@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>TestConfig.config</DefaultName>
+    <Name>TestConfig File</Name>
+    <Description>Template for creating a Quintity test configuration file.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem SubType="" TargetFileName="$fileinputname$.config" ReplaceParameters="true">TestConfig.config</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

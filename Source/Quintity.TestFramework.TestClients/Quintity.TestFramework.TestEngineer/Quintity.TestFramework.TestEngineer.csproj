@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{064BB86D-0B85-44C3-9DDD-CB246F53C7AA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Quintity.TestFramework.TestEngineer</RootNamespace>
+    <AssemblyName>Quintity.TestFramework.TestEngineer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quintity.TestFramework.Core, Version=3.5.6833.25634, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Quintity.TestFramework\Quintity.TestFramework.Runtime\bin\Debug\Quintity.TestFramework.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Quintity.TestFramework.Runtime, Version=3.5.6833.25634, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Quintity.TestFramework\Quintity.TestFramework.Runtime\bin\Debug\Quintity.TestFramework.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersionInfo.cs">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="CheckedComboBox\CheckedComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CheckedComboBox\CheckedComboBox.Designer.cs">
+      <DependentUpon>CheckedComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckedComboBox\GripBounds.cs" />
+    <Compile Include="CheckedComboBox\NativeMethods.cs" />
+    <Compile Include="CheckedComboBox\Popup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CheckedComboBox\Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheckedComboBox\PopupComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CheckedComboBox\PopupComboBox.Designer.cs">
+      <DependentUpon>PopupComboBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm - Runtime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertySorter.cs" />
+    <Compile Include="ResultsViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TestAutomationDefinitionEditor.cs" />
+    <Compile Include="TestListenersEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestListenersEditorDialog.Designer.cs">
+      <DependentUpon>TestListenersEditorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestPropertiesEditor.cs" />
+    <Compile Include="TestPropertiesEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPropertiesEditorDialog.Designer.cs">
+      <DependentUpon>TestPropertiesEditorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestPropertiesEditorDialog2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPropertiesEditorDialog2.Designer.cs">
+      <DependentUpon>TestPropertiesEditorDialog2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestPropertiesGlobalEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPropertiesGlobalEditor.Designer.cs">
+      <DependentUpon>TestPropertiesGlobalEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestScriptObjectEditorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestScriptObjectEditorDialog.Designer.cs">
+      <DependentUpon>TestScriptObjectEditorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestsuiteRelationshipDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestsuiteRelationshipDialog.Designer.cs">
+      <DependentUpon>TestsuiteRelationshipDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestTreeChangedEventArgs.cs" />
+    <Compile Include="TestTreeDefaultNode.cs" />
+    <Compile Include="TestTreeNode.cs" />
+    <Compile Include="TestTreeView - Runtime.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TestTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TraceViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TypeComboEditor.cs" />
+    <EmbeddedResource Include="CheckedComboBox\PopupComboBox.resx">
+      <DependentUpon>PopupComboBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ResultsViewer.resx">
+      <DependentUpon>ResultsViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestListenersEditorDialog.resx">
+      <DependentUpon>TestListenersEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPropertiesEditorDialog.resx">
+      <DependentUpon>TestPropertiesEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPropertiesEditorDialog2.resx">
+      <DependentUpon>TestPropertiesEditorDialog2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPropertiesGlobalEditor.resx">
+      <DependentUpon>TestPropertiesGlobalEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestScriptObjectEditorDialog.resx">
+      <DependentUpon>TestScriptObjectEditorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestsuiteRelationshipDialog.resx">
+      <DependentUpon>TestsuiteRelationshipDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestTreeView.resx">
+      <DependentUpon>TestTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraceViewer.resx">
+      <DependentUpon>TraceViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.configx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
