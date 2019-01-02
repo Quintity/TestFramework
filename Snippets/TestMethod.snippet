@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>Test Method</Title>
+      <Author>Quintity LLC</Author>
+      <Description>Creates a Quintity test method.</Description>
+      <HelpUrl>
+      </HelpUrl>
+      <Shortcut>qtm</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>name</ID>
+          <ToolTip>Replace the name with the name of actual test method.</ToolTip>
+          <Default>name</Default>
+          <Function>
+          </Function>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp"><![CDATA[ [QTF.TestMethod]
+        public QTF.TestResult $name$(
+            [QTF.TestParameter("String parameter", "Enter string parameter", "Default value")]
+            string param1,
+            [QTF.TestParameter("Int parameter", "Enter integer parameter", 0)]
+            int param2,
+            [QTF.TestParameter("Boolean parameter", "Enter boolean parameter", true)]
+            bool param3)
+        {
+            try
+            {
+                Setup();
+            }
+            catch (Exception e)
+            {
+                TestMessage += e.ToString();
+                TestResult = QTF.TestResult.Error;
+            }
+            finally
+            {
+                Teardown();
+            }
+
+            return TestResult;
+        }]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
