@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="616e2a8b-fd1b-4377-a565-5ed1fdeff784" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="abcf472b-6eab-42f5-aa61-72bd0f66f21d" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="273d8dbd-508d-423b-82c3-2653aa2543ed" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="ebce7dd9-85cd-472c-909c-0248f33f18b8" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+    <MetadataFile FileName="Quintity.TestFramework.Runtime.xsd" MetadataType="Schema" ID="6455de8a-9a80-42f0-a61e-328c00d83b01" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+    <MetadataFile FileName="Quintity.TestFramework.Core.xsd" MetadataType="Schema" ID="67164dad-5162-485d-9d6e-c9030d862456" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="5f39b3dd-77f0-4fc6-9ee6-1858428c0213" SourceId="1" SourceUrl="net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
