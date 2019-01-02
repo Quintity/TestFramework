@@ -1,0 +1,781 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>30b319c8-86e2-47b5-a367-f81a130823ab</SystemID>
+  <UserID />
+  <Title>Traditional Card Fulfillments</Title>
+  <Author>jmothers</Author>
+  <Created>2018-07-02T09:20:42-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>90f791b2-dd8f-4164-a24f-645012049de4</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>3f02edb1-677d-44ee-a89a-337ed9557df3</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>913ff8ea-d1e6-4739-905f-42334812a9cf</SystemID>
+      <UserID />
+      <Title>Traditional card</Title>
+      <Author>jmothers</Author>
+      <Created>2018-07-02T09:20:42-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>7f19a440-9689-469e-86f6-fca7f288abb8</SystemID>
+          <UserID />
+          <Title>Launch Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StoreFrontUrl]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Maximize</DisplayName>
+                <Name>maximizeApp</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[MaximizeAfterLaunch]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a5f507c6-91fe-4476-a89d-6cfe7bd6af88</SystemID>
+          <UserID />
+          <Title>Sign into application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SignIn</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Email Address</DisplayName>
+                <Name>emailAddress</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StorefrontEmail]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Password</DisplayName>
+                <Name>password</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StorefrontPassword]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>0bb76f95-2cb3-413f-b05f-3fd5a38a77e3</SystemID>
+          <UserID />
+          <Title>Setup environment</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>PurchaseSetup</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Purchase defintion path</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestData]\PurchaseDefinitions\TraditionalPurchase.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>743e984c-bfba-403e-bfbc-f7592633a0c7</SystemID>
+          <UserID />
+          <Title>Navigate to Shop All Cards page</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ClickShopNowButton</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>b0538847-3930-4119-932a-0d9fde47fabc</SystemID>
+          <UserID />
+          <Title>Select card to purchase</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>SelectCard</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>92986528-4a9c-4340-8616-c748f92a1c72</SystemID>
+          <UserID />
+          <Title>Configure selected card</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>ConfigureSelectedCard</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>814d49e1-069a-45ae-a864-7099c9a60d2c</SystemID>
+          <UserID />
+          <Title>Review shopping cart and proceed to checkout</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>ReviewShoppingCartAndCheckout</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>f5607164-93e7-44b8-bcfb-9de5630782a4</SystemID>
+          <UserID />
+          <Title>Prepare order and proceed to review</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>PrepareOrderAndReview</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>12d68652-a62e-4fcd-a5d5-609165ca4125</SystemID>
+          <UserID />
+          <Title>Place order</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>PlaceOrder</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>de06cb43-b7fe-41ee-9e16-bf41f9cecf0b</SystemID>
+          <UserID />
+          <Title>Validate order confirmation</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>ValidateConfirmation</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>840a94be-68a2-416c-83f2-439c989f7d89</SystemID>
+          <UserID />
+          <Title>Launch Backoffice application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackofficeUrl]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Maximize</DisplayName>
+                <Name>maximizeApp</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[MaximizeAfterLaunch]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>32679019-be39-4da6-ab43-de81e24f3e5e</SystemID>
+          <UserID />
+          <Title>Login application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>LoginToBackofficeApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>User name</DisplayName>
+                <Name>userName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackOfficeUserName]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Password</DisplayName>
+                <Name>password</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackOfficePassword]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Remember me?</DisplayName>
+                <Name>rememberMe</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>da28899e-63f6-497a-b9ee-169fe79db3d6</SystemID>
+          <UserID />
+          <Title>Navigate to Orders editor</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>NavigateToOrders</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>bddaad34-a55e-406f-9c9a-8ea5fc180bfb</SystemID>
+          <UserID />
+          <Title>Search for and select an order</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>SearchAndSelectOrder</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>30da3739-caac-4cac-a56a-4ddd86fa5f32</SystemID>
+          <UserID />
+          <Title>Navigate to "Administration" tab</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>NavigateToAdministrationTab</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>e2c880f0-f4d1-4718-a8e7-f1dfccb191b3</SystemID>
+          <UserID />
+          <Title>Update Administration order information</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>UpdateAdministrationTabOrder</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>ecc2a8d3-e8a2-4256-b5c8-011c33dfc362</SystemID>
+          <UserID />
+          <Title>Navigate to "Payment and Delivery"  tab</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>NavigateToPaymentDeliveryTab</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>17a97bb3-c5ff-475c-a66c-e804d6c9cf04</SystemID>
+          <UserID />
+          <Title>Update Payment and Status information</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>UpdatePaymentDelivery</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a76aa981-7c71-4bc0-a3d1-6d73f8b92227</SystemID>
+          <UserID />
+          <Title>Navigate to "Positions and Prices" tab</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>NavigateToPositionsPricesTab</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>cfd05300-7251-4a3f-b155-8d1382a8ecd1</SystemID>
+          <UserID />
+          <Title>Navigate to Cronjobs editor</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>NavigateToCronjobs</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>18d0f470-3a02-4a0d-99fd-90e5285cdb70</SystemID>
+          <UserID />
+          <Title>Search for and execute Cron job</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Cronjobs</TestClass>
+            <TestMethod>SearchForAndRunCronjob</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Search term</DisplayName>
+                <Name>code</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>Third Submit Outbound Order</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>82f55e1a-47df-4cb1-8e06-576a148b3fa7</SystemID>
+          <UserID />
+          <Title>Wait for CardSource file generation</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>C:\DevProjects\Starbucks\Repos\B2B_Hybris_6.5\Starbucks.B2B\Starbucks.B2B.BackofficeTests\bin\Debug\Starbucks.B2B.BackofficeTests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.BackofficeTests.CommonTestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>10000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>06cdec8b-e10c-43d5-a065-5dd93045a2af</SystemID>
+          <UserID />
+          <Title>Download generated CardSource file</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.CardSourceFiles</TestClass>
+            <TestMethod>RetrieveRemoteCardSourceFile</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>64071b1c-4d95-4350-b7ed-9824113f813f</SystemID>
+          <UserID />
+          <Title>Verify CardSource file contents</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.CardSourceFiles</TestClass>
+            <TestMethod>VerifyCardSourceFileContents</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>d46cd302-470e-4ec9-90dc-56cfeb75a634</SystemID>
+          <UserID />
+          <Title>Create and upload return vendor return file.</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.CardSourceFiles</TestClass>
+            <TestMethod>UploadReturnFile</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>de5153fc-2732-49d9-bd4c-00576f97b16a</SystemID>
+          <UserID />
+          <Title>Navigate to Cronjobs</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>NavigateToCronjobs</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>f8fac435-1be0-43f5-9c4e-ff907e57bfaf</SystemID>
+          <UserID />
+          <Title>Search for and execute Cron job</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Cronjobs</TestClass>
+            <TestMethod>SearchForAndRunCronjob</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Search term</DisplayName>
+                <Name>code</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>Retrieve Inbound Order Job</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>91c900c3-9f39-4900-972c-b36928102f59</SystemID>
+          <UserID />
+          <Title>Pause for cron job execution</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>C:\DevProjects\Starbucks\Repos\B2B_Hybris_6.5\Starbucks.B2B\Starbucks.B2B.BackofficeTests\bin\Debug\Starbucks.B2B.BackofficeTests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.BackofficeTests.CommonTestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>5000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>8ce6269b-caaf-4679-8024-ca9ac57ae79a</SystemID>
+          <UserID />
+          <Title>Navigate to Orders editor</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>NavigateToOrders</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>529e0697-5960-4d35-9667-8815129a84c9</SystemID>
+          <UserID />
+          <Title>Search for and select an order</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>SearchAndSelectOrder</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>f27ee852-c041-4970-bd96-5566b75aa029</SystemID>
+          <UserID />
+          <Title>Navigate to "Payment and Delivery"  tab</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>NavigateToPaymentDeliveryTab</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>b680cf79-5bec-47e5-ae08-a831f369f487</SystemID>
+          <UserID />
+          <Title>Verify "Payment and Delivery" tab content</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.OrderManagement</TestClass>
+            <TestMethod>VerifyPaymentDeliveryTabContent</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Expected order status</DisplayName>
+                <Name>expectedOrderStatus</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>Completed</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Expected payment status</DisplayName>
+                <Name>expectedPaymentStatus</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>PAID</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Expected delivery status</DisplayName>
+                <Name>expectedDeliveryStatus</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>n/a</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>45c70a48-8905-4b38-b525-8208c37e1388</SystemID>
+          <UserID />
+          <Title>Switch to Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SwitchToStorefront</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a91e7ea0-d91d-4ba9-b636-e265efbc953a</SystemID>
+          <UserID />
+          <Title>Navigate to Orders page</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>NavigateToOrdersPage</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>edb876eb-a66f-4c1a-acb5-5491bee81b82</SystemID>
+          <UserID />
+          <Title>Verify order summary card content</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>VerifyOrderSummaryCard</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>2a12afc2-9c39-46da-9d7b-86f84e20c899</SystemID>
+          <UserID />
+          <Title>Close browser</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ShutdownApplication</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>0058bfe2-1ac8-434f-906b-c38f79f7baa2</SystemID>
+          <UserID />
+          <Title>Finalize fulfillment</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>True</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.OrderFulfillment</TestClass>
+            <TestMethod>FinalizeFillment</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Traditional Card Fulfillments.ste</FilePath>
+</TestSuite>

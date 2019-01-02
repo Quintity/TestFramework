@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>5d3a69b1-4c0a-43a1-b24d-f34f436b9fea</SystemID>
+  <UserID />
+  <Title>Starbucks.B2B.Storefront master suite</Title>
+  <Author>jmothers</Author>
+  <Created>2018-07-02T09:20:00-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>5bf998f4-57ac-4a93-ba2d-3abe94d30fb9</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>3669e204-c9bf-45af-9ac3-957d5bcb24f4</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\Traditional Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Co-Branded Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Business Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Digital Card Fulfillments.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Starbucks B2B MasterSuite.ste</FilePath>
+</TestSuite>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>96605693-7ab6-4b7e-9fce-f08b5a559024</SystemID>
+  <UserID />
+  <Title>NewSuite</Title>
+  <Author>jmoth</Author>
+  <Created>2018-09-15T10:15:34-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>5dc976cc-631c-43f8-bc98-31dce2819457</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>0065aea2-3183-4dc7-bbeb-e3c25e0c67d3</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">C:\DevProjects\Quintity\Repos\Quintity.TestFramework.TestListenersService\Quintity.TestFramework.TestListenersService.Test\TestSuites\2.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\NewSuite.ste</FilePath>
+</TestSuite>

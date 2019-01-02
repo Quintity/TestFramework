@@ -1,0 +1,825 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>acf59b7e-ca3c-4112-8779-90bbe6638d28</SystemID>
+  <UserID />
+  <Title>ScratchSuite</Title>
+  <Author>jmothers</Author>
+  <Created>2018-07-19T15:35:00-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>5e87e8d9-d176-49b1-8e62-f15d8b49cc51</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>1b179971-66b5-4a0f-a7d8-9dedf35e6a60</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>293a58cb-c78f-4335-b7a5-a537d0466c16</SystemID>
+      <UserID />
+      <Title>PurchaseDefinition2</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-03T10:50:03-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>86f4f1ac-714f-4b55-b8b9-fc7bdc3eeb83</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.ScratchTests</TestClass>
+            <TestMethod>TestDefinition2Test</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestOutput]\Scratch\TestDefinition2.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>7d6b1e55-6e46-441a-af39-c3e2fe760e86</SystemID>
+      <UserID />
+      <Title>Configure Co-branded purchase defintion</Title>
+      <Author>jmothers</Author>
+      <Created>2018-07-23T13:45:05-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>0ddff080-a2c7-4566-bec6-44ffab934359</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ConfigureCoBrandedCardPurchaseDefinition</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Definition file</DisplayName>
+                <Name>outputFilePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestData]\PurchaseDefinitions\CoBrandedPurchase.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>a5e45668-d084-4c4a-a971-f6af7f506550</SystemID>
+      <UserID />
+      <Title>Configure Business Card purchase defintion</Title>
+      <Author>jmothers</Author>
+      <Created>2018-07-23T13:45:05-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>ec53371d-ac07-46b4-bc9c-98a4105a7df8</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ConfigureBusinessCardPurchaseDefinition</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>outputFilePath</DisplayName>
+                <Name>outputFilePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestData]\PurchaseDefinitions\BusinessCardsPurchase.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>1548b7b6-71af-4b41-b3ff-500ec3c3f25f</SystemID>
+      <UserID />
+      <Title>Configure Digital Card purchase definition</Title>
+      <Author>jmothers</Author>
+      <Created>2018-07-31T08:12:39-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>4e19ea33-46ce-46ba-8b66-14ada7bea943</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ConfigureDigitalCardPurchaseDefinition</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Definition file</DisplayName>
+                <Name>outputFilePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestData]\PurchaseDefinitions\DigitalCardsPurchase.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>50435efe-0a44-405a-b9d6-4732b1933b4d</SystemID>
+      <UserID />
+      <Title>Configure Traditional Card purchase definition</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-03T12:40:59-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>6b202e6e-85d5-4408-9c19-fb31b4cc9244</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ConfigureTraditionalCardPurchaseDefinition</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Definition file</DisplayName>
+                <Name>outputFilePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>C:\DevProjects\Starbucks\Repos\B2B_Hybris_6.5\Starbucks.B2B\Starbucks.B2B.StorefrontTests\TestOutput\TraditionalPurchaseB.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>11c2ac24-fe48-43bd-947d-00362a94790a</SystemID>
+      <UserID />
+      <Title>Configure Mixed Order Card purchase definition</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-03T12:40:59-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>90ae657e-2cf7-4e33-9664-cfbe264fbabf</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>ConfigureMixedOrderCardPurchaseDefinition</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Definition file</DisplayName>
+                <Name>outputFilePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestData]\PurchaseDefinitions\MixedOrderPurchase.json</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>2f19aee9-e385-444d-bc6b-0cd98d20c215</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmothers</Author>
+      <Created>2018-07-19T15:35:00-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>45e8888c-776f-4463-905e-f5584dbed2e8</SystemID>
+          <UserID />
+          <Title>Launch Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StoreFrontUrl]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>27e0b7da-19e9-45c0-93a6-e3edbd4a672f</SystemID>
+          <UserID />
+          <Title>Launch Backoffice application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackofficeUrl]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>4562f87d-8abb-472f-8379-98b88417182d</SystemID>
+          <UserID />
+          <Title>Switch to Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SwitchToStorefront</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>d82ae193-e0f4-4bde-9c75-00f585c1357d</SystemID>
+          <UserID />
+          <Title>Switch to Backoffice application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>SwitchToBackOffice</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>1e737b5a-b878-4573-9991-8d38b45b4aed</SystemID>
+          <UserID />
+          <Title>Sign into Backoffice</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>LoginToBackofficeApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>User name</DisplayName>
+                <Name>userName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackOfficeUserName]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Password</DisplayName>
+                <Name>password</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackOfficePassword]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Remember me?</DisplayName>
+                <Name>rememberMe</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>f98093e6-8217-4ced-8a9c-19ddd210ece9</SystemID>
+          <UserID />
+          <Title>Switch to Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SwitchToStorefront</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>048dde71-d5ac-4ef9-ba39-f2609edf9faa</SystemID>
+          <UserID />
+          <Title>Sign into Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SignIn</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Email Address</DisplayName>
+                <Name>emailAddress</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StorefrontEmail]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Password</DisplayName>
+                <Name>password</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StorefrontPassword]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>e67b2cbe-ccf2-4a33-9833-bb7d69295574</SystemID>
+          <UserID />
+          <Title>Copy of Switch to Backoffice application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>SwitchToBackOffice</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>238ae8a9-beb6-4853-8a02-9e0867848eeb</SystemID>
+          <UserID />
+          <Title>Shutdown Backoffice application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>ShutdownApplication</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>ed2d8961-90ca-40b9-b49e-0881f31daa8c</SystemID>
+          <UserID />
+          <Title>Copy of Switch to Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>SwitchToStorefront</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>4675b7de-d775-4f3d-9d41-b68ff005fe2f</SystemID>
+          <UserID />
+          <Title>Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>3000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Manual">
+          <SystemID>781c4579-142e-4632-817f-29d868f20572</SystemID>
+          <UserID />
+          <Title>Shutdown Storefront application</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly />
+            <TestClass />
+            <TestMethod />
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>1a34cccd-be09-4c39-827c-b7baa33bcef7</SystemID>
+      <UserID />
+      <Title>Retrieve remote files</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-07T10:31:25-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>94bad579-7e05-4025-a496-5b54a3dfe32b</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.CoBrandVendorFiles</TestClass>
+            <TestMethod>RetrieveRemoteFiles</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>minutes</DisplayName>
+                <Name>minutes</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>40</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>3b7f2ca9-3e0f-4799-9061-b60f34b6183e</SystemID>
+      <UserID />
+      <Title>Read CardSource file</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-09T07:05:37-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>2a7a0cf0-c605-4d66-84d0-de97e39e8403</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.VendorFilesBase</TestClass>
+            <TestMethod>ReadCardSourceFile</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>C:\DevProjects\Starbucks\Repos\B2B_Hybris_6.5\Starbucks.B2B\Starbucks.B2B.Tests\TestOutput\StandardTesting\CARDSOURCE_2018221132912.txt</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>78283695-e1cc-4176-afb1-2b71681eba3a</SystemID>
+      <UserID />
+      <Title>Read Co-Branded Response file</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-09T07:17:16-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>764a0e5f-ed83-438e-9cda-e7e9d680dd76</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.VendorFiles.CoBrandVendorFiles</TestClass>
+            <TestMethod>ReadCoBrandedResponseFile</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestOutput]\IB0001261052001.xml</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Inactive">
+      <SystemID>5b19e098-b084-4355-b414-27a40c1140aa</SystemID>
+      <UserID />
+      <Title>Launch application</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-21T10:47:39-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>4dfa41c0-ff1f-4461-bc02-eb8f4e17d430</SystemID>
+          <UserID />
+          <Title>Launch Frontoffice</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[StoreFrontUrl]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Maximize</DisplayName>
+                <Name>maximizeApp</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[MaximizeAfterLaunch]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>762b8b3a-e660-4dcf-991a-bed7a11a46fa</SystemID>
+          <UserID />
+          <Title>Launch Backoffice</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Backoffice.Common</TestClass>
+            <TestMethod>LaunchApplication</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>Browser</DisplayName>
+                <Name>browserName</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[Browser]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Application url</DisplayName>
+                <Name>applicationUrl</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[BackofficeUrl]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Maximize</DisplayName>
+                <Name>maximizeApp</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[MaximizeAfterLaunch]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>d6c6460b-3f4b-4311-9256-edd5e326282a</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Storefront.Common</TestClass>
+            <TestMethod>Scratch</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>cfd15f24-f64a-4541-85a2-57ebb12925f0</SystemID>
+      <UserID />
+      <Title>DateTime convert</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-30T16:14:26-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>3f066303-095f-4c30-9d53-a6e444e94683</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlWAysExecute>False</AlWAysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Miscellaneous</TestClass>
+            <TestMethod>TimeConvert</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>time</DisplayName>
+                <Name>time</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>Aug 30, 2018 1:02:09 PM</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\ScratchSuite.ste</FilePath>
+</TestSuite>

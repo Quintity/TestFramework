@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>12584333-6dd3-4731-bfdb-11c2ed5cf086</SystemID>
+  <UserID>22</UserID>
+  <Title>Starbucks B2B Master Suite</Title>
+  <Author>jmothers</Author>
+  <Created>2018-08-01T14:15:21-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>6e8e1b9e-b2b4-41e5-8ac5-4aa9def98398</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>b4d5f4ff-6a37-4e6e-8342-bee2b787d7ff</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\Gift Card E2E Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Account Management.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Starbucks B2B Master Suite.ste</FilePath>
+</TestSuite>

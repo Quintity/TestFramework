@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>d39eb031-8421-4d33-a00d-3d3c74bfa963</SystemID>
+  <UserID />
+  <Title>Miscellaneous</Title>
+  <Author>jmothers</Author>
+  <Created>2018-08-20T09:22:40-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>188b3640-e1e8-446e-8ed6-24dc0db24a7d</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>9fb89a84-58ed-4642-a833-21d764a8200b</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>0cd95ac3-6e92-421d-9d22-ca7f8f10e59d</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmothers</Author>
+      <Created>2018-08-20T09:22:40-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>852eb7bf-860c-4aec-9806-b062134155ab</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Starbucks.B2B.Tests.dll</TestAssembly>
+            <TestClass>Starbucks.B2B.Tests.Miscellaneous</TestClass>
+            <TestMethod>ReadCardSourceFile</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>orderNumber</DisplayName>
+                <Name>orderNumber</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>01269002</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>column</DisplayName>
+                <Name>column</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>RecipientZipcode</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>value</DisplayName>
+                <Name>value</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>98103</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestOutput]\StandardTesting\CARDSOURCE_2018232153445.txt</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Miscellaneous.ste</FilePath>
+</TestSuite>

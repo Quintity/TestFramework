@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>6751bd34-028c-419c-8e0f-481ded854903</SystemID>
+  <UserID />
+  <Title>Master test suite</Title>
+  <Author>jmothers</Author>
+  <Created>2018-08-01T13:16:21-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>5441f130-2a54-4921-b27b-58cc5bd54f93</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>a851ba39-2c2f-4fea-9210-a27f7d8e64b2</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\Scratch\Traditional test suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Scratch\Co-Branded test suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Scratch\Business card test suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Scratch\Digital test suite.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Scratch\Master test suite.ste</FilePath>
+</TestSuite>

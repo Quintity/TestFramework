@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>8aac6797-5e14-4d0e-a85d-a815c1e66ccb</SystemID>
+  <UserID />
+  <Title>2</Title>
+  <Author>jmoth</Author>
+  <Created>2018-09-15T12:25:57-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>32ee5178-87be-442e-bf96-70dffc9a289e</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>ce47bd9a-8450-43dd-bf14-23b40a1884f0</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\3.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\2.ste</FilePath>
+</TestSuite>

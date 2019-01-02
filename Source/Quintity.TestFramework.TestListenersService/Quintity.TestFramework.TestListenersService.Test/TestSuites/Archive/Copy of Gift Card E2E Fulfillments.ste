@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>c4a4c727-9cbb-4763-bc90-72fabe3e0da4</SystemID>
+  <UserID />
+  <Title>Gift Card E2E Fulfillments</Title>
+  <Author>jmothers</Author>
+  <Created>2018-08-01T14:12:55-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>0fb792aa-5613-4642-b4cc-365d41dc8d1e</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>2983c297-773c-4022-98b3-6c4caec07cf0</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\Traditional Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Co-Branded Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Business Card Fulfillments.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Digital Card Fulfillments.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Copy of Gift Card E2E Fulfillments.ste</FilePath>
+</TestSuite>
