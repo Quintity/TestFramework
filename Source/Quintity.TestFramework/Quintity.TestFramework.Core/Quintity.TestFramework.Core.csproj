@@ -161,7 +161,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClassDiagram.cd" />
     <None Include="KeyFile.snk" />
     <None Include="packages.config" />
     <None Include="Quintity.TestFramework.Core.nuspec" />
