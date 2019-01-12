@@ -211,17 +211,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\ResetResults.bmp" />
+    <None Include="Resources\ResetResults.bmp" />
     <None Include="Resources\StopExecution.bmp" />
-    <None Include="Images\Execute.bmp" />
     <None Include="Images\StopExecute.bmp" />
     <None Include="Images\FileNew.bmp" />
     <None Include="Images\FileOpen.bmp" />
     <None Include="Images\FileSave.bmp" />
-    <None Include="Images\ResetResults.bmp" />
     <None Include="Images\Reset.png" />
     <None Include="Images\ResetResult.png" />
     <None Include="Images\history.bmp" />
-    <None Include="Images\Executex.bmp" />
     <None Include="Images\Reset.bmp" />
     <None Include="Images\StartExecution.bmp" />
     <None Include="Images\StopExecution.bmp" />

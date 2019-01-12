@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties1 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties1 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             this.m_mainMenu = new System.Windows.Forms.MenuStrip();
             this.m_fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_fileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +57,12 @@
             this.testListenersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mainToolStrip = new System.Windows.Forms.ToolStrip();
+            this.m_newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_executeToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_resetToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.m_propertiesStatusBarButton = new System.Windows.Forms.ToolStripSplitButton();
             this.m_propertyFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +87,9 @@
             this.m_samplingRateLabel = new System.Windows.Forms.Label();
             this.m_samplingNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.m_treeViewToolStrip = new System.Windows.Forms.ToolStrip();
+            this.m_collapseAllToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_testCasesOnlyToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_expandAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_viewersTabControl = new System.Windows.Forms.TabControl();
             this.m_resultsViewerTabPage = new System.Windows.Forms.TabPage();
             this.m_traceViewerTabPage = new System.Windows.Forms.TabPage();
@@ -92,14 +100,6 @@
             this.m_testTreeView = new Quintity.TestFramework.TestEngineer.TestTreeView();
             this.m_resultsViewer = new Quintity.TestFramework.TestEngineer.ResultsViewer();
             this.m_traceViewer = new Quintity.TestFramework.TestEngineer.TraceViewer();
-            this.m_collapseAllToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_testCasesOnlyToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_expandAllToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_newToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_executeToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_resetToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_mainMenu.SuspendLayout();
             this.m_mainToolStrip.SuspendLayout();
             this.m_mainStatusStrip.SuspendLayout();
@@ -344,10 +344,59 @@
             this.m_mainToolStrip.TabIndex = 1;
             this.m_mainToolStrip.Text = "toolStrip1";
             // 
+            // m_newToolStripButton
+            // 
+            this.m_newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_newToolStripButton.Image")));
+            this.m_newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_newToolStripButton.Name = "m_newToolStripButton";
+            this.m_newToolStripButton.Size = new System.Drawing.Size(51, 22);
+            this.m_newToolStripButton.Text = "New";
+            this.m_newToolStripButton.Click += new System.EventHandler(this.m_newToolStripButton_Click);
+            // 
+            // m_openToolStripButton
+            // 
+            this.m_openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_openToolStripButton.Image")));
+            this.m_openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_openToolStripButton.Name = "m_openToolStripButton";
+            this.m_openToolStripButton.Size = new System.Drawing.Size(56, 22);
+            this.m_openToolStripButton.Text = "Open";
+            this.m_openToolStripButton.Click += new System.EventHandler(this.m_openToolStripButton_Click);
+            // 
+            // m_saveToolStripButton
+            // 
+            this.m_saveToolStripButton.Enabled = false;
+            this.m_saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_saveToolStripButton.Image")));
+            this.m_saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_saveToolStripButton.Name = "m_saveToolStripButton";
+            this.m_saveToolStripButton.Size = new System.Drawing.Size(51, 22);
+            this.m_saveToolStripButton.Text = "Save";
+            this.m_saveToolStripButton.ToolTipText = "m_savToolStripButton";
+            this.m_saveToolStripButton.Click += new System.EventHandler(this.m_saveToolStripButton_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // m_executeToolStripButton
+            // 
+            this.m_executeToolStripButton.Enabled = false;
+            this.m_executeToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_executeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_executeToolStripButton.Name = "m_executeToolStripButton";
+            this.m_executeToolStripButton.Size = new System.Drawing.Size(67, 22);
+            this.m_executeToolStripButton.Text = "Execute";
+            this.m_executeToolStripButton.Click += new System.EventHandler(this.m_executeToolStripButton_Click);
+            // 
+            // m_resetToolStripButton
+            // 
+            this.m_resetToolStripButton.Enabled = false;
+            this.m_resetToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ResetResults;
+            this.m_resetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_resetToolStripButton.Name = "m_resetToolStripButton";
+            this.m_resetToolStripButton.Size = new System.Drawing.Size(55, 22);
+            this.m_resetToolStripButton.Text = "Reset";
+            this.m_resetToolStripButton.Click += new System.EventHandler(this.m_resetToolStripButton_Click);
             // 
             // m_mainStatusStrip
             // 
@@ -650,6 +699,42 @@
             this.m_treeViewToolStrip.TabIndex = 0;
             this.m_treeViewToolStrip.Text = "toolStrip2";
             // 
+            // m_collapseAllToolStripButton
+            // 
+            this.m_collapseAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_collapseAllToolStripButton.Enabled = false;
+            this.m_collapseAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_collapseAllToolStripButton.Image")));
+            this.m_collapseAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_collapseAllToolStripButton.Name = "m_collapseAllToolStripButton";
+            this.m_collapseAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_collapseAllToolStripButton.Text = "1";
+            this.m_collapseAllToolStripButton.ToolTipText = "Collapse all to root test suite ";
+            this.m_collapseAllToolStripButton.Click += new System.EventHandler(this.m_collapseAllToolStripButton_Click);
+            // 
+            // m_testCasesOnlyToolStripButton
+            // 
+            this.m_testCasesOnlyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_testCasesOnlyToolStripButton.Enabled = false;
+            this.m_testCasesOnlyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_testCasesOnlyToolStripButton.Image")));
+            this.m_testCasesOnlyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_testCasesOnlyToolStripButton.Name = "m_testCasesOnlyToolStripButton";
+            this.m_testCasesOnlyToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_testCasesOnlyToolStripButton.Text = "2";
+            this.m_testCasesOnlyToolStripButton.ToolTipText = "Expand test suites only";
+            this.m_testCasesOnlyToolStripButton.Click += new System.EventHandler(this.m_testCasesOnlyToolStripButton_Click);
+            // 
+            // m_expandAllToolStripButton
+            // 
+            this.m_expandAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_expandAllToolStripButton.Enabled = false;
+            this.m_expandAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_expandAllToolStripButton.Image")));
+            this.m_expandAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_expandAllToolStripButton.Name = "m_expandAllToolStripButton";
+            this.m_expandAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_expandAllToolStripButton.Text = "A";
+            this.m_expandAllToolStripButton.ToolTipText = "Expand all to root test suite";
+            this.m_expandAllToolStripButton.Click += new System.EventHandler(this.m_expandAllToolStripButton_Click);
+            // 
             // m_viewersTabControl
             // 
             this.m_viewersTabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
@@ -745,91 +830,6 @@
             this.m_traceViewer.TabIndex = 0;
             this.m_traceViewer.Text = "";
             this.m_traceViewer.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.m_traceViewer_LinkClicked);
-            // 
-            // m_collapseAllToolStripButton
-            // 
-            this.m_collapseAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_collapseAllToolStripButton.Enabled = false;
-            this.m_collapseAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_collapseAllToolStripButton.Image")));
-            this.m_collapseAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_collapseAllToolStripButton.Name = "m_collapseAllToolStripButton";
-            this.m_collapseAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_collapseAllToolStripButton.Text = "1";
-            this.m_collapseAllToolStripButton.ToolTipText = "Collapse all to root test suite ";
-            this.m_collapseAllToolStripButton.Click += new System.EventHandler(this.m_collapseAllToolStripButton_Click);
-            // 
-            // m_testCasesOnlyToolStripButton
-            // 
-            this.m_testCasesOnlyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_testCasesOnlyToolStripButton.Enabled = false;
-            this.m_testCasesOnlyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_testCasesOnlyToolStripButton.Image")));
-            this.m_testCasesOnlyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_testCasesOnlyToolStripButton.Name = "m_testCasesOnlyToolStripButton";
-            this.m_testCasesOnlyToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_testCasesOnlyToolStripButton.Text = "2";
-            this.m_testCasesOnlyToolStripButton.ToolTipText = "Expand test suites only";
-            this.m_testCasesOnlyToolStripButton.Click += new System.EventHandler(this.m_testCasesOnlyToolStripButton_Click);
-            // 
-            // m_expandAllToolStripButton
-            // 
-            this.m_expandAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_expandAllToolStripButton.Enabled = false;
-            this.m_expandAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_expandAllToolStripButton.Image")));
-            this.m_expandAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_expandAllToolStripButton.Name = "m_expandAllToolStripButton";
-            this.m_expandAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_expandAllToolStripButton.Text = "A";
-            this.m_expandAllToolStripButton.ToolTipText = "Expand all to root test suite";
-            this.m_expandAllToolStripButton.Click += new System.EventHandler(this.m_expandAllToolStripButton_Click);
-            // 
-            // m_newToolStripButton
-            // 
-            this.m_newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_newToolStripButton.Image")));
-            this.m_newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_newToolStripButton.Name = "m_newToolStripButton";
-            this.m_newToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.m_newToolStripButton.Text = "New";
-            this.m_newToolStripButton.Click += new System.EventHandler(this.m_newToolStripButton_Click);
-            // 
-            // m_openToolStripButton
-            // 
-            this.m_openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_openToolStripButton.Image")));
-            this.m_openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_openToolStripButton.Name = "m_openToolStripButton";
-            this.m_openToolStripButton.Size = new System.Drawing.Size(56, 22);
-            this.m_openToolStripButton.Text = "Open";
-            this.m_openToolStripButton.Click += new System.EventHandler(this.m_openToolStripButton_Click);
-            // 
-            // m_saveToolStripButton
-            // 
-            this.m_saveToolStripButton.Enabled = false;
-            this.m_saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_saveToolStripButton.Image")));
-            this.m_saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_saveToolStripButton.Name = "m_saveToolStripButton";
-            this.m_saveToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.m_saveToolStripButton.Text = "Save";
-            this.m_saveToolStripButton.ToolTipText = "m_savToolStripButton";
-            this.m_saveToolStripButton.Click += new System.EventHandler(this.m_saveToolStripButton_Click);
-            // 
-            // m_executeToolStripButton
-            // 
-            this.m_executeToolStripButton.Enabled = false;
-            this.m_executeToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
-            this.m_executeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_executeToolStripButton.Name = "m_executeToolStripButton";
-            this.m_executeToolStripButton.Size = new System.Drawing.Size(67, 22);
-            this.m_executeToolStripButton.Text = "Execute";
-            this.m_executeToolStripButton.Click += new System.EventHandler(this.m_executeToolStripButton_Click);
-            // 
-            // m_resetToolStripButton
-            // 
-            this.m_resetToolStripButton.Enabled = false;
-            this.m_resetToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ResetResults;
-            this.m_resetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_resetToolStripButton.Name = "m_resetToolStripButton";
-            this.m_resetToolStripButton.Size = new System.Drawing.Size(55, 22);
-            this.m_resetToolStripButton.Text = "Reset";
-            this.m_resetToolStripButton.Click += new System.EventHandler(this.m_resetToolStripButton_Click);
             // 
             // MainForm
             // 
