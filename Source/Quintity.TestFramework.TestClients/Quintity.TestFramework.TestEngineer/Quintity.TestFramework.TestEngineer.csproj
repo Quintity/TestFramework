@@ -96,6 +96,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PropertySorter.cs" />
     <Compile Include="ResultsViewer.cs">
       <SubType>Component</SubType>
@@ -156,17 +161,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="ResultsViewer.resx">
       <DependentUpon>ResultsViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,7 +195,6 @@
     <EmbeddedResource Include="TraceViewer.resx">
       <DependentUpon>TraceViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.configx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -209,6 +209,23 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StopExecution.bmp" />
+    <None Include="Images\Execute.bmp" />
+    <None Include="Images\StopExecute.bmp" />
+    <None Include="Images\FileNew.bmp" />
+    <None Include="Images\FileOpen.bmp" />
+    <None Include="Images\FileSave.bmp" />
+    <None Include="Images\ResetResults.bmp" />
+    <None Include="Images\Reset.png" />
+    <None Include="Images\ResetResult.png" />
+    <None Include="Images\history.bmp" />
+    <None Include="Images\Executex.bmp" />
+    <None Include="Images\Reset.bmp" />
+    <None Include="Images\StartExecution.bmp" />
+    <None Include="Images\StopExecution.bmp" />
+    <Content Include="Images\TestEngineer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

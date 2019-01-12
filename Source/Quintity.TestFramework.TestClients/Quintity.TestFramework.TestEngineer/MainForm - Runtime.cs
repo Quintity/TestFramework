@@ -341,6 +341,7 @@ namespace Quintity.TestFramework.TestEngineer
             m_suiteResetMenuItem.Enabled = !executing;
             m_suiteExecuteMenuItem.Text = !executing ? "&Execute" : "Stop &Execution";
             m_executeToolStripButton.Text = !executing ? "Execute" : "Stop";
+            m_executeToolStripButton.Image = !executing ? global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution : global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
 
             m_openToolStripButton.Enabled = !executing;
             m_newToolStripButton.Enabled = !executing;
