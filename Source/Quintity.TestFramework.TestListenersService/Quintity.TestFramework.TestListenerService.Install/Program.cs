@@ -33,7 +33,8 @@ namespace Quintity.TestFramework.TestEngineer.Setup
             {
                 Name = "Quintity TestListenersService",
                 Description = "Quintity runtime listener test management service.",
-
+                
+                DelayedAutoStart = false,
                 StartOn = SvcEvent.Install,
                 StopOn = SvcEvent.InstallUninstall_Wait,
                 RemoveOn = SvcEvent.Uninstall_Wait,
