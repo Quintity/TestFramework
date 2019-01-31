@@ -217,8 +217,8 @@
     <None Include="Images\FileNew.bmp" />
     <None Include="Images\FileOpen.bmp" />
     <None Include="Images\FileSave.bmp" />
-    <None Include="Images\StartExecution.bmp" />
     <None Include="Images\StopExecution.bmp" />
+    <None Include="Images\StartExecution2.bmp" />
     <Content Include="Images\TestEngineer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

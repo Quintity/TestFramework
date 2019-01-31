@@ -362,7 +362,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (args.Property.Equals("Tags"))
             {
-                resetTagComboBox(false);
+                // TODO - Renable once tagging enabled.
+                // resetTagComboBox(false);
             }
         }
 
@@ -696,7 +697,9 @@ namespace Quintity.TestFramework.TestEngineer
         private void setLoadedSuiteUI(bool loaded)
         {
             setCaption();
-            resetTagComboBox(!loaded);
+
+            // TODO - Renable once tagging enabled.
+            //resetTagComboBox(!loaded);
 
             m_editMenuItem.Enabled = loaded;
             m_suiteMenuItem.Enabled = loaded;
@@ -726,7 +729,9 @@ namespace Quintity.TestFramework.TestEngineer
                     m_testTreeView.ExpandAll();
                     m_testSuiteUri = null;
                     setCaption();
-                    resetTagComboBox(false);
+
+                    // TODO - Renable once tagging enabled.
+                    //resetTagComboBox(false);
                     m_testPropertyGrid.Enabled = true;
                     m_collapseAllToolStripButton.Enabled = true;
                     m_testCasesOnlyToolStripButton.Enabled = true;
