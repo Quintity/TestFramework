@@ -328,3 +328,4 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/Source/Quintity.TestFramework.TestListenersService/TestListenersService.Setup
