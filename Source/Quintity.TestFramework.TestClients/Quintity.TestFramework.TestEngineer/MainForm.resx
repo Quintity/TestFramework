@@ -148,6 +148,15 @@
         AAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="m_executeToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPY0AG3759+w/CUC7pAGYA2YaANMbMi/h/7+U9
+        8gwCabDoMvnvMtHh/+4rO0k3BGYADHfv7CTNEHQDQJgkL2EzAISJ9hIuA2CYoJcIGVC/uZY8A0BeWH9u
+        LX7NIIDNAFAgXnp0ibBmEEA3AOTkV+9fEdYIAzADiHYyOgApJsnJ6ACmiWSNMEC6ZgYGAHkEOGF0tQlc
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="m_mainStatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>286, 17</value>
   </metadata>

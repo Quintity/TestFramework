@@ -274,6 +274,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             this.m_testTreeView.ResetResults();
             resetViewerAndStatusBar();
+            m_resetToolStripButton.Enabled = false;
         }
 
         #endregion
@@ -880,22 +881,10 @@ namespace Quintity.TestFramework.TestEngineer
             m_testTreeView.StopExecution();
         }
 
-        private void setCaption()
-        {
-            if (m_testSuiteUri != null)
-            {
-                Text = string.Format("{0} - Quintity TestEngineer", m_testSuiteUri.Segments[m_testSuiteUri.Segments.Length - 1]);
-            }
-            else
-            {
-                Text = string.Format("{0} - Quintity Test Framework", m_testTreeView.RootNode.TestScriptObject.Title);
-            }
-        }
+        private void setCaption() => Text = $"{Path.GetFileName(((TestSuite)m_testTreeView.RootNode.TestScriptObject).FilePath)}  - Quintity Test Framework";
 
         private void resetViewerAndStatusBar()
         {
-            // TODO - remove
-            //m_testTreeView.ResetResults();
             m_traceViewer.Clear();
             m_resultsViewer.Clear();
 

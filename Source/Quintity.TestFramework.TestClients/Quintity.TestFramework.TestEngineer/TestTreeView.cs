@@ -332,8 +332,14 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (result == DialogResult.OK)
             {
-                TestSuite testSuite = new TestSuite(
-                    Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName), m_saveFileDialog.FileName);
+                //TestSuite testSuite = new TestSuite(
+                //    Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName), m_saveFileDialog.FileName);
+
+                var testSuite = new TestSuite()
+                {
+                    Title = Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName),
+                    FilePath = m_saveFileDialog.FileName
+                };
 
                 var testcase = testSuite.AddTestCase(new TestCase("Untitled test case"));
                 testcase.AddTestStep(new TestStep("Untitled test step"));
