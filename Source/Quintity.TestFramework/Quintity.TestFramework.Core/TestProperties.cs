@@ -450,9 +450,7 @@ namespace Quintity.TestFramework.Core
         public static string ExpandString(string source, bool ignoreEscaped)
         {
             TestAssert.IsNotNull(_testPropertyCollection, "The TestProperties collection must be initialized before use.");
-            TestAssert.IsFalse(string.IsNullOrEmpty(source), "The target string key cannot be a null or empty value.");
-
-            //source = GetPropertyValueAsString(source, source);
+            TestAssert.IsFalse(source is null, "The target string key cannot be a null or empty value.");
 
             string leftEscapeToken = "&@#!~?^";
             string rightEscapeToken = "!@*&%+";

@@ -643,7 +643,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
             else
             {
-                m_testTreeView.DisplayDefaultScreen();
+                newTestSuite();
             }
         }
 
@@ -761,7 +761,20 @@ namespace Quintity.TestFramework.TestEngineer
 
         private bool saveTestSuite()
         {
-            return saveTestSuite(m_testTreeView.GetTestSuite());
+            bool success = true;
+
+            var testSuite = m_testTreeView.GetTestSuite();
+
+            if (string.IsNullOrEmpty(testSuite.FileName))
+            {
+                saveAsTestSuite();
+            }
+            else
+            {
+                success = saveTestSuite(testSuite);
+            }
+
+            return success;
         }
 
         private bool saveTestSuite(TestSuite testSuite)
@@ -775,7 +788,7 @@ namespace Quintity.TestFramework.TestEngineer
                 testSuite.FileSave();
                 m_testTreeView.ResetHasChangedFlags();
 
-                m_fileSaveAsMenuItem.Enabled = false;
+                //m_fileSaveAsMenuItem.Enabled = false;
                 m_fileSaveMenuItem.Enabled = false;
                 m_saveToolStripButton.Enabled = false;
 
@@ -813,7 +826,7 @@ namespace Quintity.TestFramework.TestEngineer
                 var testSuite = m_testTreeView.GetTestSuite();
 
                 m_saveFileDialog.Title = "Save Test Suite As";
-                m_saveFileDialog.FileName = $"Copy of {testSuite.Title}";
+                m_saveFileDialog.FileName = string.IsNullOrEmpty(testSuite.FileName) ? string.Empty: $"Copy of {testSuite.Title}";
                 m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
                 m_saveFileDialog.RestoreDirectory = true;
                 m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
@@ -829,13 +842,12 @@ namespace Quintity.TestFramework.TestEngineer
                     m_testTreeView.RootNode.TestScriptObject = testSuite;
                     m_testTreeView.RootNode.TestScriptResult = null; 
 
-
                     // Clean up UI
                     m_testSuiteUri = new Uri(TestProperties.ExpandString(testSuite.FilePath));
                     m_testTreeView.ResetHasChangedFlags();
 
                     m_fileSaveMenuItem.Enabled = false;
-                    m_fileSaveAsMenuItem.Enabled = false;
+                    //m_fileSaveAsMenuItem.Enabled = false;
                     m_saveToolStripButton.Enabled = false;
 
                     m_testPropertyGrid.SelectedObject = m_testTreeView.RootNode.TestScriptObject;
@@ -881,7 +893,21 @@ namespace Quintity.TestFramework.TestEngineer
             m_testTreeView.StopExecution();
         }
 
-        private void setCaption() => Text = $"{Path.GetFileName(((TestSuite)m_testTreeView.RootNode.TestScriptObject).FilePath)}  - Quintity Test Framework";
+        private void setCaption()
+        {
+            var qtf = "Quintity TestEngineer";
+
+            var testSuite = m_testTreeView.RootNode.TestScriptObjectAsTestSuite();
+
+            if (string.IsNullOrEmpty(testSuite.FilePath))
+            {
+                Text = qtf;
+            }
+            else
+            {
+                Text = $"{Path.GetFileName(testSuite.FilePath)}  - {qtf}";
+            }
+        }
 
         private void resetViewerAndStatusBar()
         {

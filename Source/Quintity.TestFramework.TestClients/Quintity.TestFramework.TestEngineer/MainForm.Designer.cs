@@ -178,7 +178,6 @@
             // 
             // m_fileSaveAsMenuItem
             // 
-            this.m_fileSaveAsMenuItem.Enabled = false;
             this.m_fileSaveAsMenuItem.Name = "m_fileSaveAsMenuItem";
             this.m_fileSaveAsMenuItem.Size = new System.Drawing.Size(155, 22);
             this.m_fileSaveAsMenuItem.Text = "Save &As";

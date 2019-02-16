@@ -224,7 +224,6 @@ namespace Quintity.TestFramework.TestEngineer
             }
             else
             {
-                // Provide file path if test suite.
                 var fileText = TestScriptObject is TestSuite ? $"File:  {TestProperties.ExpandString(((TestSuite)TestScriptObject).FilePath)}" : string.Empty;
 
                 ToolTipText = string.Format("Title:  {0}\r\nStatus:  {1}\r\n{2}\r\nDescription:  {3}",
