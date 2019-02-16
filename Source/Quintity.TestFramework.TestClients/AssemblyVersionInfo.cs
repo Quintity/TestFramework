@@ -15,7 +15,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("Release")]
 [assembly: AssemblyCompany("Quintity LLC")]
 [assembly: AssemblyProduct("Quintity TestFramework (QTF)")]
-[assembly: AssemblyCopyright("Copyright© 2017. Quintity LLC. All rights reserved. ")]
+[assembly: AssemblyCopyright("Copyright© 2019. Quintity LLC. All rights reserved. ")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
