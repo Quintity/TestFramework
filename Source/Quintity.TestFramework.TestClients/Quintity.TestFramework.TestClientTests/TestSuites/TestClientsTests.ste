@@ -22,7 +22,14 @@
       <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
       <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
       <TestMethod>SimpleTest</TestMethod>
-      <TestParameters />
+      <TestParameters>
+        <TestParameter>
+          <DisplayName>throwException</DisplayName>
+          <Name>throwException</Name>
+          <TypeAsString>System.Boolean</TypeAsString>
+          <ValueAsString>False</ValueAsString>
+        </TestParameter>
+      </TestParameters>
     </TestAutomationDefinition>
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
@@ -61,22 +68,30 @@
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
+          <Description><![CDATA[This is the description]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
             <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>DumpProperties</TestMethod>
-            <TestParameters />
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\Subtestsuite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Sample test suite.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
 </TestSuite>

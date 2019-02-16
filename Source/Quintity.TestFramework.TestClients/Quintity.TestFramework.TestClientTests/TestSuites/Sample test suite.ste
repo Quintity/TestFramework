@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>b1b01f5a-49b8-4374-86ef-4f30692d075e</SystemID>
+  <UserID />
+  <Title>Sample test suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-01-31T10:36:38-08:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>501c6ca9-4a55-4b6e-abce-2bf7a056ff03</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>f06ef1a7-4c51-4861-89fa-dee7f0002f8a</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>53c7d49f-f95b-48dd-9d7e-387777037c69</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-01-31T10:36:38-08:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a2542ed8-e41b-4239-9ddc-016969dbf8f5</SystemID>
+          <UserID />
+          <Title>Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>7edbfa60-5516-40f5-9c3d-87a58889a93b</SystemID>
+          <UserID />
+          <Title>Copy of Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>2c54b57c-2238-48c0-9a9d-ee5526ba90ad</SystemID>
+          <UserID />
+          <Title>Copy of Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Sample test suite.ste</FilePath>
+</TestSuite>

@@ -236,8 +236,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />
+    <Content Include="Images\QAvatar_small.jpg" />
     <Content Include="Images\ResetResults.bmp" />
     <None Include="Resources\ResetResults.bmp" />
     <None Include="Resources\StopExecution.bmp" />

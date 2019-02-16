@@ -10,15 +10,18 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod("This is a simple test", "This is the description")]
-        public TestVerdict SimpleTest()
+        public TestVerdict SimpleTest(bool throwException)
         {
             try
             {
                 Setup();
 
-                throw new Exception("This is a big deal.");
+                if (throwException)
+                {
+                    throw new Exception("This is a big deal.");
+                }
             }
-            catch( Exception e)
+            catch ( Exception e)
             {
                 TestMessage += e.ToString();
                 TestVerdict = TestVerdict.Error;
@@ -28,7 +31,7 @@ namespace Quintity.TestFramework.TestClientTests
                 Teardown();
             }
 
-            return TestVerdict.Fail;
+            return TestVerdict;
         }
 
         #endregion
