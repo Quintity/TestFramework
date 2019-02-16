@@ -149,35 +149,5 @@ namespace Quintity.TestFramework.TestEngineer.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TestEngineerLogo1 {
-            get {
-                object obj = ResourceManager.GetObject("TestEngineerLogo1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TestEngineerLogo2 {
-            get {
-                object obj = ResourceManager.GetObject("TestEngineerLogo2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TestEngineerLogo3 {
-            get {
-                object obj = ResourceManager.GetObject("TestEngineerLogo3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

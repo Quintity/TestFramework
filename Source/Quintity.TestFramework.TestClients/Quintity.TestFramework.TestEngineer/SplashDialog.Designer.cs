@@ -67,7 +67,7 @@
             // 
             this.m_pbSplash.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_pbSplash.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_pbSplash.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.TestEngineerLogo3;
+            this.m_pbSplash.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.TestEngineerLogo;
             this.m_pbSplash.Location = new System.Drawing.Point(0, 0);
             this.m_pbSplash.Name = "m_pbSplash";
             this.m_pbSplash.Size = new System.Drawing.Size(457, 364);

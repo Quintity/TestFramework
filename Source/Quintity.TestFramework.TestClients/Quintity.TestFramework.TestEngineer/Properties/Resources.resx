@@ -127,23 +127,14 @@
   <data name="QuintityLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\QuintityLogo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TestEngineerLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\TestEngineerLogo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FileSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\FileSave.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StopExecution" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\StopExecution.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TestEngineerLogo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\TestEngineerLogo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FileNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\FileNew.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestEngineerLogo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\TestEngineerLogo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FileOpen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\FileOpen.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -151,7 +142,7 @@
   <data name="StartExecution" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\StartExecution.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TestEngineerLogo3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TestEngineerLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\TestEngineerLogo.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
