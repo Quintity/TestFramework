@@ -3,14 +3,18 @@ using System.Diagnostics;
 using System.Reflection;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
+using System.Collections.Generic;
+using System;
 
 namespace Quintity.TestFramework.SampleListeners
 {
     public class SampleTestListener : TestListener
     {
+        public SampleTestListener(Dictionary<string, string> args)
+        { }
+
         public override void OnTestExecutionBegin(TestExecutor testExecutor, TestExecutionBeginArgs args)
         {
-            
             Debug.WriteLine("SampleTestListener method:  " + MethodInfo.GetCurrentMethod().Name);
         }
 
@@ -88,9 +92,10 @@ namespace Quintity.TestFramework.SampleListeners
             Debug.WriteLine("SampleTestListener method:  " + MethodInfo.GetCurrentMethod().Name);
         }
 
+        [NoOperation]
         public override void OnTestMetric(string virtualUser, TestMetricEventArgs args)
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

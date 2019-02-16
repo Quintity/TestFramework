@@ -255,19 +255,6 @@ namespace Quintity.TestFramework.TestEngineer
 
         #region Public methods
 
-        public void DisplayDefaultScreen()
-        {
-            this.ShowLines = false;
-
-            var node = new TestTreeDefaultNode(
-                @"                              " +
-                "Select File->New to create a new test suite or File->Open to open an existing suite.");
-
-            this.Nodes.Insert(0, node);
-
-            this.ExpandAll();
-        }
-
         public TestTreeNode OpenExistingTestSuite(TestTreeNode currentNode, bool recordHistory = true)
         {
             TestSuite testSuite = null;
@@ -321,30 +308,33 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestSuite(TestTreeNode currentNode, bool recordHistory = true)
         {
-            m_saveFileDialog.Title = "Save Test Suite As";
-            m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
-            m_saveFileDialog.RestoreDirectory = true;
-            m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
-            m_saveFileDialog.FilterIndex = 1;
-
+            DialogResult result = DialogResult.OK;
             TestTreeNode newNode = null;
-            DialogResult result = m_saveFileDialog.ShowDialog();
+
+            if (currentNode != null)
+            {
+                m_saveFileDialog.Title = "Save Test Suite As";
+                m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
+                m_saveFileDialog.RestoreDirectory = true;
+                m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
+                m_saveFileDialog.FilterIndex = 1;
+
+                result = m_saveFileDialog.ShowDialog();
+            }
 
             if (result == DialogResult.OK)
             {
-                //TestSuite testSuite = new TestSuite(
-                //    Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName), m_saveFileDialog.FileName);
-
-                var testSuite = new TestSuite()
-                {
-                    Title = Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName),
-                    FilePath = m_saveFileDialog.FileName
-                };
+                var testSuite = new TestSuite(
+                    string.IsNullOrEmpty(m_saveFileDialog.FileName) ? "Untitled test suite" : Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName),
+                    m_saveFileDialog.FileName);
 
                 var testcase = testSuite.AddTestCase(new TestCase("Untitled test case"));
                 testcase.AddTestStep(new TestStep("Untitled test step"));
 
-                insertTestSuite(testSuite, currentNode);
+                newNode = insertTestSuite(testSuite, currentNode);
+
+                newNode.HasChanged = false;
+                newNode.UpdateTitleAndToolTip();
             }
 
             return newNode;
@@ -797,7 +787,7 @@ namespace Quintity.TestFramework.TestEngineer
                 MessageBox.Show(e.Message, "Quintity TestFramework",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Quintity TestFramework",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -2428,7 +2418,7 @@ namespace Quintity.TestFramework.TestEngineer
         /// </summary>
         /// <param name="testSuite">Test suite object to insert.</param>
         /// <param name="targetNode">Target node to insert.</param>
-        private void insertTestSuite(TestSuite testSuite, TestTreeNode targetNode, bool relationshipPrompt = true)
+        private TestTreeNode insertTestSuite(TestSuite testSuite, TestTreeNode targetNode, bool relationshipPrompt = true)
         {
             TestTreeNode newNode = null;
 
@@ -2481,6 +2471,8 @@ namespace Quintity.TestFramework.TestEngineer
             }
 
             EndUpdate();
+
+            return newNode;
         }
 
         private void m_miNewTestSuite_Click(object sender, EventArgs e)
