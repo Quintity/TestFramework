@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
+using System.Drawing;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -66,7 +67,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             registerRuntimeEvents();
 
-            //Properties.Settings.Default.
+            ShowSplash(true);
 
             m_testTreeView.CachedTestAssemblies = Properties.Settings.Default.TestAssemblies;
         }
@@ -996,6 +997,16 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        private void ShowSplash(bool timer)
+        {
+            SplashDialog splash = new SplashDialog(timer);
+            splash.Owner = this;
+            splash.Location = new Point(this.Location.X + this.Width - 3 *
+            splash.Width / 2, this.Location.Y + this.Height - 3 * splash.Height / 2);
+            splash.StartPosition = FormStartPosition.Manual;
+            splash.Show();
+        }
+
         #endregion
 
         private void m_testPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1016,6 +1027,11 @@ namespace Quintity.TestFramework.TestEngineer
             m_listenersEditorDlg = new TestListenersEditorDialog(Program.TestListenersFile);
             m_listenersEditorDlg.FormClosed += m_listenersEditorDlg_FormClosed;
             m_listenersEditorDlg.ShowDialog(this);
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowSplash(false);
         }
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)

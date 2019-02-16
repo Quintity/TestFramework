@@ -93,6 +93,16 @@ namespace Quintity.TestFramework.TestEngineer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap QuintityLogo {
+            get {
+                object obj = ResourceManager.GetObject("QuintityLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ResetResults {
             get {
                 object obj = ResourceManager.GetObject("ResetResults", resourceCulture);
@@ -116,6 +126,56 @@ namespace Quintity.TestFramework.TestEngineer.Properties {
         internal static System.Drawing.Bitmap StopExecution {
             get {
                 object obj = ResourceManager.GetObject("StopExecution", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestEngineer {
+            get {
+                object obj = ResourceManager.GetObject("TestEngineer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestEngineerLogo {
+            get {
+                object obj = ResourceManager.GetObject("TestEngineerLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestEngineerLogo1 {
+            get {
+                object obj = ResourceManager.GetObject("TestEngineerLogo1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestEngineerLogo2 {
+            get {
+                object obj = ResourceManager.GetObject("TestEngineerLogo2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TestEngineerLogo3 {
+            get {
+                object obj = ResourceManager.GetObject("TestEngineerLogo3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

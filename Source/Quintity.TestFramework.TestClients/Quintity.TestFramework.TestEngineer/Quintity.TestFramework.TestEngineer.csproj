@@ -121,6 +121,12 @@
     <Compile Include="ResultsViewer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SplashDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SplashDialog.Designer.cs">
+      <DependentUpon>SplashDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAutomationDefinitionEditor.cs" />
     <Compile Include="TestListenersEditorDialog.cs">
       <SubType>Form</SubType>
@@ -187,6 +193,9 @@
     <EmbeddedResource Include="ResultsViewer.resx">
       <DependentUpon>ResultsViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SplashDialog.resx">
+      <DependentUpon>SplashDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestListenersEditorDialog.resx">
       <DependentUpon>TestListenersEditorDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -227,6 +236,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\TestEngineerLogo.jpg" />
+    <None Include="Images\QuintityLogo.jpg" />
     <Content Include="Images\ResetResults.bmp" />
     <None Include="Resources\ResetResults.bmp" />
     <None Include="Resources\StopExecution.bmp" />
@@ -235,6 +246,7 @@
     <None Include="Images\FileSave.bmp" />
     <None Include="Images\StopExecution.bmp" />
     <Content Include="Images\StartExecution.bmp" />
+    <None Include="Images\TestEngineer.gif" />
     <Content Include="Images\TestEngineer.ico" />
   </ItemGroup>
   <ItemGroup>
