@@ -244,16 +244,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_executeToolStripButton_Click(object sender, EventArgs e)
         {
-            var btn = sender as ToolStripButton;
-
-            if (btn.Text.Equals("Execute"))
-            {
                 executeTestSuite();
-            }
-            else
-            {
-                stopTestSuite();
-            }
         }
 
         private void m_newToolStripButton_Click(object sender, EventArgs e)
@@ -1033,6 +1024,23 @@ namespace Quintity.TestFramework.TestEngineer
         {
             ShowSplash(false);
         }
+
+        private void m_stepOverButton_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.StepOverBreakPoint();
+        }
+
+        private void m_stopToolStripButton_Click(object sender, EventArgs e)
+        {
+            stopTestSuite();
+        }
+
+        private void m_suiteStopExecuteMenuItem_Click(object sender, EventArgs e)
+        {
+            stopTestSuite();
+        }
+
+
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)
         //{

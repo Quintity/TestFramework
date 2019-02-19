@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TestConfigs\TestListeners.config" />
-    <None Include="TestProperties\TestProperies.config" />
+    <None Include="TestProperties\TestProperties.config" />
     <None Include="TestSuites\ScratchTests.ste" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

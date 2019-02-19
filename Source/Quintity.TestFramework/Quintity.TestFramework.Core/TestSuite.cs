@@ -1009,6 +1009,11 @@ namespace Quintity.TestFramework.Core
 
             FireExecutionBeginEvent(this, new TestSuiteBeginExecutionArgs(virtualUser));
 
+            if (TestBreakPoints.HasBreakPoint(this))
+            {
+                TestBreakPoints.EnterBreakPoint(this);
+            }
+
             _qualifiedTestCases = discreteTestCases;
 
             TestSuiteResult testSuiteResult = new TestSuiteResult();

@@ -145,6 +145,8 @@ namespace Quintity.TestFramework.TestEngineer
         private OpenFileDialog m_openFileDialog;
         private ToolStripMenuItem m_miReloadTestSuite;
         private ToolStripMenuItem m_miRename;
+        private ToolStripSeparator m_toolStripSeparator6;
+        private ToolStripMenuItem m_miInsertBreakPoint;
         private bool m_ignoreNodeChanges;
 
         #endregion
@@ -195,6 +197,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestSuite.Click += m_miNewTestSuite_Click;
             this.m_miNewTestCase.Click += m_miNewTestCase_Click;
             this.m_miNewTestStep.Click += m_miNewTestStep_Click;
+            this.m_miInsertBreakPoint.Click += m_miInsertBreakPoint_Click;
             this.m_miCut.Click += m_miCut_Click;
             this.m_miCopy.Click += m_miCopy_Click;
             this.m_miPaste.Click += m_miPaste_Click;
@@ -206,7 +209,6 @@ namespace Quintity.TestFramework.TestEngineer
 
             TestScriptObject.OnTestPropertyChanged += TestScriptObject_OnTestPropertyChanged;
         }
-
 
         UnavailableReadsEventArgs unavailableReadsEventArgs = null;
 
@@ -820,6 +822,12 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        internal void StepOverBreakPoint()
+        {
+            TestBreakPoints.ContinueExecution();
+        }
+
+
         /// <summary>
         /// Refreshes the test object based on treeview structure.  Including
         /// rebuilding test suite's or case's container objects and updating parent object
@@ -1321,16 +1329,18 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestStep = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miAddTestSuite = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miInsertBreakPoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_treeViewContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1353,13 +1363,15 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miAddTestSuite,
             this.m_miReloadTestSuite,
             this.m_toolStripSeparator5,
+            this.m_miInsertBreakPoint,
+            this.m_toolStripSeparator6,
             this.m_miCut,
             this.m_miCopy,
             this.m_miPaste,
             this.m_miDelete,
             this.m_miRename});
             this.m_treeViewContextMenu.Name = "m_treeViewContextMenu";
-            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 386);
+            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 414);
             this.m_treeViewContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.m_treeViewContextMenu_Opening);
             // 
             // m_miOpenEditor
@@ -1444,6 +1456,13 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miAddTestSuite.Text = "Add Existing Test Suite...";
             this.m_miAddTestSuite.ToolTipText = "Add an existing test suite";
             // 
+            // m_miReloadTestSuite
+            // 
+            this.m_miReloadTestSuite.Name = "m_miReloadTestSuite";
+            this.m_miReloadTestSuite.Size = new System.Drawing.Size(201, 22);
+            this.m_miReloadTestSuite.Text = "Reload Test Suite...";
+            this.m_miReloadTestSuite.ToolTipText = "Reload an existing test suite.";
+            // 
             // m_toolStripSeparator5
             // 
             this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
@@ -1477,17 +1496,10 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miDelete.Size = new System.Drawing.Size(201, 22);
             this.m_miDelete.Text = "Del";
             // 
-            // m_miReloadTestSuite
-            // 
-            this.m_miReloadTestSuite.Name = "m_miReloadTestSuite";
-            this.m_miReloadTestSuite.Size = new System.Drawing.Size(201, 22);
-            this.m_miReloadTestSuite.Text = "Reload Test Suite...";
-            this.m_miReloadTestSuite.ToolTipText = "Reload an existing test suite.";
-            // 
             // m_miRename
             // 
             this.m_miRename.Name = "m_miRename";
-            this.m_miRename.ShortcutKeys = Keys.F2;
+            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.m_miRename.Size = new System.Drawing.Size(201, 22);
             this.m_miRename.Text = "Rename";
             this.m_miRename.ToolTipText = "Rename the selected item.";
@@ -1520,7 +1532,17 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(21, "teststep.manual.pass.bmp");
             this.m_treeViewImages.Images.SetKeyName(22, "folder.closed.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute.bmp");
-
+            // 
+            // m_toolStripSeparator6
+            // 
+            this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
+            this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miInsertBreakpoint
+            // 
+            this.m_miInsertBreakPoint.Name = "m_miInsertBreakpoint";
+            this.m_miInsertBreakPoint.Size = new System.Drawing.Size(201, 22);
+            this.m_miInsertBreakPoint.Text = "Insert Breakpoint";
             // 
             // TestTreeView
             // 
@@ -2502,7 +2524,17 @@ namespace Quintity.TestFramework.TestEngineer
             SelectedNode = AddNewTestStep(SelectedNode);
         }
 
-        private void m_miCut_Click(object sender, EventArgs e)
+        private void m_miInsertBreakPoint_Click(object sender, EventArgs e)
+        {
+            InsertBreakPoint(SelectedNode);
+        }
+
+        public void InsertBreakPoint(TestTreeNode currentNode)
+        {
+            TestBreakPoints.InsertBreakPoint(currentNode.TestScriptObject);
+        }
+
+            private void m_miCut_Click(object sender, EventArgs e)
         {
             if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
             {

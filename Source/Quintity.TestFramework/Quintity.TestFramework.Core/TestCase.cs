@@ -219,6 +219,11 @@ namespace Quintity.TestFramework.Core
             string currentUser = Thread.CurrentThread.Name;
             FireExecutionBeginEvent(this, new TestCaseBeginExecutionArgs(currentUser));
 
+            if (TestBreakPoints.HasBreakPoint(this))
+            {
+                TestBreakPoints.EnterBreakPoint(this);
+            }
+
             TestCaseResult testCaseResult = new TestCaseResult();
             testCaseResult.SetReferenceID(SystemID);
             testCaseResult.SetVirtualUser(currentUser);

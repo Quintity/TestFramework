@@ -260,6 +260,11 @@ namespace Quintity.TestFramework.Core
 
             FireExecutionBeginEvent(this, new TestStepBeginExecutionArgs(currentUser));
 
+            if (TestBreakPoints.HasBreakPoint(this))
+            {
+                TestBreakPoints.EnterBreakPoint(this);
+            }
+
             TestAutomationDefinition.ResultStruct resultStruct = TestAutomationDefinition.Invoke(testClassDictionary);
 
             result.SetStartTime(resultStruct.StartTime);

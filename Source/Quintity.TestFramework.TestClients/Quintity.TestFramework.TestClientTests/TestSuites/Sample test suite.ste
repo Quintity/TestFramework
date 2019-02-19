@@ -95,13 +95,13 @@
           <TestAutomationDefinition>
             <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>Sleep</TestMethod>
+            <TestMethod>SetBreakPoint</TestMethod>
             <TestParameters>
               <TestParameter>
-                <DisplayName>millisecondTimeout</DisplayName>
-                <Name>millisecondTimeout</Name>
-                <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>1000</ValueAsString>
+                <DisplayName>systemId</DisplayName>
+                <Name>systemId</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>2c54b57c-2238-48c0-9a9d-ee5526ba90ad</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>

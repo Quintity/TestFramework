@@ -236,6 +236,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\Undo.bmp" />
+    <None Include="Images\StepOver.bmp" />
+    <None Include="Images\Copy.bmp" />
+    <None Include="Images\Cut.bmp" />
+    <None Include="Images\Paste.bmp" />
+    <None Include="Images\Redo.bmp" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

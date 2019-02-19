@@ -34,6 +34,32 @@ namespace Quintity.TestFramework.TestClientTests
             return TestVerdict;
         }
 
+        [TestMethod]
+        public TestVerdict ScratchTest1()
+        {
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict SetBreakPoint(string systemId)
+        {
+           // TestBreakPoints.AddBreakPoint(new Guid(systemId));
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ScratchTest2()
+        {
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ScratchTest3()
+        {
+            return TestVerdict;
+        }
+
+
         #endregion
 
         #region Private and protected methods
