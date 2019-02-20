@@ -209,7 +209,7 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_editMenuItem_MouseDown(object sender, MouseEventArgs e)
         {
             m_editUndoMenuItem.Enabled = m_testTreeView.UndoAvailable();
-            m_editRedoMenuItem.Enabled = m_testTreeView.RedoAvaible();
+            m_editRedoMenuItem.Enabled = m_testTreeView.RedoAvailable();
         }
 
         private void m_editUndoMenuItem_Click(object sender, EventArgs e)

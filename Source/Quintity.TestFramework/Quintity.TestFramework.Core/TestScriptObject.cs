@@ -173,6 +173,18 @@ namespace Quintity.TestFramework.Core
 
         #region Class internal methods
 
+        /// <summary>
+        /// Checks for and enters into an execution break if either the test script object has a breakpoint set or 
+        /// execution is currently in breakstep mode.
+        /// </summary>
+        protected void CheckForBreakPointMode()
+        {
+            if (TestBreakPoints.HasBreakPointSet(this) || TestBreakPoints.BreakStepMode)
+            {
+                TestBreakPoints.EnterBreakPoint(this);
+            }
+        }
+
         #endregion
 
         #region Class public methods

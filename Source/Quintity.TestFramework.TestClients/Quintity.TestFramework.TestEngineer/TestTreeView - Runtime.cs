@@ -272,11 +272,6 @@ namespace Quintity.TestFramework.TestEngineer
             node.IsExecuting = true;
             node.UpdateUI();
             SelectedNode = node;
-
-            if (_isBreakPointStepMode)
-            {
-                TestBreakPoints.EnterBreakPoint(testScriptObject);
-            }
         }
 
         private void onTestScriptObjectExecutionComplete(TestScriptObject testScriptObject, TestScriptResult testScriptObjectResult)

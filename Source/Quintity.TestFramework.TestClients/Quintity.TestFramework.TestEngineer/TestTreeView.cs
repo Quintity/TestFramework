@@ -748,7 +748,7 @@ namespace Quintity.TestFramework.TestEngineer
             m_changeHistory.Redo();
         }
 
-        public bool RedoAvaible()
+        public bool RedoAvailable()
         {
             return m_changeHistory.CanRedo();
         }
@@ -822,20 +822,17 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        private bool _isBreakPointStepMode = false;
-
         internal void StepOverBreakPoint()
         {
-            _isBreakPointStepMode = true;
+            TestBreakPoints.BreakStepMode = true;
             TestBreakPoints.ContinueExecution();
         }
 
         internal void ContinueExecution()
         {
-            _isBreakPointStepMode = false;
+            TestBreakPoints.BreakStepMode = false;
             TestBreakPoints.ContinueExecution();
         }
-
 
         /// <summary>
         /// Refreshes the test object based on treeview structure.  Including
