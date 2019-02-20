@@ -114,7 +114,7 @@ namespace Quintity.TestFramework.TestEngineer
         { }
 
         private void TestSuite_OnTestPostprocessorBegin(TestSuite testSuite, TestProcessorBeginExecutionArgs args)
-        {        }
+        { }
 
         private void TestSuite_OnTestPostprocessorComplete(TestSuite testSuite, TestProcessorResult testProcessorResult)
         { }
@@ -219,10 +219,10 @@ namespace Quintity.TestFramework.TestEngineer
             }
             else
             {
-                onTestTrace( virtualUser,  traceMessage);
+                onTestTrace(virtualUser, traceMessage);
             }
         }
-        
+
 
         private void TestExecutor_OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
@@ -272,6 +272,11 @@ namespace Quintity.TestFramework.TestEngineer
             node.IsExecuting = true;
             node.UpdateUI();
             SelectedNode = node;
+
+            if (_isBreakPointStepMode)
+            {
+                TestBreakPoints.EnterBreakPoint(testScriptObject);
+            }
         }
 
         private void onTestScriptObjectExecutionComplete(TestScriptObject testScriptObject, TestScriptResult testScriptObjectResult)

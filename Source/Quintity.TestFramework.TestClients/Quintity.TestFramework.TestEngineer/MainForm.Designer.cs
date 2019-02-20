@@ -29,27 +29,44 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties1 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties2 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             this.m_mainMenu = new System.Windows.Forms.MenuStrip();
             this.m_fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_fileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_fileOpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_fileSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_fileSaveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.m_fileExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_editMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_editUndoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_editRedoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_editCutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_editCopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_editPasteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_editDeleteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_suiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_suiteExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_suiteStopExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_suiteResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_testPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testListenersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mainToolStrip = new System.Windows.Forms.ToolStrip();
+            this.m_newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_executeToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_stopToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_resetToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_stepOverButton = new System.Windows.Forms.ToolStripButton();
             this.m_mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.m_propertiesStatusBarButton = new System.Windows.Forms.ToolStripSplitButton();
             this.m_propertyFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +93,9 @@
             this.m_samplingNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.m_testTreeView = new Quintity.TestFramework.TestEngineer.TestTreeView();
             this.m_treeViewToolStrip = new System.Windows.Forms.ToolStrip();
+            this.m_collapseAllToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_testCasesOnlyToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.m_expandAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_viewersTabControl = new System.Windows.Forms.TabControl();
             this.m_resultsViewerTabPage = new System.Windows.Forms.TabPage();
             this.m_resultsViewer = new Quintity.TestFramework.TestEngineer.ResultsViewer();
@@ -84,26 +104,9 @@
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_executionTimer = new System.Windows.Forms.Timer(this.components);
-            this.m_collapseAllToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_testCasesOnlyToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_expandAllToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_newToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_openToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_saveToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_executeToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_stopToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_resetToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.m_stepOverButton = new System.Windows.Forms.ToolStripButton();
-            this.m_fileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_fileOpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_fileSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_editUndoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_editCutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_editCopyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_editPasteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_suiteExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_suiteStopExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_suiteResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_suiteStepOverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_mainMenu.SuspendLayout();
             this.m_mainToolStrip.SuspendLayout();
             this.m_mainStatusStrip.SuspendLayout();
@@ -150,13 +153,45 @@
             this.m_fileMenuItem.Size = new System.Drawing.Size(37, 20);
             this.m_fileMenuItem.Text = "&File";
             // 
+            // m_fileNewMenuItem
+            // 
+            this.m_fileNewMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileNew;
+            this.m_fileNewMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_fileNewMenuItem.Name = "m_fileNewMenuItem";
+            this.m_fileNewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.m_fileNewMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_fileNewMenuItem.Text = "New";
+            this.m_fileNewMenuItem.Click += new System.EventHandler(this.m_fileNewMenuItem_Click);
+            // 
+            // m_fileOpenMenuItem
+            // 
+            this.m_fileOpenMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileOpen;
+            this.m_fileOpenMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_fileOpenMenuItem.Name = "m_fileOpenMenuItem";
+            this.m_fileOpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.m_fileOpenMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_fileOpenMenuItem.Text = "Open...";
+            this.m_fileOpenMenuItem.Click += new System.EventHandler(this.m_fileOpenMenuItem_Click);
+            // 
             // m_toolStripSeparator1
             // 
             this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
             this.m_toolStripSeparator1.Size = new System.Drawing.Size(152, 6);
             // 
+            // m_fileSaveMenuItem
+            // 
+            this.m_fileSaveMenuItem.Enabled = false;
+            this.m_fileSaveMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileSave;
+            this.m_fileSaveMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_fileSaveMenuItem.Name = "m_fileSaveMenuItem";
+            this.m_fileSaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.m_fileSaveMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.m_fileSaveMenuItem.Text = "&Save";
+            this.m_fileSaveMenuItem.Click += new System.EventHandler(this.m_fileSaveMenuItem_Click);
+            // 
             // m_fileSaveAsMenuItem
             // 
+            this.m_fileSaveAsMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.SaveAs;
             this.m_fileSaveAsMenuItem.Name = "m_fileSaveAsMenuItem";
             this.m_fileSaveAsMenuItem.Size = new System.Drawing.Size(155, 22);
             this.m_fileSaveAsMenuItem.Text = "Save &As";
@@ -169,6 +204,7 @@
             // 
             // m_fileExitMenuItem
             // 
+            this.m_fileExitMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Exit;
             this.m_fileExitMenuItem.Name = "m_fileExitMenuItem";
             this.m_fileExitMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.m_fileExitMenuItem.Size = new System.Drawing.Size(155, 22);
@@ -192,26 +228,66 @@
             this.m_editMenuItem.Text = "&Edit";
             this.m_editMenuItem.MouseDown += new System.Windows.Forms.MouseEventHandler(this.m_editMenuItem_MouseDown);
             // 
+            // m_editUndoMenuItem
+            // 
+            this.m_editUndoMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Undo;
+            this.m_editUndoMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_editUndoMenuItem.Name = "m_editUndoMenuItem";
+            this.m_editUndoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.m_editUndoMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.m_editUndoMenuItem.Text = "Undo";
+            this.m_editUndoMenuItem.Click += new System.EventHandler(this.m_editUndoMenuItem_Click);
+            // 
             // m_editRedoMenuItem
             // 
             this.m_editRedoMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Redo;
             this.m_editRedoMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_editRedoMenuItem.Name = "m_editRedoMenuItem";
             this.m_editRedoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.m_editRedoMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.m_editRedoMenuItem.Size = new System.Drawing.Size(144, 22);
             this.m_editRedoMenuItem.Text = "Redo";
             this.m_editRedoMenuItem.Click += new System.EventHandler(this.m_editRedoMenuItem_Click);
             // 
             // m_toolStripSeparator3
             // 
             this.m_toolStripSeparator3.Name = "m_toolStripSeparator3";
-            this.m_toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.m_toolStripSeparator3.Size = new System.Drawing.Size(141, 6);
+            // 
+            // m_editCutMenuItem
+            // 
+            this.m_editCutMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
+            this.m_editCutMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_editCutMenuItem.Name = "m_editCutMenuItem";
+            this.m_editCutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.m_editCutMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.m_editCutMenuItem.Text = "Cut";
+            this.m_editCutMenuItem.Click += new System.EventHandler(this.m_editCutMenuItem_Click);
+            // 
+            // m_editCopyMenuItem
+            // 
+            this.m_editCopyMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
+            this.m_editCopyMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_editCopyMenuItem.Name = "m_editCopyMenuItem";
+            this.m_editCopyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.m_editCopyMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.m_editCopyMenuItem.Text = "Copy";
+            this.m_editCopyMenuItem.Click += new System.EventHandler(this.m_editCopyMenuItem_Click);
+            // 
+            // m_editPasteMenuItem
+            // 
+            this.m_editPasteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
+            this.m_editPasteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_editPasteMenuItem.Name = "m_editPasteMenuItem";
+            this.m_editPasteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.m_editPasteMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.m_editPasteMenuItem.Text = "Paste";
+            this.m_editPasteMenuItem.Click += new System.EventHandler(this.m_editPasteMenuItem_Click);
             // 
             // m_editDeleteMenuItem
             // 
             this.m_editDeleteMenuItem.Name = "m_editDeleteMenuItem";
             this.m_editDeleteMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.m_editDeleteMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.m_editDeleteMenuItem.Size = new System.Drawing.Size(144, 22);
             this.m_editDeleteMenuItem.Text = "Delete";
             this.m_editDeleteMenuItem.Click += new System.EventHandler(this.m_editDeleteMenuItem_Click);
             // 
@@ -221,16 +297,52 @@
             this.m_suiteExecuteMenuItem,
             this.m_suiteStopExecuteMenuItem,
             this.m_toolStripSeparator5,
+            this.m_suiteStepOverMenuItem,
+            this.toolStripSeparator3,
             this.m_suiteResetMenuItem});
             this.m_suiteMenuItem.Enabled = false;
             this.m_suiteMenuItem.Name = "m_suiteMenuItem";
             this.m_suiteMenuItem.Size = new System.Drawing.Size(69, 20);
             this.m_suiteMenuItem.Text = "Test &Suite";
             // 
+            // m_suiteExecuteMenuItem
+            // 
+            this.m_suiteExecuteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_suiteExecuteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_suiteExecuteMenuItem.Name = "m_suiteExecuteMenuItem";
+            this.m_suiteExecuteMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.m_suiteExecuteMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteExecuteMenuItem.Text = "Execute";
+            this.m_suiteExecuteMenuItem.ToolTipText = "Begins loaded test suite execution";
+            this.m_suiteExecuteMenuItem.Click += new System.EventHandler(this.m_suiteExecuteMenuItem_Click);
+            // 
+            // m_suiteStopExecuteMenuItem
+            // 
+            this.m_suiteStopExecuteMenuItem.Enabled = false;
+            this.m_suiteStopExecuteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
+            this.m_suiteStopExecuteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_suiteStopExecuteMenuItem.Name = "m_suiteStopExecuteMenuItem";
+            this.m_suiteStopExecuteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
+            this.m_suiteStopExecuteMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteStopExecuteMenuItem.Text = "&Stop Execution";
+            this.m_suiteStopExecuteMenuItem.ToolTipText = "Stops current test execution";
+            this.m_suiteStopExecuteMenuItem.Click += new System.EventHandler(this.m_suiteStopExecuteMenuItem_Click);
+            // 
             // m_toolStripSeparator5
             // 
             this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
             this.m_toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
+            // 
+            // m_suiteResetMenuItem
+            // 
+            this.m_suiteResetMenuItem.Enabled = false;
+            this.m_suiteResetMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("m_suiteResetMenuItem.Image")));
+            this.m_suiteResetMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_suiteResetMenuItem.Name = "m_suiteResetMenuItem";
+            this.m_suiteResetMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteResetMenuItem.Text = "Reset";
+            this.m_suiteResetMenuItem.ToolTipText = "Reset all test results";
+            this.m_suiteResetMenuItem.Click += new System.EventHandler(this.m_suiteResetMenuItem_Click);
             // 
             // m_toolsMenuItem
             // 
@@ -266,8 +378,9 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.AboutBox;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -281,6 +394,7 @@
             this.m_executeToolStripButton,
             this.m_stopToolStripButton,
             this.m_resetToolStripButton,
+            this.toolStripSeparator4,
             this.m_stepOverButton});
             this.m_mainToolStrip.Location = new System.Drawing.Point(0, 24);
             this.m_mainToolStrip.Name = "m_mainToolStrip";
@@ -288,10 +402,82 @@
             this.m_mainToolStrip.TabIndex = 1;
             this.m_mainToolStrip.Text = "toolStrip1";
             // 
+            // m_newToolStripButton
+            // 
+            this.m_newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_newToolStripButton.Image")));
+            this.m_newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_newToolStripButton.Name = "m_newToolStripButton";
+            this.m_newToolStripButton.Size = new System.Drawing.Size(51, 22);
+            this.m_newToolStripButton.Text = "New";
+            this.m_newToolStripButton.Click += new System.EventHandler(this.m_newToolStripButton_Click);
+            // 
+            // m_openToolStripButton
+            // 
+            this.m_openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_openToolStripButton.Image")));
+            this.m_openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_openToolStripButton.Name = "m_openToolStripButton";
+            this.m_openToolStripButton.Size = new System.Drawing.Size(56, 22);
+            this.m_openToolStripButton.Text = "Open";
+            this.m_openToolStripButton.Click += new System.EventHandler(this.m_openToolStripButton_Click);
+            // 
+            // m_saveToolStripButton
+            // 
+            this.m_saveToolStripButton.Enabled = false;
+            this.m_saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_saveToolStripButton.Image")));
+            this.m_saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_saveToolStripButton.Name = "m_saveToolStripButton";
+            this.m_saveToolStripButton.Size = new System.Drawing.Size(51, 22);
+            this.m_saveToolStripButton.Text = "Save";
+            this.m_saveToolStripButton.ToolTipText = "m_savToolStripButton";
+            this.m_saveToolStripButton.Click += new System.EventHandler(this.m_saveToolStripButton_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // m_executeToolStripButton
+            // 
+            this.m_executeToolStripButton.Enabled = false;
+            this.m_executeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_executeToolStripButton.Image")));
+            this.m_executeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_executeToolStripButton.Name = "m_executeToolStripButton";
+            this.m_executeToolStripButton.Size = new System.Drawing.Size(67, 22);
+            this.m_executeToolStripButton.Text = "Execute";
+            this.m_executeToolStripButton.ToolTipText = "Begins loaded test suite execution";
+            this.m_executeToolStripButton.Click += new System.EventHandler(this.m_executeToolStripButton_Click);
+            // 
+            // m_stopToolStripButton
+            // 
+            this.m_stopToolStripButton.Enabled = false;
+            this.m_stopToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
+            this.m_stopToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_stopToolStripButton.Name = "m_stopToolStripButton";
+            this.m_stopToolStripButton.Size = new System.Drawing.Size(51, 22);
+            this.m_stopToolStripButton.Text = "Stop";
+            this.m_stopToolStripButton.ToolTipText = "Stops current test execution";
+            this.m_stopToolStripButton.Click += new System.EventHandler(this.m_stopToolStripButton_Click);
+            // 
+            // m_resetToolStripButton
+            // 
+            this.m_resetToolStripButton.Enabled = false;
+            this.m_resetToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_resetToolStripButton.Image")));
+            this.m_resetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_resetToolStripButton.Name = "m_resetToolStripButton";
+            this.m_resetToolStripButton.Size = new System.Drawing.Size(55, 22);
+            this.m_resetToolStripButton.Text = "Reset";
+            this.m_resetToolStripButton.ToolTipText = "Reset all test results";
+            this.m_resetToolStripButton.Click += new System.EventHandler(this.m_resetToolStripButton_Click);
+            // 
+            // m_stepOverButton
+            // 
+            this.m_stepOverButton.Enabled = false;
+            this.m_stepOverButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StepOver;
+            this.m_stepOverButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_stepOverButton.Name = "m_stepOverButton";
+            this.m_stepOverButton.Size = new System.Drawing.Size(78, 22);
+            this.m_stepOverButton.Text = "Step Over";
+            this.m_stepOverButton.Click += new System.EventHandler(this.m_stepOverButton_Click);
             // 
             // m_mainStatusStrip
             // 
@@ -553,8 +739,8 @@
             // m_tagComboBox
             // 
             this.m_tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            checkedBoxProperties1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties1;
+            checkedBoxProperties2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties2;
             this.m_tagComboBox.DisplayMemberSingleItem = "";
             this.m_tagComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_tagComboBox.Enabled = false;
@@ -630,6 +816,42 @@
             this.m_treeViewToolStrip.TabIndex = 0;
             this.m_treeViewToolStrip.Text = "toolStrip2";
             // 
+            // m_collapseAllToolStripButton
+            // 
+            this.m_collapseAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_collapseAllToolStripButton.Enabled = false;
+            this.m_collapseAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_collapseAllToolStripButton.Image")));
+            this.m_collapseAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_collapseAllToolStripButton.Name = "m_collapseAllToolStripButton";
+            this.m_collapseAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_collapseAllToolStripButton.Text = "1";
+            this.m_collapseAllToolStripButton.ToolTipText = "Collapse all to root test suite ";
+            this.m_collapseAllToolStripButton.Click += new System.EventHandler(this.m_collapseAllToolStripButton_Click);
+            // 
+            // m_testCasesOnlyToolStripButton
+            // 
+            this.m_testCasesOnlyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_testCasesOnlyToolStripButton.Enabled = false;
+            this.m_testCasesOnlyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_testCasesOnlyToolStripButton.Image")));
+            this.m_testCasesOnlyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_testCasesOnlyToolStripButton.Name = "m_testCasesOnlyToolStripButton";
+            this.m_testCasesOnlyToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_testCasesOnlyToolStripButton.Text = "2";
+            this.m_testCasesOnlyToolStripButton.ToolTipText = "Expand test suites only";
+            this.m_testCasesOnlyToolStripButton.Click += new System.EventHandler(this.m_testCasesOnlyToolStripButton_Click);
+            // 
+            // m_expandAllToolStripButton
+            // 
+            this.m_expandAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_expandAllToolStripButton.Enabled = false;
+            this.m_expandAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_expandAllToolStripButton.Image")));
+            this.m_expandAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_expandAllToolStripButton.Name = "m_expandAllToolStripButton";
+            this.m_expandAllToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.m_expandAllToolStripButton.Text = "A";
+            this.m_expandAllToolStripButton.ToolTipText = "Expand all to root test suite";
+            this.m_expandAllToolStripButton.Click += new System.EventHandler(this.m_expandAllToolStripButton_Click);
+            // 
             // m_viewersTabControl
             // 
             this.m_viewersTabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
@@ -690,217 +912,24 @@
             // 
             this.m_executionTimer.Interval = 1000;
             // 
-            // m_collapseAllToolStripButton
+            // m_suiteStepOverMenuItem
             // 
-            this.m_collapseAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_collapseAllToolStripButton.Enabled = false;
-            this.m_collapseAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_collapseAllToolStripButton.Image")));
-            this.m_collapseAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_collapseAllToolStripButton.Name = "m_collapseAllToolStripButton";
-            this.m_collapseAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_collapseAllToolStripButton.Text = "1";
-            this.m_collapseAllToolStripButton.ToolTipText = "Collapse all to root test suite ";
-            this.m_collapseAllToolStripButton.Click += new System.EventHandler(this.m_collapseAllToolStripButton_Click);
+            this.m_suiteStepOverMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StepOver;
+            this.m_suiteStepOverMenuItem.Name = "m_suiteStepOverMenuItem";
+            this.m_suiteStepOverMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.m_suiteStepOverMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteStepOverMenuItem.Text = "Step Over";
+            this.m_suiteStepOverMenuItem.Click += new System.EventHandler(this.m_suiteStepOverMenuItem_Click);
             // 
-            // m_testCasesOnlyToolStripButton
+            // toolStripSeparator3
             // 
-            this.m_testCasesOnlyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_testCasesOnlyToolStripButton.Enabled = false;
-            this.m_testCasesOnlyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_testCasesOnlyToolStripButton.Image")));
-            this.m_testCasesOnlyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_testCasesOnlyToolStripButton.Name = "m_testCasesOnlyToolStripButton";
-            this.m_testCasesOnlyToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_testCasesOnlyToolStripButton.Text = "2";
-            this.m_testCasesOnlyToolStripButton.ToolTipText = "Expand test suites only";
-            this.m_testCasesOnlyToolStripButton.Click += new System.EventHandler(this.m_testCasesOnlyToolStripButton_Click);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
             // 
-            // m_expandAllToolStripButton
+            // toolStripSeparator4
             // 
-            this.m_expandAllToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.m_expandAllToolStripButton.Enabled = false;
-            this.m_expandAllToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_expandAllToolStripButton.Image")));
-            this.m_expandAllToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_expandAllToolStripButton.Name = "m_expandAllToolStripButton";
-            this.m_expandAllToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.m_expandAllToolStripButton.Text = "A";
-            this.m_expandAllToolStripButton.ToolTipText = "Expand all to root test suite";
-            this.m_expandAllToolStripButton.Click += new System.EventHandler(this.m_expandAllToolStripButton_Click);
-            // 
-            // m_newToolStripButton
-            // 
-            this.m_newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_newToolStripButton.Image")));
-            this.m_newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_newToolStripButton.Name = "m_newToolStripButton";
-            this.m_newToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.m_newToolStripButton.Text = "New";
-            this.m_newToolStripButton.Click += new System.EventHandler(this.m_newToolStripButton_Click);
-            // 
-            // m_openToolStripButton
-            // 
-            this.m_openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_openToolStripButton.Image")));
-            this.m_openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_openToolStripButton.Name = "m_openToolStripButton";
-            this.m_openToolStripButton.Size = new System.Drawing.Size(56, 22);
-            this.m_openToolStripButton.Text = "Open";
-            this.m_openToolStripButton.Click += new System.EventHandler(this.m_openToolStripButton_Click);
-            // 
-            // m_saveToolStripButton
-            // 
-            this.m_saveToolStripButton.Enabled = false;
-            this.m_saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_saveToolStripButton.Image")));
-            this.m_saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_saveToolStripButton.Name = "m_saveToolStripButton";
-            this.m_saveToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.m_saveToolStripButton.Text = "Save";
-            this.m_saveToolStripButton.ToolTipText = "m_savToolStripButton";
-            this.m_saveToolStripButton.Click += new System.EventHandler(this.m_saveToolStripButton_Click);
-            // 
-            // m_executeToolStripButton
-            // 
-            this.m_executeToolStripButton.Enabled = false;
-            this.m_executeToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("m_executeToolStripButton.Image")));
-            this.m_executeToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_executeToolStripButton.Name = "m_executeToolStripButton";
-            this.m_executeToolStripButton.Size = new System.Drawing.Size(67, 22);
-            this.m_executeToolStripButton.Text = "Execute";
-            this.m_executeToolStripButton.ToolTipText = "Begins loaded test suite execution";
-            this.m_executeToolStripButton.Click += new System.EventHandler(this.m_executeToolStripButton_Click);
-            // 
-            // m_stopToolStripButton
-            // 
-            this.m_stopToolStripButton.Enabled = false;
-            this.m_stopToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
-            this.m_stopToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_stopToolStripButton.Name = "m_stopToolStripButton";
-            this.m_stopToolStripButton.Size = new System.Drawing.Size(51, 22);
-            this.m_stopToolStripButton.Text = "Stop";
-            this.m_stopToolStripButton.ToolTipText = "Stops current test execution";
-            this.m_stopToolStripButton.Click += new System.EventHandler(this.m_stopToolStripButton_Click);
-            // 
-            // m_resetToolStripButton
-            // 
-            this.m_resetToolStripButton.Enabled = false;
-            this.m_resetToolStripButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ResetResults;
-            this.m_resetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_resetToolStripButton.Name = "m_resetToolStripButton";
-            this.m_resetToolStripButton.Size = new System.Drawing.Size(55, 22);
-            this.m_resetToolStripButton.Text = "Reset";
-            this.m_resetToolStripButton.ToolTipText = "Reset all test results";
-            this.m_resetToolStripButton.Click += new System.EventHandler(this.m_resetToolStripButton_Click);
-            // 
-            // m_stepOverButton
-            // 
-            this.m_stepOverButton.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StepOver;
-            this.m_stepOverButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_stepOverButton.Name = "m_stepOverButton";
-            this.m_stepOverButton.Size = new System.Drawing.Size(78, 22);
-            this.m_stepOverButton.Text = "Step Over";
-            this.m_stepOverButton.Click += new System.EventHandler(this.m_stepOverButton_Click);
-            // 
-            // m_fileNewMenuItem
-            // 
-            this.m_fileNewMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileNew;
-            this.m_fileNewMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_fileNewMenuItem.Name = "m_fileNewMenuItem";
-            this.m_fileNewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.m_fileNewMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.m_fileNewMenuItem.Text = "New";
-            this.m_fileNewMenuItem.Click += new System.EventHandler(this.m_fileNewMenuItem_Click);
-            // 
-            // m_fileOpenMenuItem
-            // 
-            this.m_fileOpenMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileOpen;
-            this.m_fileOpenMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_fileOpenMenuItem.Name = "m_fileOpenMenuItem";
-            this.m_fileOpenMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.m_fileOpenMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.m_fileOpenMenuItem.Text = "Open...";
-            this.m_fileOpenMenuItem.Click += new System.EventHandler(this.m_fileOpenMenuItem_Click);
-            // 
-            // m_fileSaveMenuItem
-            // 
-            this.m_fileSaveMenuItem.Enabled = false;
-            this.m_fileSaveMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.FileSave;
-            this.m_fileSaveMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_fileSaveMenuItem.Name = "m_fileSaveMenuItem";
-            this.m_fileSaveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.m_fileSaveMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.m_fileSaveMenuItem.Text = "&Save";
-            this.m_fileSaveMenuItem.Click += new System.EventHandler(this.m_fileSaveMenuItem_Click);
-            // 
-            // m_editUndoMenuItem
-            // 
-            this.m_editUndoMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Undo;
-            this.m_editUndoMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_editUndoMenuItem.Name = "m_editUndoMenuItem";
-            this.m_editUndoMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.m_editUndoMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.m_editUndoMenuItem.Text = "Undo";
-            this.m_editUndoMenuItem.Click += new System.EventHandler(this.m_editUndoMenuItem_Click);
-            // 
-            // m_editCutMenuItem
-            // 
-            this.m_editCutMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
-            this.m_editCutMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_editCutMenuItem.Name = "m_editCutMenuItem";
-            this.m_editCutMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.m_editCutMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.m_editCutMenuItem.Text = "Cut";
-            this.m_editCutMenuItem.Click += new System.EventHandler(this.m_editCutMenuItem_Click);
-            // 
-            // m_editCopyMenuItem
-            // 
-            this.m_editCopyMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
-            this.m_editCopyMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_editCopyMenuItem.Name = "m_editCopyMenuItem";
-            this.m_editCopyMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.m_editCopyMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.m_editCopyMenuItem.Text = "Copy";
-            this.m_editCopyMenuItem.Click += new System.EventHandler(this.m_editCopyMenuItem_Click);
-            // 
-            // m_editPasteMenuItem
-            // 
-            this.m_editPasteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
-            this.m_editPasteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_editPasteMenuItem.Name = "m_editPasteMenuItem";
-            this.m_editPasteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.m_editPasteMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.m_editPasteMenuItem.Text = "Paste";
-            this.m_editPasteMenuItem.Click += new System.EventHandler(this.m_editPasteMenuItem_Click);
-            // 
-            // m_suiteExecuteMenuItem
-            // 
-            this.m_suiteExecuteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
-            this.m_suiteExecuteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_suiteExecuteMenuItem.Name = "m_suiteExecuteMenuItem";
-            this.m_suiteExecuteMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.m_suiteExecuteMenuItem.Size = new System.Drawing.Size(203, 22);
-            this.m_suiteExecuteMenuItem.Text = "Execute";
-            this.m_suiteExecuteMenuItem.ToolTipText = "Begins loaded test suite execution";
-            this.m_suiteExecuteMenuItem.Click += new System.EventHandler(this.m_suiteExecuteMenuItem_Click);
-            // 
-            // m_suiteStopExecuteMenuItem
-            // 
-            this.m_suiteStopExecuteMenuItem.Enabled = false;
-            this.m_suiteStopExecuteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
-            this.m_suiteStopExecuteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_suiteStopExecuteMenuItem.Name = "m_suiteStopExecuteMenuItem";
-            this.m_suiteStopExecuteMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.m_suiteStopExecuteMenuItem.Size = new System.Drawing.Size(203, 22);
-            this.m_suiteStopExecuteMenuItem.Text = "&Stop Execution";
-            this.m_suiteStopExecuteMenuItem.ToolTipText = "Stops current test execution";
-            this.m_suiteStopExecuteMenuItem.Click += new System.EventHandler(this.m_suiteStopExecuteMenuItem_Click);
-            // 
-            // m_suiteResetMenuItem
-            // 
-            this.m_suiteResetMenuItem.Enabled = false;
-            this.m_suiteResetMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ResetResults;
-            this.m_suiteResetMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_suiteResetMenuItem.Name = "m_suiteResetMenuItem";
-            this.m_suiteResetMenuItem.Size = new System.Drawing.Size(203, 22);
-            this.m_suiteResetMenuItem.Text = "Reset";
-            this.m_suiteResetMenuItem.ToolTipText = "Reset all test results";
-            this.m_suiteResetMenuItem.Click += new System.EventHandler(this.m_suiteResetMenuItem_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // MainForm
             // 
@@ -1019,6 +1048,9 @@
         private System.Windows.Forms.ToolStripButton m_stepOverButton;
         private System.Windows.Forms.ToolStripButton m_stopToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem m_suiteStopExecuteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_suiteStepOverMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 

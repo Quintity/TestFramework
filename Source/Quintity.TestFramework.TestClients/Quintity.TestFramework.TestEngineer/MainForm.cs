@@ -38,6 +38,10 @@ namespace Quintity.TestFramework.TestEngineer
         TestListenersEditorDialog m_listenersEditorDlg;
         private bool _promptListenerReload = false;     // Flag to be used when loaded listeners have been updated.
 
+        // Execution and breakpoint flags
+        private bool _isExecuting = false;
+        private bool _isBreakPointStepMode = false;
+
         #endregion
 
         #region Constructors
@@ -244,7 +248,14 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_executeToolStripButton_Click(object sender, EventArgs e)
         {
+            if (!_isExecuting)
+            {
                 executeTestSuite();
+            }
+            else
+            {
+                m_testTreeView.ContinueExecution();
+            }
         }
 
         private void m_newToolStripButton_Click(object sender, EventArgs e)
@@ -1027,6 +1038,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_stepOverButton_Click(object sender, EventArgs e)
         {
+            _isBreakPointStepMode = true;
+
             this.m_testTreeView.StepOverBreakPoint();
         }
 
@@ -1040,7 +1053,10 @@ namespace Quintity.TestFramework.TestEngineer
             stopTestSuite();
         }
 
-
+        private void m_suiteStepOverMenuItem_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.StepOverBreakPoint();
+        }
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)
         //{

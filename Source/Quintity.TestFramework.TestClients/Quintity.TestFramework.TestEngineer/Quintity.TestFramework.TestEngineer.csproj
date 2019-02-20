@@ -242,6 +242,10 @@
     <None Include="Images\Cut.bmp" />
     <None Include="Images\Paste.bmp" />
     <None Include="Images\Redo.bmp" />
+    <None Include="Images\Exit.png" />
+    <None Include="Images\SaveAs.png" />
+    <None Include="Images\AboutBox.png" />
+    <None Include="Images\Restart_16x_24.bmp" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

@@ -822,8 +822,17 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        private bool _isBreakPointStepMode = false;
+
         internal void StepOverBreakPoint()
         {
+            _isBreakPointStepMode = true;
+            TestBreakPoints.ContinueExecution();
+        }
+
+        internal void ContinueExecution()
+        {
+            _isBreakPointStepMode = false;
             TestBreakPoints.ContinueExecution();
         }
 

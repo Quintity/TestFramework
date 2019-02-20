@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
@@ -24,6 +25,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void registerRuntimeEvents()
         {
+            TestBreakPoints.OnTestBreakPointEnter += TestBreakPoints_OnTestBreakPointEnter;
+            TestBreakPoints.OnTestBreakPointExit += TestBreakPoints_OnTestBreakPointExit;
+
             // TestExecutor events
             TestExecutor.OnExecutionBegin += TestExecutor_OnExecutionBegin;
             TestExecutor.OnExecutionComplete += TestExecutor_OnExecutionComplete;
@@ -51,8 +55,50 @@ namespace Quintity.TestFramework.TestEngineer
             TestTrace.OnTestTrace += TestTrace_OnTestTrace;
         }
 
+        private void TestBreakPoints_OnTestBreakPointExit(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                var @delegate = new TestBreakPoints.TestBreakPointExitHandler(onTestBreakPointExit);
+                BeginInvoke(@delegate, new object[] { testScriptObject, args });
+            }
+            else
+            {
+                onTestBreakPointExit(testScriptObject, args);
+            }
+            
+        }
+
+        private void TestBreakPoints_OnTestBreakPointEnter(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                var @delegate = new TestBreakPoints.TestBreakPointEnterHandler(onTestBreakPointEnter);
+                BeginInvoke(@delegate, new object[] { testScriptObject, args });
+            }
+            else
+            {
+                onTestBreakPointEnter(testScriptObject, args);
+            }
+        }
+
+        private void onTestBreakPointEnter(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        {
+            this.m_executeToolStripButton.Enabled = true;
+            this.m_stepOverButton.Enabled = true;
+        }
+
+        private void onTestBreakPointExit(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        {
+            this.m_executeToolStripButton.Enabled = false;
+            this.m_stepOverButton.Enabled = false;
+        }
+
         private void unregisterRuntimeEvents()
         {
+            TestBreakPoints.OnTestBreakPointEnter -= TestBreakPoints_OnTestBreakPointEnter;
+            TestBreakPoints.OnTestBreakPointExit -= TestBreakPoints_OnTestBreakPointExit;
+
             // TestExecutor events
             TestExecutor.OnExecutionBegin -= TestExecutor_OnExecutionBegin;
             TestExecutor.OnExecutionComplete -= TestExecutor_OnExecutionComplete;
@@ -260,6 +306,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void onBeginningTestExecution(TestExecutor testExecutor, TestExecutionBeginArgs args)
         {
+            _isExecuting = true;
+
             // Start timers
             m_stopWatch = Stopwatch.StartNew();
             m_executionTimer.Start();
@@ -299,6 +347,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void onTestExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
+            _isExecuting = false;
+
             // Stop timers
             m_stopWatch.Stop();
             m_executionTimer.Stop();
