@@ -179,9 +179,9 @@ namespace Quintity.TestFramework.Core
         /// </summary>
         protected void CheckForBreakPointMode()
         {
-            if (TestBreakPoints.HasBreakPointSet(this) || TestBreakPoints.BreakStepMode)
+            if (TestBreakpoints.HasBreakPointSet(this) || TestBreakpoints.BreakStepMode)
             {
-                TestBreakPoints.EnterBreakPoint(this);
+                TestBreakpoints.EnterBreakPoint(this);
             }
         }
 

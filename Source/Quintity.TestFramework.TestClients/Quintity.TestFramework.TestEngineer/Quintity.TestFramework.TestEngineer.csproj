@@ -246,6 +246,7 @@
     <None Include="Images\SaveAs.png" />
     <None Include="Images\AboutBox.png" />
     <None Include="Images\Restart_16x_24.bmp" />
+    <None Include="Images\BreakpointEnable.png" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

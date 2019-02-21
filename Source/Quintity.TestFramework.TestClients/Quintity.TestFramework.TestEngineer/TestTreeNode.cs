@@ -23,6 +23,9 @@ namespace Quintity.TestFramework.TestEngineer
         public bool HasChanged
         { get; set; }
 
+        public bool HasBreakpoint
+        { get; set; }
+
         public TestScriptObjectEditorDialog TestScriptEditorDialog
         { get; set; }
 

@@ -25,8 +25,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void registerRuntimeEvents()
         {
-            TestBreakPoints.OnTestBreakPointEnter += TestBreakPoints_OnTestBreakPointEnter;
-            TestBreakPoints.OnTestBreakPointExit += TestBreakPoints_OnTestBreakPointExit;
+            TestBreakpoints.OnTestBreakPointEnter += TestBreakPoints_OnTestBreakPointEnter;
+            TestBreakpoints.OnTestBreakPointExit += TestBreakPoints_OnTestBreakPointExit;
 
             // TestExecutor events
             TestExecutor.OnExecutionBegin += TestExecutor_OnExecutionBegin;
@@ -59,7 +59,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             if (this.InvokeRequired)
             {
-                var @delegate = new TestBreakPoints.TestBreakPointExitHandler(onTestBreakPointExit);
+                var @delegate = new TestBreakpoints.TestBreakPointExitHandler(onTestBreakPointExit);
                 BeginInvoke(@delegate, new object[] { testScriptObject, args });
             }
             else
@@ -73,7 +73,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             if (this.InvokeRequired)
             {
-                var @delegate = new TestBreakPoints.TestBreakPointEnterHandler(onTestBreakPointEnter);
+                var @delegate = new TestBreakpoints.TestBreakPointEnterHandler(onTestBreakPointEnter);
                 BeginInvoke(@delegate, new object[] { testScriptObject, args });
             }
             else
@@ -96,8 +96,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void unregisterRuntimeEvents()
         {
-            TestBreakPoints.OnTestBreakPointEnter -= TestBreakPoints_OnTestBreakPointEnter;
-            TestBreakPoints.OnTestBreakPointExit -= TestBreakPoints_OnTestBreakPointExit;
+            TestBreakpoints.OnTestBreakPointEnter -= TestBreakPoints_OnTestBreakPointEnter;
+            TestBreakpoints.OnTestBreakPointExit -= TestBreakPoints_OnTestBreakPointExit;
 
             // TestExecutor events
             TestExecutor.OnExecutionBegin -= TestExecutor_OnExecutionBegin;

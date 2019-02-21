@@ -38,9 +38,7 @@ namespace Quintity.TestFramework.TestEngineer
         TestListenersEditorDialog m_listenersEditorDlg;
         private bool _promptListenerReload = false;     // Flag to be used when loaded listeners have been updated.
 
-        // Execution and breakpoint flags
         private bool _isExecuting = false;
-        private bool _isBreakPointStepMode = false;
 
         #endregion
 
@@ -1038,8 +1036,6 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_stepOverButton_Click(object sender, EventArgs e)
         {
-            _isBreakPointStepMode = true;
-
             this.m_testTreeView.StepOverBreakPoint();
         }
 

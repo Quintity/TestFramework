@@ -286,6 +286,9 @@ namespace Quintity.TestFramework.TestEngineer
             node.IsExecuting = false;
             node.TestScriptResult = testScriptObjectResult;
             node.UpdateUI();
+
+            // If completed following a step over, turn step mode off.
+            TestBreakpoints.BreakStepMode = false;
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace Quintity.TestFramework.Core
     {
     }
 
-    public static class TestBreakPoints
+    public static class TestBreakpoints
     {
         private static ManualResetEvent ResetEvent = new ManualResetEvent(false);
         private static List<TestScriptObject> _breakPoints;
@@ -43,7 +43,7 @@ namespace Quintity.TestFramework.Core
         /// <summary>
         /// Inserts a breakpoint for the test script object.
         /// </summary>
-        /// <param name="testScriptObject"></param>
+        /// <param name="testScriptObject">Test script object</param>
         public static void InsertBreakPoint(TestScriptObject testScriptObject)
         {
             _breakPoints = _breakPoints ?? new List<TestScriptObject>();
@@ -54,6 +54,15 @@ namespace Quintity.TestFramework.Core
             }
 
             _breakPoints.Add(testScriptObject);
+        }
+
+        /// <summary>
+        /// Deletes an existing breakpoint from the test script object.
+        /// </summary>
+        /// <param name="testScriptObject">Test script object</param>
+        public static void DeleteBreakPoint(TestScriptObject testScriptObject)
+        {
+            _breakPoints.Remove(testScriptObject);
         }
 
         /// <summary>
