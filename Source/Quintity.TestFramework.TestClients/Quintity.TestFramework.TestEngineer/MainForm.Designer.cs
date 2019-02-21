@@ -52,6 +52,8 @@
             this.m_suiteExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_suiteStopExecuteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_suiteStepOverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.m_suiteResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_testPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +68,7 @@
             this.m_executeToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_stopToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_resetToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_stepOverButton = new System.Windows.Forms.ToolStripButton();
             this.m_mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.m_propertiesStatusBarButton = new System.Windows.Forms.ToolStripSplitButton();
@@ -104,9 +107,9 @@
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_executionTimer = new System.Windows.Forms.Timer(this.components);
-            this.m_suiteStepOverMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_suiteDeleteAllBreakpointsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_suiteDisableAllBreakpointsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_mainMenu.SuspendLayout();
             this.m_mainToolStrip.SuspendLayout();
             this.m_mainStatusStrip.SuspendLayout();
@@ -297,9 +300,12 @@
             this.m_suiteExecuteMenuItem,
             this.m_suiteStopExecuteMenuItem,
             this.m_toolStripSeparator5,
+            this.m_suiteResetMenuItem,
             this.m_suiteStepOverMenuItem,
-            this.toolStripSeparator3,
-            this.m_suiteResetMenuItem});
+            this.toolStripSeparator5,
+            this.m_suiteDeleteAllBreakpointsMenuItem,
+            this.m_suiteDisableAllBreakpointsMenuItem,
+            this.toolStripSeparator3});
             this.m_suiteMenuItem.Enabled = false;
             this.m_suiteMenuItem.Name = "m_suiteMenuItem";
             this.m_suiteMenuItem.Size = new System.Drawing.Size(69, 20);
@@ -332,6 +338,20 @@
             // 
             this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
             this.m_toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
+            // 
+            // m_suiteStepOverMenuItem
+            // 
+            this.m_suiteStepOverMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StepOver;
+            this.m_suiteStepOverMenuItem.Name = "m_suiteStepOverMenuItem";
+            this.m_suiteStepOverMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.m_suiteStepOverMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteStepOverMenuItem.Text = "Step Over";
+            this.m_suiteStepOverMenuItem.Click += new System.EventHandler(this.m_suiteStepOverMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
             // 
             // m_suiteResetMenuItem
             // 
@@ -380,7 +400,7 @@
             // 
             this.aboutToolStripMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.AboutBox;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -468,6 +488,11 @@
             this.m_resetToolStripButton.Text = "Reset";
             this.m_resetToolStripButton.ToolTipText = "Reset all test results";
             this.m_resetToolStripButton.Click += new System.EventHandler(this.m_resetToolStripButton_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // m_stepOverButton
             // 
@@ -912,24 +937,23 @@
             // 
             this.m_executionTimer.Interval = 1000;
             // 
-            // m_suiteStepOverMenuItem
+            // m_suiteDeleteAllBreakpointsMenuItem
             // 
-            this.m_suiteStepOverMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StepOver;
-            this.m_suiteStepOverMenuItem.Name = "m_suiteStepOverMenuItem";
-            this.m_suiteStepOverMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
-            this.m_suiteStepOverMenuItem.Size = new System.Drawing.Size(203, 22);
-            this.m_suiteStepOverMenuItem.Text = "Step Over";
-            this.m_suiteStepOverMenuItem.Click += new System.EventHandler(this.m_suiteStepOverMenuItem_Click);
+            this.m_suiteDeleteAllBreakpointsMenuItem.Name = "m_suiteDeleteAllBreakpointsMenuItem";
+            this.m_suiteDeleteAllBreakpointsMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteDeleteAllBreakpointsMenuItem.Text = "Delete All Breakpoints";
+            this.m_suiteDeleteAllBreakpointsMenuItem.Click += new System.EventHandler(this.m_suiteDeleteAllBreakpointsMenuItem_Click);
             // 
-            // toolStripSeparator3
+            // m_suiteDisableAllBreakpointsMenuItem
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
+            this.m_suiteDisableAllBreakpointsMenuItem.Name = "m_suiteDisableAllBreakpointsMenuItem";
+            this.m_suiteDisableAllBreakpointsMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.m_suiteDisableAllBreakpointsMenuItem.Text = "Disable All Breakpoints";
             // 
-            // toolStripSeparator4
+            // toolStripSeparator5
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
             // 
             // MainForm
             // 
@@ -1051,6 +1075,9 @@
         private System.Windows.Forms.ToolStripMenuItem m_suiteStepOverMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem m_suiteDeleteAllBreakpointsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem m_suiteDisableAllBreakpointsMenuItem;
     }
 }
 

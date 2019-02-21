@@ -1054,6 +1054,11 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_testTreeView.StepOverBreakPoint();
         }
 
+        private void m_suiteDeleteAllBreakpointsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.DeleteAllBreakpoints();
+        }
+
         //void watcher_Deleted(object sender, FileSystemEventArgs e)
         //{
         //    int i = 1;

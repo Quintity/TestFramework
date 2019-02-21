@@ -288,7 +288,7 @@ namespace Quintity.TestFramework.TestEngineer
             node.UpdateUI();
 
             // If completed following a step over, turn step mode off.
-            TestBreakpoints.BreakStepMode = false;
+            TestBreakpoints.StepOverMode = false;
         }
 
         #endregion

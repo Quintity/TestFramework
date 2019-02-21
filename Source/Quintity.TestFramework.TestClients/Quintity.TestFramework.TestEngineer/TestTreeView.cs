@@ -827,33 +827,34 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        // Breakpoint methods
+
         public void InsertBreakpoint(TestTreeNode currentNode)
         {
-            currentNode.HasBreakpoint = true;
-            TestBreakpoints.InsertBreakPoint(currentNode.TestScriptObject);
+            TestBreakpoints.InsertBreakpoint(currentNode.TestScriptObject);
         }
 
         public void DisableBreakpoint(TestTreeNode currentNode)
         {
-            //currentNode.HasBreakpoint = false;
-            //TestBreakPoints.DeleteBreakPoint(currentNode.TestScriptObject);
+            currentNode.TestBreakpoint.CurrentState = TestBreakpoint.State.Disabled;
         }
 
         public void DeleteBreakpoint(TestTreeNode currentNode)
         {
-            currentNode.HasBreakpoint = false;
-            TestBreakpoints.DeleteBreakPoint(currentNode.TestScriptObject);
+            TestBreakpoints.DeleteBreakpoint(currentNode.TestScriptObject);
         }
 
+        internal void DeleteAllBreakpoints()
+        {
+            TestBreakpoints.DeleteAllBreakpoints();
+        }
         internal void StepOverBreakPoint()
         {
-            TestBreakpoints.BreakStepMode = true;
-            TestBreakpoints.ContinueExecution();
+            TestBreakpoints.StepOverExecution();
         }
 
         internal void ContinueExecution()
         {
-            TestBreakpoints.BreakStepMode = false;
             TestBreakpoints.ContinueExecution();
         }
 
@@ -1569,6 +1570,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(21, "teststep.manual.pass.bmp");
             this.m_treeViewImages.Images.SetKeyName(22, "folder.closed.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute.bmp");
+            this.m_treeViewImages.Images.SetKeyName(24, "BreakpointEnable.png");
             // 
             // m_miBreakpoint
             // 

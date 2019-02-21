@@ -25,8 +25,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void registerRuntimeEvents()
         {
-            TestBreakpoints.OnTestBreakPointEnter += TestBreakPoints_OnTestBreakPointEnter;
-            TestBreakpoints.OnTestBreakPointExit += TestBreakPoints_OnTestBreakPointExit;
+            TestBreakpoints.OnTestBreakpointEnter += TestBreakpoints_OnTestBreakpointEnter1;
+            TestBreakpoints.OnTestBreakpointExit += TestBreakpoints_OnTestBreakpointExit;
 
             // TestExecutor events
             TestExecutor.OnExecutionBegin += TestExecutor_OnExecutionBegin;
@@ -55,40 +55,39 @@ namespace Quintity.TestFramework.TestEngineer
             TestTrace.OnTestTrace += TestTrace_OnTestTrace;
         }
 
-        private void TestBreakPoints_OnTestBreakPointExit(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        private void TestBreakpoints_OnTestBreakpointEnter1(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
         {
             if (this.InvokeRequired)
             {
-                var @delegate = new TestBreakpoints.TestBreakPointExitHandler(onTestBreakPointExit);
-                BeginInvoke(@delegate, new object[] { testScriptObject, args });
+                var @delegate = new TestBreakpoints.TestBreakpointEnterHandler(onTestBreakpointEnter);
+                BeginInvoke(@delegate, new object[] { testBreakpoint, args });
             }
             else
             {
-                onTestBreakPointExit(testScriptObject, args);
+                onTestBreakpointEnter(testBreakpoint, args);
             }
-            
         }
 
-        private void TestBreakPoints_OnTestBreakPointEnter(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        private void TestBreakpoints_OnTestBreakpointExit(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
         {
             if (this.InvokeRequired)
             {
-                var @delegate = new TestBreakpoints.TestBreakPointEnterHandler(onTestBreakPointEnter);
-                BeginInvoke(@delegate, new object[] { testScriptObject, args });
+                var @delegate = new TestBreakpoints.TestBreakpointExitHandler(onTestBreakPointExit);
+                BeginInvoke(@delegate, new object[] { testBreakpoint, args });
             }
             else
             {
-                onTestBreakPointEnter(testScriptObject, args);
+                onTestBreakPointExit(testBreakpoint, args);
             }
         }
 
-        private void onTestBreakPointEnter(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        private void onTestBreakpointEnter(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
         {
             this.m_executeToolStripButton.Enabled = true;
             this.m_stepOverButton.Enabled = true;
         }
 
-        private void onTestBreakPointExit(TestScriptObject testScriptObject, TestBreakPointArgs args)
+        private void onTestBreakPointExit(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
         {
             this.m_executeToolStripButton.Enabled = false;
             this.m_stepOverButton.Enabled = false;
@@ -96,8 +95,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void unregisterRuntimeEvents()
         {
-            TestBreakpoints.OnTestBreakPointEnter -= TestBreakPoints_OnTestBreakPointEnter;
-            TestBreakpoints.OnTestBreakPointExit -= TestBreakPoints_OnTestBreakPointExit;
+            TestBreakpoints.OnTestBreakpointEnter -= TestBreakpoints_OnTestBreakpointEnter1;
+            TestBreakpoints.OnTestBreakpointExit -= TestBreakpoints_OnTestBreakpointExit;
 
             // TestExecutor events
             TestExecutor.OnExecutionBegin -= TestExecutor_OnExecutionBegin;

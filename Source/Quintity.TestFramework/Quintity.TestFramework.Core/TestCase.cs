@@ -219,7 +219,7 @@ namespace Quintity.TestFramework.Core
             string currentUser = Thread.CurrentThread.Name;
             FireExecutionBeginEvent(this, new TestCaseBeginExecutionArgs(currentUser));
 
-            CheckForBreakPointMode();
+            CheckForPossibleBreakpointMode();
 
             TestCaseResult testCaseResult = new TestCaseResult();
             testCaseResult.SetReferenceID(SystemID);

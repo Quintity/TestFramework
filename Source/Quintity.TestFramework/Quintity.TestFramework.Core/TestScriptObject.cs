@@ -177,11 +177,15 @@ namespace Quintity.TestFramework.Core
         /// Checks for and enters into an execution break if either the test script object has a breakpoint set or 
         /// execution is currently in breakstep mode.
         /// </summary>
-        protected void CheckForBreakPointMode()
+        protected void CheckForPossibleBreakpointMode()
         {
-            if (TestBreakpoints.HasBreakPointSet(this) || TestBreakpoints.BreakStepMode)
+            if (TestBreakpoints.StepOverMode)
             {
-                TestBreakpoints.EnterBreakPoint(this);
+                TestBreakpoints.EnterStepOverMode();
+            }
+            else if (TestBreakpoints.HasBreakpointSet(this))
+            {
+                TestBreakpoints.EnterBreakpoint(this);
             }
         }
 

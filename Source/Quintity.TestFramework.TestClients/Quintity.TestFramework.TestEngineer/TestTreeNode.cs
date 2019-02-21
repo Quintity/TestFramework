@@ -23,7 +23,7 @@ namespace Quintity.TestFramework.TestEngineer
         public bool HasChanged
         { get; set; }
 
-        public bool HasBreakpoint
+        public TestBreakpoint TestBreakpoint
         { get; set; }
 
         public TestScriptObjectEditorDialog TestScriptEditorDialog
@@ -40,6 +40,10 @@ namespace Quintity.TestFramework.TestEngineer
             HasChanged = false;
             UpdateTitleAndToolTip();
             UpdateUI();
+
+            TestBreakpoints.OnTestBreakpointInserted += TestBreakpoints_OnTestBreakpointInserted;
+            TestBreakpoints.OnTestBreakpointDeleted += TestBreakpoints_OnTestBreakpointDeleted;
+            TestBreakpoint.OnTestBreakpointStateChanged += TestBreakpoint_OnTestBreakpointStateChanged;
         }
 
         public TestTreeNode()
@@ -48,6 +52,43 @@ namespace Quintity.TestFramework.TestEngineer
         protected TestTreeNode(SerializationInfo info, StreamingContext context)
             : base(info, context)
         { }
+
+        #endregion
+
+        #region Event handlers
+
+        private void TestBreakpoints_OnTestBreakpointInserted(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+           if (testBreakpoint.TestScriptObjectID.Equals(TestScriptObject.SystemID))
+            {
+                TestBreakpoint = testBreakpoint;
+                UpdateUI();
+            }
+        }
+        private void TestBreakpoints_OnTestBreakpointDeleted(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            if (testBreakpoint is null)
+            {
+                if (TestBreakpoint != null)
+                {
+                    TestBreakpoint = null;
+                    UpdateUI();
+                }
+            }
+            else if (testBreakpoint.TestScriptObjectID.Equals(TestScriptObject.SystemID))
+            {
+                TestBreakpoint = null;
+                UpdateUI();
+            }
+        }
+
+        private void TestBreakpoint_OnTestBreakpointStateChanged(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            if (TestScriptObject.SystemID.Equals(testBreakpoint.TestScriptObjectID))
+            {
+                UpdateUI();
+            }
+        }
 
         #endregion
 
@@ -106,8 +147,6 @@ namespace Quintity.TestFramework.TestEngineer
 
             UpdateToolTip();
         }
-
-
 
         /// <summary>
         /// Sets the node's TestScriptResult value to null;
@@ -262,7 +301,15 @@ namespace Quintity.TestFramework.TestEngineer
                 {
                     if (TestScriptResult == null)
                     {
-                        ImageKey = SelectedImageKey = IsExpanded ? "folder.open.bmp" : "folder.closed.bmp";
+                        if (TestBreakpoint != null)
+                        {
+                            ImageKey = SelectedImageKey = "BreakpointEnable.png";
+                        }
+                        else
+                        {
+                            ImageKey = SelectedImageKey = IsExpanded ? "folder.open.bmp" : "folder.closed.bmp";
+                        }
+
                         NodeFont = TestTreeView.ActiveFont;
                         ForeColor = Color.Black;
                     }
@@ -337,6 +384,15 @@ namespace Quintity.TestFramework.TestEngineer
                             ForeColor = Color.Gray;
                             break;
                     }
+
+                    // TODO -temporary until graphics are fixed up.
+                    if (TestBreakpoint != null)
+                    {
+                        ImageKey = SelectedImageKey = "BreakpointEnable.png";
+                    }
+
+                    NodeFont = TestTreeView.ActiveFont;
+                    ForeColor = Color.Black;
 
                     SelectedImageKey = ImageKey;
                 }
