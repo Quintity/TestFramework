@@ -48,6 +48,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         // Delegate and method to traverse all tree nodes starting at name node.
         public delegate bool TraverseNodesDelegate(TestTreeNode testTreeNode, object tag);
+
         public void TraverseNodes(TestTreeNode startNode, TraverseNodesDelegate traverseNodesDelegate)
         {
             TraverseNodes(startNode, traverseNodesDelegate, null);
@@ -149,7 +150,7 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miBreakpoint;
         private ToolStripMenuItem m_miInsertBreakpoint;
         private ToolStripMenuItem m_miDeleteBreakpoint;
-        private ToolStripMenuItem m_miDisableBreakpoint;
+        private ToolStripMenuItem m_miChangeBreakpointState;
         private bool m_ignoreNodeChanges;
 
         #endregion
@@ -202,7 +203,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestStep.Click += m_miNewTestStep_Click;
             this.m_miInsertBreakpoint.Click += m_miInsertBreakpoint_Click;
             this.m_miDeleteBreakpoint.Click += m_miDeleteBreakpoint_Click;
-            this.m_miDisableBreakpoint.Click += m_miDisableBreakpoint_Click;
+            this.m_miChangeBreakpointState.Click += m_miDisableBreakpoint_Click;
             this.m_miCut.Click += m_miCut_Click;
             this.m_miCopy.Click += m_miCopy_Click;
             this.m_miPaste.Click += m_miPaste_Click;
@@ -261,6 +262,33 @@ namespace Quintity.TestFramework.TestEngineer
         #endregion
 
         #region Public methods
+
+        /// <summary>
+        /// Traverses TestTreeView for all nodes.
+        /// </summary>
+        /// <param name="startNode">Starting node position</param>
+        /// <returns>Collection of all nodes from starting position</returns>
+        public List<TestTreeNode> GetTestTreeNodes(TestTreeNode startNode)
+        {
+            var testTreeNodes = new List<TestTreeNode>();
+            TraverseNodes(startNode, getTestTreeNodesDelegate, testTreeNodes);
+
+            return testTreeNodes;
+        }
+
+        /// <summary>
+        /// Delegate for GetTestTreeNodes method.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private bool getTestTreeNodesDelegate(TestTreeNode node, object tag)
+        {
+            var nodes = tag as List<TestTreeNode>;
+            nodes.Add(node);
+            return true;
+        }
+
 
         public TestTreeNode OpenExistingTestSuite(TestTreeNode currentNode, bool recordHistory = true)
         {
@@ -829,14 +857,62 @@ namespace Quintity.TestFramework.TestEngineer
 
         // Breakpoint methods
 
+        public List<TestBreakpoint> GetAllBreakpoints()
+        {
+            var nodes = GetTestTreeNodes(RootNode);
+
+            var breakpoints = (from z in nodes
+                               where z.TestBreakpoint != null
+                               select z.TestBreakpoint);
+
+            return new List<TestBreakpoint>(breakpoints);
+        }
+
         public void InsertBreakpoint(TestTreeNode currentNode)
         {
             TestBreakpoints.InsertBreakpoint(currentNode.TestScriptObject);
         }
 
-        public void DisableBreakpoint(TestTreeNode currentNode)
+        internal void ToggleBreakpoint()
         {
-            currentNode.TestBreakpoint.CurrentState = TestBreakpoint.State.Disabled;
+            var breakpoint = TestBreakpoints.GetBreakpoint(SelectedNode.TestScriptObject);
+             
+            if (breakpoint is null)
+            {
+                TestBreakpoints.InsertBreakpoint(SelectedNode.TestScriptObject);
+            }
+            else
+            {
+                if (breakpoint.CurrentState == TestBreakpoint.State.Enabled)
+                {
+                    TestBreakpoints.DeleteBreakpoint(breakpoint);
+                }
+                else
+                {
+                    TestBreakpoints.ChangeBreakpointState(breakpoint, TestBreakpoint.State.Enabled);
+                }
+            }
+        }
+
+        public void ToggleBreakpointState(TestTreeNode currentNode)
+        {
+            var breakpoint = TestBreakpoints.GetBreakpoint(currentNode.TestScriptObject);
+
+            if (breakpoint != null)
+            {
+                breakpoint.CurrentState = breakpoint.CurrentState ==
+                    TestBreakpoint.State.Enabled ? TestBreakpoint.State.Disabled : TestBreakpoint.State.Enabled;
+            }
+        }
+
+        public void DisableAllBreakpoints()
+        {
+            TestBreakpoints.ChangeBreakpointStates(GetAllBreakpoints(), TestBreakpoint.State.Disabled);
+        }
+
+        public void EnableAllBreakpoints()
+        {
+            TestBreakpoints.ChangeBreakpointStates(GetAllBreakpoints(), TestBreakpoint.State.Enabled);
         }
 
         public void DeleteBreakpoint(TestTreeNode currentNode)
@@ -846,8 +922,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void DeleteAllBreakpoints()
         {
-            TestBreakpoints.DeleteAllBreakpoints();
+            TestBreakpoints.DeleteBreakpoints(new List<TestBreakpoint>(GetAllBreakpoints()));
         }
+
         internal void StepOverBreakPoint()
         {
             TestBreakpoints.StepOverExecution();
@@ -1361,19 +1438,19 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miAddTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDeleteBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miDisableBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miChangeBreakpointState = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
             this.m_treeViewContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1420,6 +1497,8 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_miExecute
             // 
+            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miExecute.Name = "m_miExecute";
             this.m_miExecute.Size = new System.Drawing.Size(201, 22);
             this.m_miExecute.Text = "Execute";
@@ -1501,6 +1580,16 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
             this.m_toolStripSeparator5.Size = new System.Drawing.Size(198, 6);
             // 
+            // m_miBreakpoint
+            // 
+            this.m_miBreakpoint.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_miInsertBreakpoint,
+            this.m_miDeleteBreakpoint,
+            this.m_miChangeBreakpointState});
+            this.m_miBreakpoint.Name = "m_miBreakpoint";
+            this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
+            this.m_miBreakpoint.Text = "Breakpoint";
+            // 
             // m_toolStripSeparator6
             // 
             this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
@@ -1508,6 +1597,8 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_miCut
             // 
+            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
+            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miCut.Name = "m_miCut";
             this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.m_miCut.Size = new System.Drawing.Size(201, 22);
@@ -1515,6 +1606,8 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_miCopy
             // 
+            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
+            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miCopy.Name = "m_miCopy";
             this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.m_miCopy.Size = new System.Drawing.Size(201, 22);
@@ -1522,25 +1615,12 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_miPaste
             // 
+            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
+            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miPaste.Name = "m_miPaste";
             this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.m_miPaste.Size = new System.Drawing.Size(201, 22);
             this.m_miPaste.Text = "Paste";
-            // 
-            // m_miDelete
-            // 
-            this.m_miDelete.Name = "m_miDelete";
-            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
-            this.m_miDelete.Text = "Del";
-            // 
-            // m_miRename
-            // 
-            this.m_miRename.Name = "m_miRename";
-            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_miRename.Size = new System.Drawing.Size(201, 22);
-            this.m_miRename.Text = "Rename";
-            this.m_miRename.ToolTipText = "Rename the selected item.";
             // 
             // m_treeViewImages
             // 
@@ -1572,18 +1652,9 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(24, "BreakpointEnable.png");
             // 
-            // m_miBreakpoint
-            // 
-            this.m_miBreakpoint.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_miInsertBreakpoint,
-            this.m_miDeleteBreakpoint,
-            this.m_miDisableBreakpoint});
-            this.m_miBreakpoint.Name = "m_miBreakpoint";
-            this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
-            this.m_miBreakpoint.Text = "Breakpoint";
-            // 
             // m_miInsertBreakpoint
             // 
+            this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable;
             this.m_miInsertBreakpoint.Name = "m_miInsertBreakpoint";
             this.m_miInsertBreakpoint.Size = new System.Drawing.Size(172, 22);
             this.m_miInsertBreakpoint.Text = "Insert Breakpoint";
@@ -1591,15 +1662,37 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_miDeleteBreakpoint
             // 
+            this.m_miDeleteBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.DeleteBreakpoint;
             this.m_miDeleteBreakpoint.Name = "m_miDeleteBreakpoint";
             this.m_miDeleteBreakpoint.Size = new System.Drawing.Size(172, 22);
             this.m_miDeleteBreakpoint.Text = "Delete Breakpoint";
             // 
-            // m_miDisableBreakpoint
+            // m_miChangeBreakpointState
             // 
-            this.m_miDisableBreakpoint.Name = "m_miDisableBreakpoint";
-            this.m_miDisableBreakpoint.Size = new System.Drawing.Size(172, 22);
-            this.m_miDisableBreakpoint.Text = "Disable Breakpoint";
+            this.m_miChangeBreakpointState.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ToggleAllBreakpoints;
+            this.m_miChangeBreakpointState.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
+            this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
+            this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
+            // 
+            // m_miDelete
+            // 
+            this.m_miDelete.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
+            this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miDelete.Name = "m_miDelete";
+            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
+            this.m_miDelete.Text = "Del";
+            // 
+            // m_miRename
+            // 
+            this.m_miRename.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Rename;
+            this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miRename.Name = "m_miRename";
+            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.m_miRename.Size = new System.Drawing.Size(201, 22);
+            this.m_miRename.Text = "Rename";
+            this.m_miRename.ToolTipText = "Rename the selected item.";
             // 
             // TestTreeView
             // 
@@ -2224,6 +2317,30 @@ namespace Quintity.TestFramework.TestEngineer
             // Unavailable refers to a failed test suite open/load.
             var unavailable = selectedNode.TestScriptObject.Status == Status.Unavailable ? true : false;
 
+            if (!selectedNode.HasBreakpoint())
+            {
+                m_miDeleteBreakpoint.Visible = false;
+                m_miDeleteBreakpoint.Enabled = false;
+
+                m_miChangeBreakpointState.Visible = false;
+                m_miChangeBreakpointState.Enabled = false;
+                
+                m_miInsertBreakpoint.Visible = true;
+                m_miInsertBreakpoint.Enabled = true;
+            }
+            else
+            {
+                m_miDeleteBreakpoint.Visible = true;
+                m_miDeleteBreakpoint.Enabled = true;
+
+                m_miChangeBreakpointState.Text = selectedNode.TestBreakpoint.CurrentState == TestBreakpoint.State.Enabled ? "Disable Breakpoint" : "Enable Breakpoint";
+                m_miChangeBreakpointState.Visible = true;
+                m_miChangeBreakpointState.Enabled = true;
+
+                m_miInsertBreakpoint.Visible = false;
+                m_miInsertBreakpoint.Enabled = false;
+            }
+
             if (selectedNode.TestScriptObject.Status == Status.Active)
             {
                 m_miActivate.Enabled = true;
@@ -2583,7 +2700,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_miDisableBreakpoint_Click(object sender, EventArgs e)
         {
-            DisableBreakpoint(SelectedNode);
+            ToggleBreakpointState(SelectedNode);
         }
 
         private void m_miDeleteBreakpoint_Click(object sender, EventArgs e)

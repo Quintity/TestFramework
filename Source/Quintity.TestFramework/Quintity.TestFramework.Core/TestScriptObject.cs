@@ -183,7 +183,7 @@ namespace Quintity.TestFramework.Core
             {
                 TestBreakpoints.EnterStepOverMode();
             }
-            else if (TestBreakpoints.HasBreakpointSet(this))
+            else if (TestBreakpoints.HasEnableBreakpoint(this))
             {
                 TestBreakpoints.EnterBreakpoint(this);
             }

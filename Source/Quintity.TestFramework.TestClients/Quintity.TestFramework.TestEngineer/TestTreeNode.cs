@@ -148,6 +148,11 @@ namespace Quintity.TestFramework.TestEngineer
             UpdateToolTip();
         }
 
+        public bool HasBreakpoint()
+        {
+            return TestBreakpoint is null ? false : true;
+        }
+
         /// <summary>
         /// Sets the node's TestScriptResult value to null;
         /// </summary>

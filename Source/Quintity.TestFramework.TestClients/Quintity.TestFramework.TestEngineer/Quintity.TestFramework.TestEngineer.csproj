@@ -236,6 +236,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\ToggleAllBreakpoints.bmp" />
     <None Include="Images\Undo.bmp" />
     <None Include="Images\StepOver.bmp" />
     <None Include="Images\Copy.bmp" />
@@ -247,6 +248,12 @@
     <None Include="Images\AboutBox.png" />
     <None Include="Images\Restart_16x_24.bmp" />
     <None Include="Images\BreakpointEnable.png" />
+    <None Include="Images\BreakpointDisable.bmp" />
+    <None Include="Images\DeleteBreakpoint.png" />
+    <None Include="Images\DisableAllBreakpoints.png" />
+    <None Include="Images\ClearBreakpointGroup.png" />
+    <None Include="Images\Delete.bmp" />
+    <None Include="Images\Rename.bmp" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

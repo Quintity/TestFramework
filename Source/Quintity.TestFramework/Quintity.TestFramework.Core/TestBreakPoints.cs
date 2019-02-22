@@ -15,7 +15,7 @@ namespace Quintity.TestFramework.Core
     {
         private static ManualResetEvent ResetEvent = new ManualResetEvent(false);
         private static List<TestBreakpoint> _breakPoints;
-        private static TestBreakpoint _currentBreakpoint =null;
+        private static TestBreakpoint _currentBreakpoint = null;
         public static bool StepOverMode { get; set; }
 
         #region Class events
@@ -95,6 +95,18 @@ namespace Quintity.TestFramework.Core
             }
         }
 
+        /// <summary>
+        /// Clears list of breakpoints
+        /// </summary>
+        /// <param name="breakpoints">List of breakpoints to remove.</param>
+        public static void DeleteBreakpoints(List<TestBreakpoint> breakpoints)
+        {
+            foreach (var breakpoint in breakpoints)
+            {
+                DeleteBreakpoint(breakpoint);
+            }
+        }
+
         public static void DeleteBreakpoint(TestBreakpoint breakpoint)
         {
             if (breakpoint != null)
@@ -104,15 +116,17 @@ namespace Quintity.TestFramework.Core
             }
         }
 
-        /// <summary>
-        /// Clears all breakpoints.
-        /// </summary>
-        public static void DeleteAllBreakpoints()
+        public static void ChangeBreakpointState(TestBreakpoint breakpoint, TestBreakpoint.State newState)
         {
-            _breakPoints = new List<TestBreakpoint>();
+            breakpoint.CurrentState = newState;
+        }
 
-            // Setting test breakpoint to null, indicates delete all breakpoints
-            FireTestBreakpointDeletedEvent(null, null);
+        public static void ChangeBreakpointStates(List<TestBreakpoint> breakpoints, TestBreakpoint.State newState)
+        {
+            foreach (var breakpoint in breakpoints)
+            {
+                breakpoint.CurrentState = newState;
+            }
         }
 
         /// <summary>
@@ -120,9 +134,42 @@ namespace Quintity.TestFramework.Core
         /// </summary>
         /// <param name="testScriptObject"></param>
         /// <returns>true if set, otherwise false.</returns>
-        public static bool HasBreakpointSet(TestScriptObject testScriptObject)
+        public static bool HasBreakpoint(TestScriptObject testScriptObject)
         {
+            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+
             return _breakPoints is null ? false : _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObject.SystemID)) is null ? false : true;
+        }
+
+        /// <summary>
+        /// Checks if the object has an enabled breakpoint set.
+        /// </summary>
+        /// <param name="testScriptObject"></param>
+        /// <returns>true if set, otherwise false.</returns>
+        public static bool HasEnableBreakpoint(TestScriptObject testScriptObject)
+        {
+            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+
+            return _breakPoints is null ? false :
+                _breakPoints.Find(x => (x.TestScriptObjectID.Equals(testScriptObject.SystemID) &&
+                    x.CurrentState == TestBreakpoint.State.Enabled)) is null ? false : true;
+        }
+
+        public static TestBreakpoint GetBreakpoint(TestScriptObject testScriptObject)
+        {
+            return GetBreakpoint(testScriptObject.SystemID);
+        }
+
+        /// <summary>
+        /// Gets the TestBreakpoint object associated with the TestScriptObject. 
+        /// </summary>
+        /// <param name="testScriptObjectId">The TestScriptObject requested.</param>
+        /// <returns>The associated TestScriptObject or null if no associated breakpoint</returns>
+        public static TestBreakpoint GetBreakpoint(Guid testScriptObjectId)
+        {
+            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+
+            return _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
         }
 
         /// <summary>
@@ -136,6 +183,8 @@ namespace Quintity.TestFramework.Core
 
         public static void EnterBreakpoint(Guid testScriptObjectId)
         {
+            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+
             var testBreakpoint = _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
 
             if (testBreakpoint != null)
