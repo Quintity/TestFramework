@@ -176,6 +176,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_suiteResetMenuItem_Click(object sender, EventArgs e)
         {
+            resetResults();
             resetViewerAndStatusBar();
         }
 
@@ -272,6 +273,11 @@ namespace Quintity.TestFramework.TestEngineer
         }
 
         private void m_resetToolStripButton_Click(object sender, EventArgs e)
+        {
+            resetResults();
+        }
+
+        private void resetResults()
         {
             this.m_testTreeView.ResetResults();
             resetViewerAndStatusBar();
@@ -585,7 +591,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
                 else
                 {
-                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments }\" has been specified, " + 
+                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments }\" has been specified, " +
                         "however it was not located in the application configuration file.",
                         "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -827,7 +833,7 @@ namespace Quintity.TestFramework.TestEngineer
                 var testSuite = m_testTreeView.GetTestSuite();
 
                 m_saveFileDialog.Title = "Save Test Suite As";
-                m_saveFileDialog.FileName = string.IsNullOrEmpty(testSuite.FileName) ? string.Empty: $"Copy of {testSuite.Title}";
+                m_saveFileDialog.FileName = string.IsNullOrEmpty(testSuite.FileName) ? string.Empty : $"Copy of {testSuite.Title}";
                 m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
                 m_saveFileDialog.RestoreDirectory = true;
                 m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
@@ -841,7 +847,7 @@ namespace Quintity.TestFramework.TestEngineer
 
                     //saveTestSuite(testSuite);
                     m_testTreeView.RootNode.TestScriptObject = testSuite;
-                    m_testTreeView.RootNode.TestScriptResult = null; 
+                    m_testTreeView.RootNode.TestScriptResult = null;
 
                     // Clean up UI
                     m_testSuiteUri = new Uri(TestProperties.ExpandString(testSuite.FilePath));
@@ -1062,6 +1068,14 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_suiteToggleBreakpointMenuItem_Click(object sender, EventArgs e)
         {
             this.m_testTreeView.ToggleBreakpoint();
+        }
+
+        private void m_suiteMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            this.m_suiteResetMenuItem.Enabled = this.m_testTreeView.HasTestScriptResults();
+
+            this.m_suiteDeleteAllBreakpointsMenuItem.Enabled =
+                this.m_suiteDisableAllBreakpointsMenuItem.Enabled = m_testTreeView.HasBreakpoints();
         }
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)

@@ -855,8 +855,23 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        // Breakpoint methods
+        internal bool HasTestScriptResults()
+        {
+            return GetTestTreeNodesWithResults().Count > 0 ? true : false;
+        }
 
+        internal List<TestTreeNode> GetTestTreeNodesWithResults()
+        {
+            var nodes = GetTestTreeNodes(RootNode);
+
+            return new List<TestTreeNode>(nodes.Where<TestTreeNode>(x => x.TestScriptResult != null));
+        }
+
+        // Breakpoint methods
+        public bool HasBreakpoints()
+        {
+            return GetAllBreakpoints().Count > 0 ? true : false;
+        }
         public List<TestBreakpoint> GetAllBreakpoints()
         {
             var nodes = GetTestTreeNodes(RootNode);
@@ -1424,7 +1439,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.m_miOpenEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -1440,15 +1454,16 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDeleteBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miChangeBreakpointState = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
             this.m_treeViewContextMenu.SuspendLayout();
@@ -1495,16 +1510,10 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
             this.m_toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
             // 
-            // m_miExecute
-            // 
-            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
-            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miExecute.Name = "m_miExecute";
-            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
-            this.m_miExecute.Text = "Execute";
-            // 
             // m_miResetResults
             // 
+            this.m_miResetResults.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ResetResults;
+            this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miResetResults.Name = "m_miResetResults";
             this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
             this.m_miResetResults.Text = "Reset Results";
@@ -1595,33 +1604,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
             this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
             // 
-            // m_miCut
-            // 
-            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
-            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCut.Name = "m_miCut";
-            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.m_miCut.Size = new System.Drawing.Size(201, 22);
-            this.m_miCut.Text = "Cut";
-            // 
-            // m_miCopy
-            // 
-            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
-            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCopy.Name = "m_miCopy";
-            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
-            this.m_miCopy.Text = "Copy";
-            // 
-            // m_miPaste
-            // 
-            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
-            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miPaste.Name = "m_miPaste";
-            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
-            this.m_miPaste.Text = "Paste";
-            // 
             // m_treeViewImages
             // 
             this.m_treeViewImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("m_treeViewImages.ImageStream")));
@@ -1652,6 +1634,14 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(24, "BreakpointEnable.png");
             // 
+            // m_miExecute
+            // 
+            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miExecute.Name = "m_miExecute";
+            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
+            this.m_miExecute.Text = "Execute";
+            // 
             // m_miInsertBreakpoint
             // 
             this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable;
@@ -1674,6 +1664,33 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
             this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
             this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
+            // 
+            // m_miCut
+            // 
+            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
+            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCut.Name = "m_miCut";
+            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.m_miCut.Size = new System.Drawing.Size(201, 22);
+            this.m_miCut.Text = "Cut";
+            // 
+            // m_miCopy
+            // 
+            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
+            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCopy.Name = "m_miCopy";
+            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
+            this.m_miCopy.Text = "Copy";
+            // 
+            // m_miPaste
+            // 
+            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
+            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miPaste.Name = "m_miPaste";
+            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
+            this.m_miPaste.Text = "Paste";
             // 
             // m_miDelete
             // 
