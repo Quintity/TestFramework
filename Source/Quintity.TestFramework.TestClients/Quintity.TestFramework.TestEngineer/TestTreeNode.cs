@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
 using Quintity.TestFramework.Core;
+using System.Drawing.Imaging;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -308,7 +309,7 @@ namespace Quintity.TestFramework.TestEngineer
                     {
                         if (TestBreakpoint != null)
                         {
-                            ImageKey = SelectedImageKey = "BreakpointEnable.png";
+                            ImageKey = SelectedImageKey = "folder.closed.breakpoint.bmp";
                         }
                         else
                         {
@@ -370,7 +371,15 @@ namespace Quintity.TestFramework.TestEngineer
                     switch (TestScriptObject.Status)
                     {
                         case Status.Active:
-                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.active.bmp" : "teststep.manual.active.bmp";
+                            if (!HasBreakpoint())
+                            {
+                                ImageKey = testStep.TestType == TestType.Automated ? "teststep.active.bmp" : "teststep.manual.active.bmp";
+                            }
+                            else
+                            {
+                                ImageKey = testStep.TestType == TestType.Automated ? "teststep.active.breakpoint.bmp" : "teststep.manual.active.breakpoint.bmp";
+                            }
+
                             NodeFont = TestTreeView.ActiveFont;
                             ForeColor = Color.Black;
                             break;
@@ -393,7 +402,7 @@ namespace Quintity.TestFramework.TestEngineer
                     // TODO -temporary until graphics are fixed up.
                     if (TestBreakpoint != null)
                     {
-                        ImageKey = SelectedImageKey = "BreakpointEnable.png";
+                        ImageKey = SelectedImageKey = "teststepbreakpoint";
                     }
 
                     NodeFont = TestTreeView.ActiveFont;

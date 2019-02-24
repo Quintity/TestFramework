@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
 using System.Linq;
+using System.Drawing.Imaging;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -212,6 +213,32 @@ namespace Quintity.TestFramework.TestEngineer
 
             // Set to catch timer system messages
             SetStyle(ControlStyles.EnableNotifyMessage, true);
+
+            var overlayImage = m_treeViewImages.Images["BreakpointEnable.small.png"];
+
+            for (int index = 0; index <= 23; index++)
+            {
+                var key = m_treeViewImages.Images.Keys[index];
+                var newKey = key.Replace("bmp", "breakpoint");
+                this.ImageList.Images.Add(newKey, mergeImages(m_treeViewImages.Images[key], overlayImage));
+
+            }
+
+            //var backgroundImage = m_treeViewImages.Images[2];
+            ////var overlayImage = m_treeViewImages.Images["BreakpointEnable.small.png"];
+
+            //var mergedImage = mergeImages(backgroundImage, overlayImage);
+            //this.ImageList.Images.Add("teststepbreakpoint", mergedImage);
+
+            //backgroundImage = m_treeViewImages.Images["folder.closed.bmp"];
+            //mergedImage = mergeImages(backgroundImage, overlayImage);
+            //this.ImageList.Images.Add("folder.closed.breakpoint.bmp", mergedImage);
+
+            //this.ImageList.Images.Add("folder.closed.breakpoint.png", mergeImages(m_treeViewImages.Images["folder.closed.bmp"], overlayImage));
+            //this.ImageList.Images.Add("folder.open.breakpoint.png", mergeImages(m_treeViewImages.Images["folder.open.bmp"], overlayImage));
+
+            //this.ImageList.Images.Add("teststep.active.breakpoint.png", mergeImages(m_treeViewImages.Images["teststep.active.bmp"], overlayImage));
+
 
             TestScriptObject.OnTestPropertyChanged += TestScriptObject_OnTestPropertyChanged;
         }
@@ -888,10 +915,52 @@ namespace Quintity.TestFramework.TestEngineer
             TestBreakpoints.InsertBreakpoint(currentNode.TestScriptObject);
         }
 
+        // TODO - cleanup
+        private Image mergeImages(Image backgroundImage, Image overlayImage)
+        {
+            Image mergedImage = backgroundImage;
+
+            if (null != overlayImage)
+            {
+                Image theOverlay = overlayImage;
+
+                if (PixelFormat.Format32bppArgb != overlayImage.PixelFormat)
+                {
+                    theOverlay = new Bitmap(overlayImage.Width,
+                                            overlayImage.Height,
+                                            PixelFormat.Format32bppArgb);
+                    using (Graphics graphics = Graphics.FromImage(theOverlay))
+                    {
+                        graphics.DrawImage(overlayImage,
+                                           new Rectangle(0, 0, theOverlay.Width, theOverlay.Height),
+                                           new Rectangle(0, 0, overlayImage.Width, overlayImage.Height),
+                                           GraphicsUnit.Pixel);
+                    }
+
+                    ((Bitmap)theOverlay).MakeTransparent();
+                }
+
+                using (Graphics graphics = Graphics.FromImage(mergedImage))
+                {
+                    graphics.DrawImage(theOverlay,
+                                       new Rectangle(0, 0, mergedImage.Width, mergedImage.Height),
+                                       new Rectangle(0, 0, theOverlay.Width, theOverlay.Height),
+                                       GraphicsUnit.Pixel);
+                }
+            }
+
+            return mergedImage;
+        }
+
+
+
+
+
+
         internal void ToggleBreakpoint()
         {
             var breakpoint = TestBreakpoints.GetBreakpoint(SelectedNode.TestScriptObject);
-             
+
             if (breakpoint is null)
             {
                 TestBreakpoints.InsertBreakpoint(SelectedNode.TestScriptObject);
@@ -1633,6 +1702,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(22, "folder.closed.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute.bmp");
             this.m_treeViewImages.Images.SetKeyName(24, "BreakpointEnable.png");
+            this.m_treeViewImages.Images.SetKeyName(25, "BreakpointEnable.small.png");
             // 
             // m_miExecute
             // 
@@ -2341,7 +2411,7 @@ namespace Quintity.TestFramework.TestEngineer
 
                 m_miChangeBreakpointState.Visible = false;
                 m_miChangeBreakpointState.Enabled = false;
-                
+
                 m_miInsertBreakpoint.Visible = true;
                 m_miInsertBreakpoint.Enabled = true;
             }
