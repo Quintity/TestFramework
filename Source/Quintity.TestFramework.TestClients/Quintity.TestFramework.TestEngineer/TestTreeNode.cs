@@ -60,7 +60,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void TestBreakpoints_OnTestBreakpointInserted(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
         {
-           if (testBreakpoint.TestScriptObjectID.Equals(TestScriptObject.SystemID))
+            if (testBreakpoint.TestScriptObjectID.Equals(TestScriptObject.SystemID))
             {
                 TestBreakpoint = testBreakpoint;
                 UpdateUI();
@@ -300,22 +300,14 @@ namespace Quintity.TestFramework.TestEngineer
                 if (IsExecuting)
                 {
                     this.EnsureVisible();
-                    ImageKey = SelectedImageKey = "execution.arrow.bmp";
+                    ImageKey = "execution.arrow";
                     ForeColor = Color.ForestGreen;
                 }
                 else
                 {
                     if (TestScriptResult == null)
                     {
-                        if (TestBreakpoint != null)
-                        {
-                            ImageKey = SelectedImageKey = "folder.closed.breakpoint.bmp";
-                        }
-                        else
-                        {
-                            ImageKey = SelectedImageKey = IsExpanded ? "folder.open.bmp" : "folder.closed.bmp";
-                        }
-
+                        ImageKey = IsExpanded ? "folder.open" : "folder.closed";
                         NodeFont = TestTreeView.ActiveFont;
                         ForeColor = Color.Black;
                     }
@@ -325,19 +317,19 @@ namespace Quintity.TestFramework.TestEngineer
 
                         if (testResult.TestVerdict == TestVerdict.Pass)
                         {
-                            ImageKey = SelectedImageKey = IsExpanded ? "folder.open.pass.bmp" : "folder.closed.pass.bmp";
+                            ImageKey = IsExpanded ? "folder.open.pass" : "folder.closed.pass";
                             NodeFont = TestTreeView.ActiveFont;
                             ForeColor = Color.Black;
                         }
                         else if (testResult.TestVerdict == TestVerdict.DidNotExecute)
                         {
-                            ImageKey = SelectedImageKey = IsExpanded ? "folder.open.didnotexecute.bmp" : "folder.closed.didnotexecute.bmp";
+                            ImageKey = IsExpanded ? "folder.open.didnotexecute" : "folder.closed.didnotexecute";
                             NodeFont = TestTreeView.ActiveFont;
                             ForeColor = Color.Gray;
                         }
                         else if (testResult.TestVerdict == TestVerdict.Fail)
                         {
-                            ImageKey = SelectedImageKey = IsExpanded ? "folder.open.fail.bmp" : "folder.closed.fail.bmp";
+                            ImageKey = IsExpanded ? "folder.open.fail" : "folder.closed.fail";
                             NodeFont = TestTreeView.ActiveFont;
                             ForeColor = Color.DarkRed;
                         }
@@ -346,10 +338,18 @@ namespace Quintity.TestFramework.TestEngineer
             }
             else
             {
-                ImageKey = SelectedImageKey = IsExpanded ? "folder.open.deactivated.bmp" : "folder.closed.deactivated.bmp";
+                ImageKey = IsExpanded ? "folder.open.deactivated" : "folder.closed.deactivated";
                 NodeFont = TestTreeView.InactiveFont;
                 ForeColor = Color.Gray;
             }
+
+            if (HasBreakpoint())
+            {
+                ImageKey = TestBreakpoint.CurrentState == TestBreakpoint.State.Enabled ?
+                    ImageKey + ".breakpoint.enabled" : ImageKey + ".breakpoint.disabled";
+            }
+
+            SelectedImageKey = ImageKey;
         }
 
         private void updateUIForTestStep()
@@ -359,37 +359,29 @@ namespace Quintity.TestFramework.TestEngineer
             if (IsExecuting)
             {
                 this.EnsureVisible();
-                ImageKey = SelectedImageKey = "execution.arrow.bmp";
+                ImageKey = SelectedImageKey = "execution.arrow";
                 ForeColor = Color.ForestGreen;
             }
             else
             {
                 if (this.TestScriptResult == null)
                 {
-                    ImageKey = SelectedImageKey = "teststep.active.bmp";
+                    ImageKey = SelectedImageKey = "teststep.active";
 
                     switch (TestScriptObject.Status)
                     {
                         case Status.Active:
-                            if (!HasBreakpoint())
-                            {
-                                ImageKey = testStep.TestType == TestType.Automated ? "teststep.active.bmp" : "teststep.manual.active.bmp";
-                            }
-                            else
-                            {
-                                ImageKey = testStep.TestType == TestType.Automated ? "teststep.active.breakpoint.bmp" : "teststep.manual.active.breakpoint.bmp";
-                            }
-
+                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.active" : "teststep.manual.active";
                             NodeFont = TestTreeView.ActiveFont;
                             ForeColor = Color.Black;
                             break;
                         case Status.Inactive:
-                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.inactive.bmp" : "teststep.manual.inactive.bmp";
+                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.inactive" : "teststep.manual.inactive";
                             NodeFont = TestTreeView.InactiveFont;
                             ForeColor = Color.Gray;
                             break;
                         case Status.Incomplete:
-                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.incomplete.bmp" : "teststep.manual.inactive.bmp";
+                            ImageKey = testStep.TestType == TestType.Automated ? "teststep.incomplete" : "teststep.manual.inactive";
                             NodeFont = TestTreeView.UnavailableFont;
                             ForeColor = Color.Gray;
                             break;
@@ -399,16 +391,12 @@ namespace Quintity.TestFramework.TestEngineer
                             break;
                     }
 
-                    // TODO -temporary until graphics are fixed up.
-                    if (TestBreakpoint != null)
-                    {
-                        ImageKey = SelectedImageKey = "teststepbreakpoint";
-                    }
+
 
                     NodeFont = TestTreeView.ActiveFont;
                     ForeColor = Color.Black;
 
-                    SelectedImageKey = ImageKey;
+                    //SelectedImageKey = ImageKey;
                 }
                 else
                 {
@@ -417,22 +405,22 @@ namespace Quintity.TestFramework.TestEngineer
                     switch (TestScriptResultAsTestStepResult().TestVerdict)
                     {
                         case TestVerdict.Pass:
-                            ImageKey = "teststep.pass.bmp";
+                            ImageKey = "teststep.pass";
                             ForeColor = Color.Black;
                             break;
                         case TestVerdict.Fail:
                             ForeColor = Color.DarkRed;
-                            ImageKey = "teststep.fail.bmp";
+                            ImageKey = "teststep.fail";
                             break;
                         case TestVerdict.Error:
                             ForeColor = Color.DarkRed;
-                            ImageKey = "teststep.error.bmp";
+                            ImageKey = "teststep.error";
                             break;
                         case TestVerdict.Inconclusive:
                             break;
                         case TestVerdict.DidNotExecute:
                             ForeColor = Color.Black;
-                            ImageKey = "teststep.error.bmp";
+                            ImageKey = "teststep.error";
                             break;
                         case TestVerdict.Unknown:
                             break;
@@ -440,9 +428,20 @@ namespace Quintity.TestFramework.TestEngineer
                             break;
                     }
 
-                    SelectedImageKey = ImageKey;
+                    //SelectedImageKey = ImageKey;
                 }
+
+                if (HasBreakpoint())
+                {
+                    ImageKey = TestBreakpoint.CurrentState == TestBreakpoint.State.Enabled ?
+                        ImageKey + ".breakpoint.enabled" : ImageKey + ".breakpoint.disabled";
+                }
+
+                SelectedImageKey = ImageKey;
+
             }
+
+
         }
 
         #endregion
