@@ -16,6 +16,9 @@ namespace Quintity.TestFramework.Core
         private static ManualResetEvent ResetEvent = new ManualResetEvent(false);
         private static List<TestBreakpoint> _breakPoints;
         private static TestBreakpoint _currentBreakpoint = null;
+        public static TestBreakpoint CurrentBreakpoint
+        { get { return _currentBreakpoint; } }
+
         public static bool StepOverMode { get; set; }
 
         #region Class events
@@ -222,6 +225,8 @@ namespace Quintity.TestFramework.Core
             ResetEvent.Set();
             ResetEvent.Reset();
             FireTestBreakpointExitEvent(_currentBreakpoint, new TestBreakPointArgs());
+
+            _currentBreakpoint = null;
         }
 
         #endregion

@@ -1074,6 +1074,8 @@ namespace Quintity.TestFramework.TestEngineer
         {
             this.m_suiteResetMenuItem.Enabled = this.m_testTreeView.HasTestScriptResults();
 
+            this.m_suiteStepOverMenuItem.Enabled = this.m_testTreeView.IsBreakpointMode();
+
             this.m_suiteDeleteAllBreakpointsMenuItem.Enabled =
                 this.m_suiteDisableAllBreakpointsMenuItem.Enabled = m_testTreeView.HasBreakpoints();
         }

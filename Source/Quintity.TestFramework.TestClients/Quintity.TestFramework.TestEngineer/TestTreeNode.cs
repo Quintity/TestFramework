@@ -391,12 +391,8 @@ namespace Quintity.TestFramework.TestEngineer
                             break;
                     }
 
-
-
                     NodeFont = TestTreeView.ActiveFont;
                     ForeColor = Color.Black;
-
-                    //SelectedImageKey = ImageKey;
                 }
                 else
                 {
@@ -427,8 +423,6 @@ namespace Quintity.TestFramework.TestEngineer
                         default:
                             break;
                     }
-
-                    //SelectedImageKey = ImageKey;
                 }
 
                 if (HasBreakpoint())
@@ -438,7 +432,6 @@ namespace Quintity.TestFramework.TestEngineer
                 }
 
                 SelectedImageKey = ImageKey;
-
             }
 
 
