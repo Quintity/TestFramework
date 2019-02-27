@@ -254,6 +254,9 @@
     <None Include="Images\ClearBreakpointGroup.png" />
     <None Include="Images\Delete.bmp" />
     <None Include="Images\Rename.bmp" />
+    <Content Include="Images\BreakpointEnable.small.png" />
+    <Content Include="Images\EnableAllBreakpoints.png" />
+    <Content Include="Images\FileNew.png" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

@@ -23,6 +23,7 @@ namespace Quintity.TestFramework.Core
         }
 
         #endregion
+
         #region Public methods
 
         public override string ToString()

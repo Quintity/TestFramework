@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Quintity.TestFramework.Core
 {
@@ -18,6 +15,23 @@ namespace Quintity.TestFramework.Core
 
         // Properties are written this way for serialization purposes.
 
+        [DataMember(Order = 0)]
+        private DateTime _created;
+        public DateTime Created
+        {
+            get { return _created; }
+            set {_created = value; }
+        }
+
+        [DataMember(Order = 1)]
+        private DateTime? _changed;
+        public DateTime? Changed
+        {
+            get { return _changed; }
+            set { _changed = value; }
+        }
+
+        [DataMember(Order = 2)]
         private Guid _testScriptObjectID;
         public Guid TestScriptObjectID
         {
@@ -25,6 +39,7 @@ namespace Quintity.TestFramework.Core
             set { _testScriptObjectID = value; }
         }
 
+        [DataMember(Order = 3)]
         private State _state;
         public State CurrentState
         {
@@ -58,6 +73,7 @@ namespace Quintity.TestFramework.Core
 
         public TestBreakpoint(Guid testScriptObjectId) : this()
         {
+            _created = DateTime.Now;
             _testScriptObjectID = testScriptObjectId;
             _state = State.Enabled;
         }

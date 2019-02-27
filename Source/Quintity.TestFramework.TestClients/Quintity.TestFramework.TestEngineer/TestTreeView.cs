@@ -204,7 +204,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestStep.Click += m_miNewTestStep_Click;
             this.m_miInsertBreakpoint.Click += m_miInsertBreakpoint_Click;
             this.m_miDeleteBreakpoint.Click += m_miDeleteBreakpoint_Click;
-            this.m_miChangeBreakpointState.Click += m_miDisableBreakpoint_Click;
+            this.m_miChangeBreakpointState.Click += m_miChangeBreakpointState_Click;
             this.m_miCut.Click += m_miCut_Click;
             this.m_miCopy.Click += m_miCopy_Click;
             this.m_miPaste.Click += m_miPaste_Click;
@@ -230,9 +230,6 @@ namespace Quintity.TestFramework.TestEngineer
                 var key = m_treeViewImages.Images.Keys[index];
                 var newKey = $"{key}.{overlay}";
                 this.ImageList.Images.Add(newKey, mergeImages(m_treeViewImages.Images[key], overlayImage));
-
-                //ImageList.Images[key].Save($@"c:\temp\images\{key}.bmp");
-                //ImageList.Images[newKey].Save($@"c:\temp\images\{newKey}.png");
             }
         }
 
@@ -545,6 +542,11 @@ namespace Quintity.TestFramework.TestEngineer
             // Remove from parent container
             parentContainer.RemoveTestScriptObject(nodeToRemove.TestScriptObject);
 
+            if (nodeToRemove.HasBreakpoint())
+            {
+                TestBreakpoints.DeleteBreakpoint(nodeToRemove.TestScriptObject);
+            }
+
             // Remove node from tree
             nodeToRemove.Remove();
 
@@ -642,12 +644,15 @@ namespace Quintity.TestFramework.TestEngineer
 
             var newNode = new TestTreeNode(testSuite);
             this.Nodes.Add(newNode);
-            // this.m_nodeMapping.Add(testSuite.SystemID, newNode);
 
+            // Populate tree view with suite nodes.
             var start = DateTime.Now;
             constructNodeTreeFragment(RootNode, testSuite);
             var elapsed = DateTime.Now - start;
             var count = m_nodeMapping.Count;
+
+            // Set breakpoints for newly loaded test suite.
+            setTestBreakpoints();
 
             m_ignoreNodeChanges = false;
 
@@ -658,6 +663,23 @@ namespace Quintity.TestFramework.TestEngineer
             EndUpdate();
 
             return newNode;
+        }
+
+        private void setTestBreakpoints()
+        {
+            var breakpoints = TestBreakpoints.GetBreakpoints();
+
+            foreach (var breakpoint in breakpoints)
+            {
+                var node = FindNode(breakpoint.TestScriptObjectID);
+
+                if (node != null)
+                {
+                    node.TestBreakpoint = breakpoint;
+                    node.UpdateUI();
+                }
+
+            }
         }
 
         public TestSuite GetTestSuite()
@@ -977,8 +999,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (breakpoint != null)
             {
-                breakpoint.CurrentState = breakpoint.CurrentState ==
-                    TestBreakpoint.State.Enabled ? TestBreakpoint.State.Disabled : TestBreakpoint.State.Enabled;
+                TestBreakpoints.ChangeBreakpointState(breakpoint, breakpoint.CurrentState == 
+                    TestBreakpoint.State.Enabled ? TestBreakpoint.State.Disabled : TestBreakpoint.State.Enabled);
             }
         }
 
@@ -2793,7 +2815,7 @@ namespace Quintity.TestFramework.TestEngineer
             SelectedNode = AddNewTestStep(SelectedNode);
         }
 
-        private void m_miDisableBreakpoint_Click(object sender, EventArgs e)
+        private void m_miChangeBreakpointState_Click(object sender, EventArgs e)
         {
             ToggleBreakpointState(SelectedNode);
         }

@@ -86,6 +86,7 @@
     <Compile Include="Support\ITestWait.cs" />
     <Compile Include="Support\SystemClock.cs" />
     <Compile Include="Support\TestWait.cs" />
+    <Compile Include="TestBreakPointArgs.cs" />
     <Compile Include="TestBreakpoints.cs" />
     <Compile Include="TestCaseResultComposite.cs" />
     <Compile Include="TestProcessorBeginExecutionArgs.cs" />

@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.IO;
 
 namespace Quintity.TestFramework.Core
 {
-    public class TestBreakPointArgs
-    {
-    }
-
     public static class TestBreakpoints
     {
+        [DataMember]
+        private static List<TestBreakpoint> _breakpoints;
         private static ManualResetEvent ResetEvent = new ManualResetEvent(false);
-        private static List<TestBreakpoint> _breakPoints;
+
         private static TestBreakpoint _currentBreakpoint = null;
         public static TestBreakpoint CurrentBreakpoint
         { get { return _currentBreakpoint; } }
 
         public static bool StepOverMode { get; set; }
+
+        /// <summary>
+        /// Specifies the file where the breakpoint collection is written to
+        /// and read from.
+        /// </summary>
+        public static string SerializationFile { get; set; }
 
         #region Class events
 
@@ -69,15 +73,12 @@ namespace Quintity.TestFramework.Core
         /// <param name="testScriptObject">Test script object</param>
         public static TestBreakpoint InsertBreakpoint(TestScriptObject testScriptObject)
         {
-            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
-
-            if (_breakPoints is null)
-            {
-                _breakPoints = new List<TestBreakpoint>();
-            }
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
 
             var breakpoint = new TestBreakpoint(testScriptObject);
-            _breakPoints.Add(breakpoint);
+            _breakpoints.Add(breakpoint);
+
+            WriteToFile();
 
             FireTestBreakpointInsertedEvent(breakpoint, new TestBreakPointArgs());
 
@@ -90,11 +91,21 @@ namespace Quintity.TestFramework.Core
         /// <param name="testScriptObject">Test script object</param>
         public static void DeleteBreakpoint(TestScriptObject testScriptObject)
         {
-            var breakpoint = _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObject.SystemID));
+            var breakpoint = _breakpoints.Find(x => x.TestScriptObjectID.Equals(testScriptObject.SystemID));
 
             if (null != breakpoint)
             {
                 DeleteBreakpoint(breakpoint);
+            }
+        }
+
+        public static void DeleteBreakpoint(TestBreakpoint breakpoint)
+        {
+            if (breakpoint != null)
+            {
+                _breakpoints.Remove(breakpoint);
+                FireTestBreakpointDeletedEvent(breakpoint, new TestBreakPointArgs());
+                WriteToFile();
             }
         }
 
@@ -106,22 +117,18 @@ namespace Quintity.TestFramework.Core
         {
             foreach (var breakpoint in breakpoints)
             {
-                DeleteBreakpoint(breakpoint);
-            }
-        }
-
-        public static void DeleteBreakpoint(TestBreakpoint breakpoint)
-        {
-            if (breakpoint != null)
-            {
-                _breakPoints.Remove(breakpoint);
+                _breakpoints.Remove(breakpoint);
                 FireTestBreakpointDeletedEvent(breakpoint, new TestBreakPointArgs());
             }
+
+            WriteToFile();
         }
 
         public static void ChangeBreakpointState(TestBreakpoint breakpoint, TestBreakpoint.State newState)
         {
             breakpoint.CurrentState = newState;
+            breakpoint.Changed = DateTime.Now;
+            WriteToFile();
         }
 
         public static void ChangeBreakpointStates(List<TestBreakpoint> breakpoints, TestBreakpoint.State newState)
@@ -129,7 +136,10 @@ namespace Quintity.TestFramework.Core
             foreach (var breakpoint in breakpoints)
             {
                 breakpoint.CurrentState = newState;
+                breakpoint.Changed = DateTime.Now;
             }
+
+            WriteToFile();
         }
 
         /// <summary>
@@ -139,9 +149,9 @@ namespace Quintity.TestFramework.Core
         /// <returns>true if set, otherwise false.</returns>
         public static bool HasBreakpoint(TestScriptObject testScriptObject)
         {
-            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
 
-            return _breakPoints is null ? false : _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObject.SystemID)) is null ? false : true;
+            return _breakpoints is null ? false : _breakpoints.Find(x => x.TestScriptObjectID.Equals(testScriptObject.SystemID)) is null ? false : true;
         }
 
         /// <summary>
@@ -151,10 +161,10 @@ namespace Quintity.TestFramework.Core
         /// <returns>true if set, otherwise false.</returns>
         public static bool HasEnableBreakpoint(TestScriptObject testScriptObject)
         {
-            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
 
-            return _breakPoints is null ? false :
-                _breakPoints.Find(x => (x.TestScriptObjectID.Equals(testScriptObject.SystemID) &&
+            return _breakpoints is null ? false :
+                _breakpoints.Find(x => (x.TestScriptObjectID.Equals(testScriptObject.SystemID) &&
                     x.CurrentState == TestBreakpoint.State.Enabled)) is null ? false : true;
         }
 
@@ -170,9 +180,16 @@ namespace Quintity.TestFramework.Core
         /// <returns>The associated TestScriptObject or null if no associated breakpoint</returns>
         public static TestBreakpoint GetBreakpoint(Guid testScriptObjectId)
         {
-            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
 
-            return _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
+            return _breakpoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
+        }
+
+        public static List<TestBreakpoint> GetBreakpoints()
+        {
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
+
+            return _breakpoints;
         }
 
         /// <summary>
@@ -186,9 +203,9 @@ namespace Quintity.TestFramework.Core
 
         public static void EnterBreakpoint(Guid testScriptObjectId)
         {
-            _breakPoints = _breakPoints ?? new List<TestBreakpoint>();
+            _breakpoints = _breakpoints ?? new List<TestBreakpoint>();
 
-            var testBreakpoint = _breakPoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
+            var testBreakpoint = _breakpoints.Find(x => x.TestScriptObjectID.Equals(testScriptObjectId));
 
             if (testBreakpoint != null)
             {
@@ -227,6 +244,57 @@ namespace Quintity.TestFramework.Core
             FireTestBreakpointExitEvent(_currentBreakpoint, new TestBreakPointArgs());
 
             _currentBreakpoint = null;
+        }
+
+        private static void WriteToFile()
+        {
+            if (!string.IsNullOrEmpty(SerializationFile))
+            {
+                DataContractSerializer serializer = new DataContractSerializer(typeof(List<TestBreakpoint>));
+
+                var settings = new XmlWriterSettings() { Indent = true };
+
+                using (var writer = XmlWriter.Create(SerializationFile, settings))
+                {
+                    serializer.WriteObject(writer, _breakpoints);
+                }
+            }
+        }
+
+        public static List<TestBreakpoint> ReadFromFile()
+        {
+            FileStream reader = null;
+            List<TestBreakpoint> breakpoints = new List<TestBreakpoint>();
+
+            if (!string.IsNullOrEmpty(SerializationFile))
+            {
+                try
+                {
+                    // Create DataContractSerializer.
+                    DataContractSerializer serializer =
+                        new System.Runtime.Serialization.DataContractSerializer(typeof(List<TestBreakpoint>));
+
+                    // Create a file stream to read into.
+                    reader = new FileStream(SerializationFile, FileMode.Open, FileAccess.Read);
+
+                    // Read into object.
+                    _breakpoints = serializer.ReadObject(reader) as List<TestBreakpoint>;
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (reader != null)
+                    {
+                        // Close file.
+                        reader.Close();
+                    }
+                }
+            }
+
+            return breakpoints;
         }
 
         #endregion

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
 using System.Drawing;
+using System.Reflection;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -126,6 +127,14 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Get/set debug file.
+            var executablePath = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            TestBreakpoints.SerializationFile = executablePath.AbsolutePath.Replace(".exe", ".sts");
+
+            if (File.Exists(TestBreakpoints.SerializationFile))
+            {
+                var breakpoints = TestBreakpoints.ReadFromFile();
+            }
             /*
              *          In case current implementation of listener update monitors is not adequate.
              *          
