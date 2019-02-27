@@ -999,7 +999,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (breakpoint != null)
             {
-                TestBreakpoints.ChangeBreakpointState(breakpoint, breakpoint.CurrentState == 
+                TestBreakpoints.ChangeBreakpointState(breakpoint, breakpoint.CurrentState ==
                     TestBreakpoint.State.Enabled ? TestBreakpoint.State.Disabled : TestBreakpoint.State.Enabled);
             }
         }
@@ -1021,7 +1021,11 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void DeleteAllBreakpoints()
         {
-            TestBreakpoints.DeleteBreakpoints(new List<TestBreakpoint>(GetAllBreakpoints()));
+            if (DialogResult.Yes == MessageBox.Show(this, "Do you want to delete all breakpoints?", "Quintity Test Framework",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
+            {
+                TestBreakpoints.DeleteBreakpoints(new List<TestBreakpoint>(GetAllBreakpoints()));
+            }
         }
 
         internal void StepOverBreakPoint()
@@ -2904,8 +2908,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void TestTreeView_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            if (SelectedNode !=null)
-            SelectedNode.UpdateUI();
+            if (SelectedNode != null)
+                SelectedNode.UpdateUI();
 
             var bob = this.m_treeViewImages.Images;
         }
