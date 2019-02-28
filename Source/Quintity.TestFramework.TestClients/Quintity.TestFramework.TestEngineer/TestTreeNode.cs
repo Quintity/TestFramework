@@ -425,16 +425,16 @@ namespace Quintity.TestFramework.TestEngineer
                     }
                 }
 
-                if (HasBreakpoint())
-                {
-                    ImageKey = TestBreakpoint.CurrentState == TestBreakpoint.State.Enabled ?
-                        ImageKey + ".breakpoint.enabled" : ImageKey + ".breakpoint.disabled";
-                }
-
-                SelectedImageKey = ImageKey;
+                
             }
 
+            if (HasBreakpoint())
+            {
+                ImageKey = TestBreakpoint.CurrentState == TestBreakpoint.State.Enabled ?
+                    ImageKey + ".breakpoint.enabled" : ImageKey + ".breakpoint.disabled";
+            }
 
+            SelectedImageKey = ImageKey;
         }
 
         #endregion

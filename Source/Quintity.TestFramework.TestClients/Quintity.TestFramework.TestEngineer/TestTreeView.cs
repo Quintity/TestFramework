@@ -1021,7 +1021,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void DeleteAllBreakpoints()
         {
-            if (DialogResult.Yes == MessageBox.Show(this, "Do you want to delete all breakpoints?", "Quintity Test Framework",
+            if (DialogResult.Yes == MessageBox.Show(this, "Do you want to delete all breakpoints?", "Quintity TestFramework",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2))
             {
                 TestBreakpoints.DeleteBreakpoints(new List<TestBreakpoint>(GetAllBreakpoints()));
