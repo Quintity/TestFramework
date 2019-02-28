@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
@@ -24,6 +25,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void registerRuntimeEvents()
         {
+            TestBreakpoints.OnTestBreakpointEnter += TestBreakpoints_OnTestBreakpointEnter1;
+            TestBreakpoints.OnTestBreakpointExit += TestBreakpoints_OnTestBreakpointExit;
+
             // TestExecutor events
             TestExecutor.OnExecutionBegin += TestExecutor_OnExecutionBegin;
             TestExecutor.OnExecutionComplete += TestExecutor_OnExecutionComplete;
@@ -51,8 +55,49 @@ namespace Quintity.TestFramework.TestEngineer
             TestTrace.OnTestTrace += TestTrace_OnTestTrace;
         }
 
+        private void TestBreakpoints_OnTestBreakpointEnter1(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                var @delegate = new TestBreakpoints.TestBreakpointEnterHandler(onTestBreakpointEnter);
+                BeginInvoke(@delegate, new object[] { testBreakpoint, args });
+            }
+            else
+            {
+                onTestBreakpointEnter(testBreakpoint, args);
+            }
+        }
+
+        private void TestBreakpoints_OnTestBreakpointExit(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                var @delegate = new TestBreakpoints.TestBreakpointExitHandler(onTestBreakPointExit);
+                BeginInvoke(@delegate, new object[] { testBreakpoint, args });
+            }
+            else
+            {
+                onTestBreakPointExit(testBreakpoint, args);
+            }
+        }
+
+        private void onTestBreakpointEnter(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            this.m_executeToolStripButton.Enabled = true;
+            this.m_stepOverButton.Enabled = true;
+        }
+
+        private void onTestBreakPointExit(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
+        {
+            this.m_executeToolStripButton.Enabled = false;
+            this.m_stepOverButton.Enabled = false;
+        }
+
         private void unregisterRuntimeEvents()
         {
+            TestBreakpoints.OnTestBreakpointEnter -= TestBreakpoints_OnTestBreakpointEnter1;
+            TestBreakpoints.OnTestBreakpointExit -= TestBreakpoints_OnTestBreakpointExit;
+
             // TestExecutor events
             TestExecutor.OnExecutionBegin -= TestExecutor_OnExecutionBegin;
             TestExecutor.OnExecutionComplete -= TestExecutor_OnExecutionComplete;
@@ -260,6 +305,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void onBeginningTestExecution(TestExecutor testExecutor, TestExecutionBeginArgs args)
         {
+            _isExecuting = true;
+
             // Start timers
             m_stopWatch = Stopwatch.StartNew();
             m_executionTimer.Start();
@@ -299,6 +346,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void onTestExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
+            _isExecuting = false;
+
             // Stop timers
             m_stopWatch.Stop();
             m_executionTimer.Stop();
@@ -338,11 +387,15 @@ namespace Quintity.TestFramework.TestEngineer
             m_editMenuItem.Enabled = !executing;
             m_helpMenuItem.Enabled = !executing;
             m_toolsMenuItem.Enabled = !executing;
-            m_suiteResetMenuItem.Enabled = !executing;
-            m_suiteExecuteMenuItem.Text = !executing ? "&Execute" : "Stop &Execution";
-            m_executeToolStripButton.Text = !executing ? "Execute" : "Stop";
-            m_executeToolStripButton.Image = !executing ? global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution : global::Quintity.TestFramework.TestEngineer.Properties.Resources.StopExecution;
 
+            m_suiteResetMenuItem.Enabled = !executing;
+            m_suiteExecuteMenuItem.Text = !executing ? "&Execute" : "&Continue";
+            m_suiteStopExecuteMenuItem.Enabled = executing;
+
+            m_executeToolStripButton.Text = !executing ? "Execute" : "Continue";
+            m_executeToolStripButton.Enabled = !executing;
+
+            m_stopToolStripButton.Enabled = executing;
             m_openToolStripButton.Enabled = !executing;
             m_newToolStripButton.Enabled = !executing;
             m_saveToolStripButton.Enabled = !executing;

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
 using System.Drawing;
+using System.Reflection;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -37,6 +38,8 @@ namespace Quintity.TestFramework.TestEngineer
         // Test listeners members
         TestListenersEditorDialog m_listenersEditorDlg;
         private bool _promptListenerReload = false;     // Flag to be used when loaded listeners have been updated.
+
+        private bool _isExecuting = false;
 
         #endregion
 
@@ -124,6 +127,14 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Get/set debug file.
+            var executablePath = new Uri(Assembly.GetExecutingAssembly().CodeBase);
+            TestBreakpoints.SerializationFile = executablePath.AbsolutePath.Replace(".exe", ".sts");
+
+            if (File.Exists(TestBreakpoints.SerializationFile))
+            {
+                var breakpoints = TestBreakpoints.ReadFromFile();
+            }
             /*
              *          In case current implementation of listener update monitors is not adequate.
              *          
@@ -174,6 +185,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_suiteResetMenuItem_Click(object sender, EventArgs e)
         {
+            resetResults();
             resetViewerAndStatusBar();
         }
 
@@ -205,7 +217,7 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_editMenuItem_MouseDown(object sender, MouseEventArgs e)
         {
             m_editUndoMenuItem.Enabled = m_testTreeView.UndoAvailable();
-            m_editRedoMenuItem.Enabled = m_testTreeView.RedoAvaible();
+            m_editRedoMenuItem.Enabled = m_testTreeView.RedoAvailable();
         }
 
         private void m_editUndoMenuItem_Click(object sender, EventArgs e)
@@ -244,15 +256,13 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_executeToolStripButton_Click(object sender, EventArgs e)
         {
-            var btn = sender as ToolStripButton;
-
-            if (btn.Text.Equals("Execute"))
+            if (!_isExecuting)
             {
                 executeTestSuite();
             }
             else
             {
-                stopTestSuite();
+                m_testTreeView.ContinueExecution();
             }
         }
 
@@ -272,6 +282,11 @@ namespace Quintity.TestFramework.TestEngineer
         }
 
         private void m_resetToolStripButton_Click(object sender, EventArgs e)
+        {
+            resetResults();
+        }
+
+        private void resetResults()
         {
             this.m_testTreeView.ResetResults();
             resetViewerAndStatusBar();
@@ -585,7 +600,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
                 else
                 {
-                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments }\" has been specified, " + 
+                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments }\" has been specified, " +
                         "however it was not located in the application configuration file.",
                         "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -827,7 +842,7 @@ namespace Quintity.TestFramework.TestEngineer
                 var testSuite = m_testTreeView.GetTestSuite();
 
                 m_saveFileDialog.Title = "Save Test Suite As";
-                m_saveFileDialog.FileName = string.IsNullOrEmpty(testSuite.FileName) ? string.Empty: $"Copy of {testSuite.Title}";
+                m_saveFileDialog.FileName = string.IsNullOrEmpty(testSuite.FileName) ? string.Empty : $"Copy of {testSuite.Title}";
                 m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
                 m_saveFileDialog.RestoreDirectory = true;
                 m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
@@ -841,7 +856,7 @@ namespace Quintity.TestFramework.TestEngineer
 
                     //saveTestSuite(testSuite);
                     m_testTreeView.RootNode.TestScriptObject = testSuite;
-                    m_testTreeView.RootNode.TestScriptResult = null; 
+                    m_testTreeView.RootNode.TestScriptResult = null;
 
                     // Clean up UI
                     m_testSuiteUri = new Uri(TestProperties.ExpandString(testSuite.FilePath));
@@ -1032,6 +1047,46 @@ namespace Quintity.TestFramework.TestEngineer
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowSplash(false);
+        }
+
+        private void m_stepOverButton_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.StepOverBreakPoint();
+        }
+
+        private void m_stopToolStripButton_Click(object sender, EventArgs e)
+        {
+            stopTestSuite();
+        }
+
+        private void m_suiteStopExecuteMenuItem_Click(object sender, EventArgs e)
+        {
+            stopTestSuite();
+        }
+
+        private void m_suiteStepOverMenuItem_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.StepOverBreakPoint();
+        }
+
+        private void m_suiteDeleteAllBreakpointsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.DeleteAllBreakpoints();
+        }
+
+        private void m_suiteToggleBreakpointMenuItem_Click(object sender, EventArgs e)
+        {
+            this.m_testTreeView.ToggleBreakpoint();
+        }
+
+        private void m_suiteMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            this.m_suiteResetMenuItem.Enabled = this.m_testTreeView.HasTestScriptResults();
+
+            this.m_suiteStepOverMenuItem.Enabled = this.m_testTreeView.IsBreakpointMode();
+
+            this.m_suiteDeleteAllBreakpointsMenuItem.Enabled =
+                this.m_suiteDisableAllBreakpointsMenuItem.Enabled = m_testTreeView.HasBreakpoints();
         }
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)

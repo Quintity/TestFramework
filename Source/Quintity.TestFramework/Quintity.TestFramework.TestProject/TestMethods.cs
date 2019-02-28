@@ -12,9 +12,29 @@ namespace Quintity.TestFramework.TestProject
     public class TestMethods : TestClassBase
     {
         [TestMethod]
-        public TestVerdict ScratchTest()
+        public TestVerdict ScratchTest1()
         {
             return TestVerdict;
         }
+
+        [TestMethod]
+        public TestVerdict SetBreakPoint()
+        {
+            //TestBreakPoints.InsertBreakPoint(new Guid("A9C54F2F-B399-4B0D-9797-0FDAC2C09876"));
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ScratchTest2()
+        {
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ScratchTest3()
+        {
+            return TestVerdict;
+        }
+
     }
 }

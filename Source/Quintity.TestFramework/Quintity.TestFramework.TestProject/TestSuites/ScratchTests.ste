@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <TestSuite status="Active">
   <SystemID>6a84ee6a-7190-4750-83c1-9eee9ac1d3b7</SystemID>
   <UserID />
@@ -61,21 +61,73 @@
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>ScratchTest1</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
           <Iterations>1</Iterations>
           <Description><![CDATA[]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
             <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
-            <TestMethod>DumpProperties</TestMethod>
+            <TestMethod>ScratchTest1</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>81d8be98-3a66-412f-b4ac-d926e3583716</SystemID>
+          <UserID />
+          <Title>Set break point</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>SetBreakPoint</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a9c54f2f-b399-4b0d-9797-0fdac2c09876</SystemID>
+          <UserID />
+          <Title>ScratchTest2</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>ScratchTest2</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>57be67aa-94f2-48a4-9f80-9907c0c425a9</SystemID>
+          <UserID />
+          <Title>ScratchTest3</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>ScratchTest3</TestMethod>
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
+  <FilePath>[TestSuites]\ScratchTests.ste</FilePath>
 </TestSuite>

@@ -236,11 +236,31 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\ToggleAllBreakpoints.bmp" />
+    <None Include="Images\Undo.bmp" />
+    <None Include="Images\StepOver.bmp" />
+    <None Include="Images\Copy.bmp" />
+    <None Include="Images\Cut.bmp" />
+    <None Include="Images\Paste.bmp" />
+    <None Include="Images\Redo.bmp" />
+    <None Include="Images\Exit.png" />
+    <None Include="Images\SaveAs.png" />
+    <None Include="Images\AboutBox.png" />
+    <None Include="Images\ResetResults.bmp" />
+    <None Include="Images\BreakpointEnable.png" />
+    <None Include="Images\BreakpointDisable.bmp" />
+    <None Include="Images\DeleteBreakpoint.png" />
+    <None Include="Images\DisableAllBreakpoints.png" />
+    <None Include="Images\ClearBreakpointGroup.png" />
+    <None Include="Images\Delete.bmp" />
+    <None Include="Images\Rename.bmp" />
+    <Content Include="Images\BreakpointEnable.small.png" />
+    <Content Include="Images\EnableAllBreakpoints.png" />
+    <Content Include="Images\FileNew.png" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />
     <Content Include="Images\QAvatar_small.jpg" />
-    <Content Include="Images\ResetResults.bmp" />
     <None Include="Resources\ResetResults.bmp" />
     <None Include="Resources\StopExecution.bmp" />
     <None Include="Images\FileNew.bmp" />

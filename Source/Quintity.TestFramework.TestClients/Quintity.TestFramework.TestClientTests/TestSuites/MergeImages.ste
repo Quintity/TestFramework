@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>4cbbcce6-0808-4356-bcf3-25a8ee7c04a4</SystemID>
+  <UserID />
+  <Title>Untitled test suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-02-23T06:07:37-08:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>d5c22a04-cb9f-46a8-9d96-1bad2445daa1</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>1617d311-58a0-4e3b-a3d3-0814fe34ce4d</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>c05636c0-1875-4214-ba32-42f395434bb1</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-02-23T06:07:37-08:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>685a8016-a952-4220-8b16-58a54c5193c6</SystemID>
+          <UserID />
+          <Title>MergeGraphics</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>MergeGraphics</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>backgroundFile</DisplayName>
+                <Name>backgroundFile</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestEngineer\Images\FileNew.png</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>overlayFile</DisplayName>
+                <Name>overlayFile</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestEngineer\Images\BreakpointEnable.small.png</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>mergedImageFile</DisplayName>
+                <Name>mergedImageFile</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestOutput]\MergedImage.png</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\MergeImages.ste</FilePath>
+</TestSuite>
