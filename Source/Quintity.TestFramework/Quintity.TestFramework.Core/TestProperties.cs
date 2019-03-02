@@ -20,6 +20,8 @@ namespace Quintity.TestFramework.Core
         public static string TestPropertiesFile
         { get; set; }
 
+        private static readonly string _overrideNotation = "(Test property override)";
+
         #endregion
 
         #region Class properties
@@ -146,27 +148,56 @@ namespace Quintity.TestFramework.Core
 
                 if (property != null)
                 {
-                    property.Value = testPropertyOverride.Value;
-                    property.Description += " (Test property override)";
+                    // Preserve original value and description
+                    property.OverriddenValue = property.Value;
+                    property.OverriddenDescription = property.Description;
+                    property.Overridden = true;
+
+                    // Parse out from value,the new value and possible new description
+                    parseOverrideValue(property, testPropertyOverride);
+                    
                 }
                 else
                 {
+                    // Create new property
                     property = new TestProperty()
                     {
                         Name = testPropertyOverride.Key as string,
-                        Value = testPropertyOverride.Value,
-                        Description = "Test property override",
-                        Active = true
+                        Active = true,
+                        Overridden = true
                     };
+
+                    // Parse out from value,the new value and possible new description
+                    parseOverrideValue(property, testPropertyOverride);
 
                     TestProperties.AddProperty(property);
                 }
             }
         }
 
-        public static bool IsInitialized()
+        /// <summary>
+        /// Parses out and updates passed test property with new value object and possible description from test override entry.
+        /// An override value, if a string, can contain a new test override description (delimited by '|').
+        /// </summary>
+        /// <param name="testProperty"></param>
+        /// <param name="testPropertyOverride"></param>
+        private static void parseOverrideValue(TestProperty testProperty, DictionaryEntry testPropertyOverride)
         {
-            return _testPropertyCollection != null ? true : false;
+            // In case value is not string, some other object.
+            dynamic valueElements = testPropertyOverride.Value;
+
+            // If it is a string, parse out elements.
+            if (testPropertyOverride.Value is string)
+            {
+                // Cast to string and parse on description delimiter.
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+                // First element is always the string value.
+                testProperty.Value = valueElements[0];
+
+                // If second string element, new override description
+                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
+                testProperty.Description = $"{newDescription}";
+            }
         }
 
         public static void AddProperty(TestProperty testProperty)
@@ -415,6 +446,11 @@ namespace Quintity.TestFramework.Core
             Save(filePath, null);
         }
 
+        public static bool HasTestPropertyOverrides()
+        {
+            return true;
+        }
+
         public static void Save(string filePath, List<Type> knownTypes)
         {
             TestAssert.IsNotNull(_testPropertyCollection, "The TestProperties collection must be initialized before use.");
@@ -424,6 +460,9 @@ namespace Quintity.TestFramework.Core
 
             foreach (TestProperty property in _testPropertyCollection)
             {
+                // Since we are saving, removed temporary override notation from description (i.e., no longer an override).
+                property.Description = property.Description.Replace(_overrideNotation, string.Empty).Trim();
+
                 tempCollection.Add(property);
             }
 

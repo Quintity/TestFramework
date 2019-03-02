@@ -2,8 +2,8 @@
 <TestPropertyCollection xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Quintity.TestFramework.Core">
   <TestProperty i:type="TestSystemProperty">
     <Name>TestHome</Name>
-    <Description>Default test home location</Description>
-    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">C:\Quintity TestEngineer 3.5</Value>
+    <Description>Jim's dev environment test home location</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestClientTests </Value>
     <Active>true</Active>
   </TestProperty>
   <TestProperty i:type="TestSystemProperty">
@@ -20,8 +20,8 @@
   </TestProperty>
   <TestProperty i:type="TestSystemProperty">
     <Name>TestAssemblies</Name>
-    <Description>Default test assemblies location</Description>
-    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\TestAssemblies</Value>
+    <Description>Jim's dev environment test assemblies location</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\bin\Debug </Value>
     <Active>true</Active>
   </TestProperty>
   <TestProperty i:type="TestSystemProperty">
@@ -52,6 +52,12 @@
     <Name>TestConfigs</Name>
     <Description>Default test configuration files (e.g., test listener configs, test profile configs, etc.)</Description>
     <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\TestConfigs</Value>
+    <Active>true</Active>
+  </TestProperty>
+  <TestProperty>
+    <Name>Quintity</Name>
+    <Description>Quintity website</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">http://www.quintity.com </Value>
     <Active>true</Active>
   </TestProperty>
 </TestPropertyCollection>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Quintity.TestFramework.Core;
@@ -9,20 +10,22 @@ namespace Quintity.TestFramework.TestEngineer
     {
         #region Data members
 
-        private const int ActiveColumn = 0;
-        private const int NameColumn = 1;
-        private const int TypeColumn = 2;
-        private const int ValueColumn = 3;
-        private const int DescriptionColumn = 4;
+
+        private const int OverriddenColumn = 0;
+        private const int ActiveColumn = 1;
+        private const int NameColumn = 2;
+        private const int TypeColumn = 3;
+        private const int ValueColumn = 4;
+        private const int DescriptionColumn = 5;
 
         private const string UserType = "User";
         private const string SystemType = "System";
 
         private bool _initialLoading = false;
 
-        #pragma warning disable 0414
+#pragma warning disable 0414
         private bool _hasChanged = false;
-        #pragma warning restore 0414
+#pragma warning restore 0414
 
         private bool _addingRow = false;
 
@@ -46,6 +49,7 @@ namespace Quintity.TestFramework.TestEngineer
             try
             {
                 m_testPropertiesDataGridView.SuspendLayout();
+                m_testPropertiesDataGridView.Invalidate();
 
                 // Making copies of actual test property in case user cancels action
                 // the property can be discarded.  If not, the current property contents
@@ -65,7 +69,9 @@ namespace Quintity.TestFramework.TestEngineer
                 }
 
                 // If test properties file not specifed, disable save button.
-                m_saveButton.Enabled = !string.IsNullOrEmpty(TestProperties.TestPropertiesFile);
+                m_saveButton.Enabled = !string.IsNullOrEmpty(TestProperties.TestPropertiesFile) && this._hasChanged;
+
+                setCaption();
             }
             catch
             { }
@@ -73,6 +79,15 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 m_testPropertiesDataGridView.ResumeLayout();
                 _initialLoading = false;
+                m_testPropertiesDataGridView.Update();
+            }
+        }
+
+        private void setCaption()
+        {
+            if (!string.IsNullOrEmpty(TestProperties.TestPropertiesFile))
+            {
+                this.Text += $" - {Path.GetFileName(TestProperties.TestPropertiesFile)}";
             }
         }
 
@@ -85,7 +100,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             if (!_initialLoading && !_addingRow)
             {
-                _hasChanged = true;
+                m_saveButton.Enabled = _hasChanged = true;
 
                 DataGridViewRow row = m_testPropertiesDataGridView.Rows[e.RowIndex];
                 var testProperty = row.Tag as TestProperty;
@@ -120,8 +135,11 @@ namespace Quintity.TestFramework.TestEngineer
                 m_testPropertiesDataGridView.AllowUserToDeleteRows = true;
             }
         }
-
-        private string getFileName()
+        /// <summary>
+        /// Gets new Save As file name via common dialog
+        /// </summary>
+        /// <returns></returns>
+        private string getNewFileName()
         {
             SaveFileDialog m_saveFileDialog = new SaveFileDialog();
 
@@ -136,15 +154,9 @@ namespace Quintity.TestFramework.TestEngineer
             return m_saveFileDialog.FileName;
         }
 
-        private void setTestPropertiesFileName(string fileName)
-        {
-            TestProperties.TestPropertiesFile = fileName;
-            m_saveButton.Enabled = true;
-        }
-
         private void saveAsToFile()
         {
-            string fileName = getFileName();
+            string fileName = getNewFileName();
 
             if (!string.IsNullOrEmpty(fileName))
             {
@@ -154,15 +166,28 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        private void setTestPropertiesFileName(string fileName)
+        {
+            TestProperties.TestPropertiesFile = fileName;
+            m_saveButton.Enabled = true;
+        }
+
         private void saveToFile()
         {
             try
             {
+                // Query to update config file with override values (they become the defaults.
+                var includeOverrides = DialogResult.Yes == MessageBox.Show(this, "Some of the test properties reflect environmental overrides.  " +
+                    "Do you want to update the configuration file to include the override values?", "Quintity TestFramework",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) ? true : false;
+
                 // Collect new properties and assign properties
-                TestProperties.SetTestPropertyCollection(collectTestProperties());
+                TestProperties.SetTestPropertyCollection(collectTestPropertiesFromGrid(includeOverrides));
 
                 // Save properties to fie.
                 TestProperties.Save();
+                setCaption();
+                m_saveButton.Enabled = false;
             }
             catch (TestPropertyEditorException e)
             {
@@ -183,8 +208,6 @@ namespace Quintity.TestFramework.TestEngineer
                 Close();
             }
         }
-
-
 
         private void m_saveAsButton_Click(object sender, EventArgs e)
         {
@@ -283,7 +306,7 @@ namespace Quintity.TestFramework.TestEngineer
             //}
         }
 
-        private TestPropertyCollection collectTestProperties()
+        private TestPropertyCollection collectTestPropertiesFromGrid(bool includeOverrides)
         {
             var testProperties = new TestPropertyCollection();
 
@@ -291,13 +314,15 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 var testProperty = row.Tag as TestProperty;
 
-                if (!string.IsNullOrEmpty(testProperty.Name))
+                if (!testProperty.Overridden || includeOverrides)
                 {
                     testProperties.Add(testProperty);
                 }
-                else
+                else if (testProperty.OverriddenValue != null)
                 {
-                    throw new TestPropertyEditorException(row.Index, NameColumn, "A test property name must be specified.");
+                    testProperty.Value = testProperty.OverriddenValue;
+                    testProperty.Description = testProperty.OverriddenDescription;
+                    testProperties.Add(testProperty);
                 }
             }
 
@@ -459,12 +484,23 @@ namespace Quintity.TestFramework.TestEngineer
                 row.Cells[TypeColumn].Value = UserType;
             }
 
+            row.Cells[OverriddenColumn].Value = testProperty.Overridden ? "*" : string.Empty;
+            row.Cells[OverriddenColumn].ToolTipText = testProperty.Overridden ? "Overridden test property" : string.Empty;
+
             row.Cells[ActiveColumn].Value = testProperty.Active;
             row.Cells[NameColumn].Value = testProperty.Name;
             row.Cells[TypeColumn].ReadOnly = true;
+
             row.Cells[ValueColumn].ValueType = testProperty.Value.GetType();
             row.Cells[ValueColumn].Value = testProperty.Value;
+            row.Cells[ValueColumn].ToolTipText =
+                testProperty.Overridden && testProperty.OverriddenValue != null ?
+                $"Original value: \"{testProperty.OverriddenValue}\"" : (string)testProperty.Value;
+
             row.Cells[DescriptionColumn].Value = testProperty.Description;
+            row.Cells[DescriptionColumn].ToolTipText =
+               testProperty.Overridden && !string.IsNullOrEmpty(testProperty.OverriddenDescription) ?
+               $"Original description: \"{testProperty.OverriddenDescription}\"" : testProperty.Description;
 
             return row;
         }
