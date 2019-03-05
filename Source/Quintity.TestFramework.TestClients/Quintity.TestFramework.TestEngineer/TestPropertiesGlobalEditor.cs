@@ -46,49 +46,13 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void TestPropertiesGlobalEditor_Load(object sender, EventArgs e)
         {
-            try
-            {
-                m_testPropertiesDataGridView.SuspendLayout();
-                m_testPropertiesDataGridView.Invalidate();
-
-                // Making copies of actual test property in case user cancels action
-                // the property can be discarded.  If not, the current property contents
-                // change (forcing update, even after cancel.  Save process only goes
-                // against tagged copy properties.
-                foreach (TestProperty testProperty in TestProperties.TestPropertyCollection)
-                {
-                    // If TestSystemProperty, need to makes some field readonly.
-                    if (testProperty is TestSystemProperty)
-                    {
-                        addTestPropertyRow(new TestSystemProperty(testProperty as TestSystemProperty));
-                    }
-                    else
-                    {
-                        addTestPropertyRow(new TestProperty(testProperty as TestProperty));
-                    }
-                }
-
-                // If test properties file not specifed, disable save button.
-                m_saveButton.Enabled = !string.IsNullOrEmpty(TestProperties.TestPropertiesFile) && this._hasChanged;
-
-                setCaption();
-            }
-            catch
-            { }
-            finally
-            {
-                m_testPropertiesDataGridView.ResumeLayout();
-                _initialLoading = false;
-                m_testPropertiesDataGridView.Update();
-            }
+            loadDataGrid();
         }
 
         private void setCaption()
         {
-            if (!string.IsNullOrEmpty(TestProperties.TestPropertiesFile))
-            {
-                this.Text += $" - {Path.GetFileName(TestProperties.TestPropertiesFile)}";
-            }
+            var fileName = string.IsNullOrEmpty(TestProperties.TestPropertiesFile) ? "Default" : Path.GetFileName(TestProperties.TestPropertiesFile);
+            this.Text = $"Test Properites Editor - {fileName}";
         }
 
         private void TestPropertiesGlobalEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -214,96 +178,9 @@ namespace Quintity.TestFramework.TestEngineer
             saveAsToFile();
         }
 
-        //private void saveAs()
-        //{
-        //    string fileName = getFileName();
-
-        //    if (!string.IsNullOrEmpty(fileName))
-        //    {
-        //        TestProperties.TestPropertiesFile = fileName;
-
-        //        saveToFile();
-        //    }
-        //}
-
-        //private void save()
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(TestProperties.TestPropertiesFile))
-        //        {
-        //            saveAs();
-        //        }
-        //        else
-        //        {
-        //            TestProperties.SetTestPropertyCollection(collectTestProperties());
-        //            this.Close();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        MessageBox.Show(e.Message, "Save Test Properties", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-
-        //}
-
-        //private void saveAs()
-        //{
-        //    try
-        //    {
-        //        SaveFileDialog m_saveFileDialog = new SaveFileDialog();
-
-        //        m_saveFileDialog.Title = "Save Test Properties";
-        //        m_saveFileDialog.InitialDirectory = TestProperties.ExpandPropertyValue(TestProperties.GetPropertyValueAsString("TestProperties"));
-        //        m_saveFileDialog.RestoreDirectory = true;
-        //        m_saveFileDialog.Filter = "Test properties (*.props)|*.props";
-        //        m_saveFileDialog.FilterIndex = 1;
-
-        //        DialogResult result = m_saveFileDialog.ShowDialog();
-
-        //        if (result == DialogResult.OK)
-        //        {
-        //            TestProperties.SetTestPropertyCollection(collectTestProperties());
-        //            TestProperties.TestPropertiesFile = m_saveFileDialog.FileName;
-        //            TestProperties.Save();
-        //        }
-
-        //        this.Close();
-        //    }
-        //    catch (TestPropertyEditorException exp)
-        //    {
-        //        m_testPropertiesDataGridView.CurrentCell = m_testPropertiesDataGridView.Rows[exp.RowIndex].Cells[exp.ColumnIndex];
-
-        //        MessageBox.Show(this, exp.Message,
-        //                    this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-        //        m_testPropertiesDataGridView.Rows[exp.RowIndex].Cells[exp.ColumnIndex].Selected = true;
-        //        m_testPropertiesDataGridView.BeginEdit(false);
-        //    } 
-        //    catch (Exception e)
-        //    {
-        //        MessageBox.Show(e.Message, "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
         private void m_saveButton_Click(object sender, EventArgs e)
         {
             saveToFile();
-            //try
-            //{
-            //    TestProperties.SetTestPropertyCollection(collectTestProperties());
-            //    this.Close();
-            //}
-            //catch (TestPropertyEditorException exp)
-            //{
-            //    m_testPropertiesDataGridView.CurrentCell = m_testPropertiesDataGridView.Rows[exp.RowIndex].Cells[exp.ColumnIndex];
-
-            //    MessageBox.Show(this, exp.Message,
-            //                this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-            //    m_testPropertiesDataGridView.Rows[exp.RowIndex].Cells[exp.ColumnIndex].Selected = true;
-            //    m_testPropertiesDataGridView.BeginEdit(false);
-            //}
         }
 
         private TestPropertyCollection collectTestPropertiesFromGrid(bool includeOverrides)
@@ -331,7 +208,24 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_cancelButton_Click(object sender, EventArgs e)
         {
-            Close();
+            DialogResult dialogResult = DialogResult.No;
+
+            if (string.IsNullOrEmpty(TestProperties.TestPropertiesFile))
+            {
+                dialogResult = MessageBox.Show(this, "The current test properties have not been saved, do you wish to save them to file? " +
+                    "All changes will be lost upon exiting the application.", "Quintity TestFramework",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
+
+                if (dialogResult== DialogResult.Yes)
+                {
+                    saveAsToFile();
+                }
+            }
+
+            if (dialogResult != DialogResult.Cancel)
+            {
+                Close();
+            }
         }
 
         private void m_testPropertiesDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -552,5 +446,155 @@ namespace Quintity.TestFramework.TestEngineer
         }
 
         #endregion
+
+        private void m_newButton_Click(object sender, EventArgs e)
+        {
+            // If has changed, prompt to save changes
+            if (_hasChanged)
+            {
+                var result = MessageBox.Show(this, "The current test properties have changed, do you wish to save them to file?", "Quintity TestFramework",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (TestProperties.TestPropertiesFile is null)
+                    {
+                        saveAsToFile();
+                    }
+                    else
+                    {
+                        saveToFile();
+                    }
+
+                    newTestProperties();
+                }
+                else if (result == DialogResult.No)
+                {
+                    newTestProperties();
+                }
+            }
+            else
+            {
+                newTestProperties();
+            }
+        }
+
+        private void newTestProperties(string filePath = null)
+        {
+            if (filePath is null)
+            {
+                TestProperties.Initialize();
+            }
+            else
+
+            {
+                TestProperties.Initialize(filePath);
+            }
+
+            _initialLoading = true;
+            loadDataGrid();
+            this.m_cancelButton.Text = "Close";
+
+        }
+
+        private void m_openButton_Click(object sender, EventArgs e)
+        {
+            // If has changed, prompt to save changes
+            if (_hasChanged)
+            {
+                var result = MessageBox.Show(this, "The current test properties have changed, do you wish to save them to file?", "Quintity TestFramework",
+                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button3);
+
+                if (result == DialogResult.Yes)
+                {
+                    if (TestProperties.TestPropertiesFile is null)
+                    {
+                        saveAsToFile();
+                    }
+                    else
+                    {
+                        saveToFile();
+                    }
+
+                    openTestProperitesFile();
+                }
+                else if (result == DialogResult.No)
+                {
+                    openTestProperitesFile();
+                }
+            }
+            else
+            {
+                openTestProperitesFile();
+            }
+        }
+
+        private void openTestProperitesFile()
+        {
+            var openFileDialog = new OpenFileDialog();
+
+            try
+            {
+                openFileDialog.Title = "Quintity TestFramework - Load Test Properties";
+                openFileDialog.InitialDirectory = TestProperties.ExpandString("[TestHome]\\TestProperties");
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Filter = "Test properties (*.props)|*.props|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.FileName = null;
+
+                if (DialogResult.OK == openFileDialog.ShowDialog())
+                {
+                    newTestProperties(openFileDialog.FileName);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(this, $"An error has occurred loading file \"{openFileDialog.FileName}\":" +
+                    $"{Environment.NewLine}{Environment.NewLine}{e.Message}{Environment.NewLine}{Environment.NewLine}" +
+                    "Please select another file.", "Quintity TestFramework",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void loadDataGrid()
+        {
+            try
+            {
+                m_testPropertiesDataGridView.SuspendLayout();
+                m_testPropertiesDataGridView.Invalidate();
+
+                m_testPropertiesDataGridView.Rows.Clear();
+
+                // Making copies of actual test property in case user cancels action
+                // the property can be discarded.  If not, the current property contents
+                // change (forcing update, even after cancel.  Save process only goes
+                // against tagged copy properties.
+                foreach (TestProperty testProperty in TestProperties.TestPropertyCollection)
+                {
+                    // If TestSystemProperty, need to makes some field readonly.
+                    if (testProperty is TestSystemProperty)
+                    {
+                        addTestPropertyRow(new TestSystemProperty(testProperty as TestSystemProperty));
+                    }
+                    else
+                    {
+                        addTestPropertyRow(new TestProperty(testProperty as TestProperty));
+                    }
+                }
+
+                // If test properties file not specifed, disable save button.
+                m_saveButton.Enabled = !string.IsNullOrEmpty(TestProperties.TestPropertiesFile) && this._hasChanged;
+
+                setCaption();
+            }
+            catch
+            { }
+            finally
+            {
+                m_testPropertiesDataGridView.ResumeLayout();
+                _initialLoading = false;
+                m_testPropertiesDataGridView.Update();
+            }
+        }
     }
 }

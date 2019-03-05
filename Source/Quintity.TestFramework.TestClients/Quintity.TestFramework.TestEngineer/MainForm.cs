@@ -35,6 +35,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private bool m_updateFilterLabels;
 
+        // Test properties members
+        TestPropertiesGlobalEditor m_testPropertiesGlobalEditor = null;
+
         // Test listeners members
         TestListenersEditorDialog m_listenersEditorDlg;
         private bool _promptListenerReload = false;     // Flag to be used when loaded listeners have been updated.
@@ -63,6 +66,7 @@ namespace Quintity.TestFramework.TestEngineer
             m_executionTimer.Tick += m_executionTimer_Tick;
 
             // Some event handlers
+            TestProperties.OnTestPropertiesFileChangedHandler += TestProperties_OnTestPropertiesFileChangedHandler;
             TestScriptObject.OnTestPropertyChanged += TestScriptObject_OnTestPropertyChanged;
             TestListenersEditorDialog.OnTestListenerFileChanged += TestListenersEditorDialog_OnTestListenerFileChanged;
             m_testTreeView.OnTestTreeNodeAdded += m_testTreeView_OnTestTreeNodeAdded;
@@ -73,6 +77,20 @@ namespace Quintity.TestFramework.TestEngineer
             ShowSplash(true);
 
             m_testTreeView.CachedTestAssemblies = Properties.Settings.Default.TestAssemblies;
+        }
+
+        private void TestProperties_OnTestPropertiesFileChangedHandler(string newFileName)
+        {
+            if (!string.IsNullOrEmpty(newFileName))
+            {
+                m_testPropertiesStatusBarLabel.Text = Path.GetFileName(newFileName);
+                m_testPropertiesStatusBarLabel.ToolTipText = newFileName;
+            }
+            else
+            {
+                m_testPropertiesStatusBarLabel.Text = "Unsaved test properties";
+                m_testPropertiesStatusBarLabel.ToolTipText = "Default test properties";
+            }
         }
 
         void m_listenersEditorDlg_FormClosed(object sender, FormClosedEventArgs e)
@@ -313,9 +331,8 @@ namespace Quintity.TestFramework.TestEngineer
                 if (testProperties != null)
                 {
                     m_testPropertiesUri = testProperties;
-                    m_testPropertiesStatusBarLabel.Text = m_testPropertiesUri.LocalPath;
+                    m_testPropertiesStatusBarLabel.Text = Path.GetFileName(m_testPropertiesUri.LocalPath);
                 }
-
             }
         }
 
@@ -325,11 +342,6 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 Uri testPropertiesUri = loadTestProperties(m_testPropertiesUri.LocalPath);
             }
-        }
-
-        private void m_propertiesStatusBarButton_Click(object sender, EventArgs e)
-        {
-            m_reloadTestPropertiesMenuItem.Enabled = m_testPropertiesUri != null ? true : false;
         }
 
         #endregion
@@ -576,7 +588,7 @@ namespace Quintity.TestFramework.TestEngineer
                 if (testPropertiesUri != null)
                 {
                     m_testPropertiesUri = testPropertiesUri;
-                    m_testPropertiesStatusBarLabel.Text = m_testPropertiesUri.LocalPath;
+                    m_testPropertiesStatusBarLabel.Text = Path.GetFileName(m_testPropertiesUri.LocalPath);
                 }
                 else
                 {
@@ -1026,9 +1038,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_testPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TestPropertiesGlobalEditor editor = new TestPropertiesGlobalEditor();
-            editor.FormClosed += Editor_FormClosed;
-            editor.Show(this);
+            m_testPropertiesGlobalEditor = new TestPropertiesGlobalEditor();
+            m_testPropertiesGlobalEditor.FormClosed += Editor_FormClosed;
+            m_testPropertiesGlobalEditor.Show(this);
             m_testPropertiesToolStripMenuItem.Enabled = false;
         }
 

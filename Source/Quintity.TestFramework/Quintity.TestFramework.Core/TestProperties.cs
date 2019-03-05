@@ -8,19 +8,47 @@ using System.Collections.Generic;
 
 namespace Quintity.TestFramework.Core
 {
-    public class TestProperties
+    public static class TestProperties
     {
         #region Class data members
 
         static private TestPropertyCollection _testPropertyCollection;
-
         public static TestPropertyCollection TestPropertyCollection
         { get { return _testPropertyCollection; } }
 
+        static private string _testPropertiesFile;
         public static string TestPropertiesFile
-        { get; set; }
+        {
+            get { return _testPropertiesFile; }
+            set
+            {
+                _testPropertiesFile = value;
 
-        private static readonly string _overrideNotation = "(Test property override)";
+                FireTestPropertiesFileChangedEvent(_testPropertiesFile);
+            }
+        }
+
+        #endregion
+
+        #region Class events
+
+        // Breakpoint state changed
+        public delegate void TestPropertiesInitializedHandler();
+        public static event TestPropertiesInitializedHandler OnTestPropertiesInitialized;
+
+        private static void FireTestPropertiesInitializedEvent()
+        {
+            OnTestPropertiesInitialized?.Invoke();
+        }
+
+        public delegate void TestPropertiesFileChangedHandler(string newFileName);
+        public static event TestPropertiesFileChangedHandler OnTestPropertiesFileChangedHandler;
+
+        private static void FireTestPropertiesFileChangedEvent(string newFileName)
+        {
+            OnTestPropertiesFileChangedHandler?.Invoke(newFileName);
+        }
+
 
         #endregion
 
@@ -74,6 +102,10 @@ namespace Quintity.TestFramework.Core
             _testPropertyCollection = new TestPropertyCollection();
 
             addSystemProperties();
+
+            TestPropertiesFile = null;
+
+            FireTestPropertiesInitializedEvent();
         }
 
         public static void Initialize(string filePath)
@@ -85,9 +117,9 @@ namespace Quintity.TestFramework.Core
         {
             TestAssert.IsFalse(string.IsNullOrEmpty(filePath), "The file path cannot be a null or empty value.");
 
-            TestPropertiesFile = filePath;
-
             Initialize();
+
+            TestPropertiesFile = filePath;
 
             if (knownTypes == null)
             {
@@ -107,6 +139,8 @@ namespace Quintity.TestFramework.Core
                     AddProperty(property);
                 }
             }
+
+            FireTestPropertiesInitializedEvent();
         }
 
         public static Hashtable GetTestProperityOverrides(string targetEnvironments)
@@ -155,7 +189,7 @@ namespace Quintity.TestFramework.Core
 
                     // Parse out from value,the new value and possible new description
                     parseOverrideValue(property, testPropertyOverride);
-                    
+
                 }
                 else
                 {
@@ -265,6 +299,7 @@ namespace Quintity.TestFramework.Core
         {
             return GetPropertyValueAsTimeSpan(name, new TimeSpan());
         }
+
         public static TimeSpan GetPropertyValueAsTimeSpan(string name, TimeSpan @default)
         {
             var @value = GetPropertyValue(name, @default);
@@ -446,11 +481,6 @@ namespace Quintity.TestFramework.Core
             Save(filePath, null);
         }
 
-        public static bool HasTestPropertyOverrides()
-        {
-            return true;
-        }
-
         public static void Save(string filePath, List<Type> knownTypes)
         {
             TestAssert.IsNotNull(_testPropertyCollection, "The TestProperties collection must be initialized before use.");
@@ -460,9 +490,6 @@ namespace Quintity.TestFramework.Core
 
             foreach (TestProperty property in _testPropertyCollection)
             {
-                // Since we are saving, removed temporary override notation from description (i.e., no longer an override).
-                property.Description = property.Description.Replace(_overrideNotation, string.Empty).Trim();
-
                 tempCollection.Add(property);
             }
 
@@ -474,6 +501,11 @@ namespace Quintity.TestFramework.Core
             }
 
             serializeToFile(tempCollection, knownTypes, filePath);
+        }
+
+        public static bool HasTestPropertyOverrides()
+        {
+            return true;
         }
 
         public static string ExpandString(string source)
@@ -535,6 +567,11 @@ namespace Quintity.TestFramework.Core
             return target;
         }
 
+        new public static string ToString()
+        {
+            return _testPropertyCollection.ToString();
+        }
+
         public static string StripMacro(string source, bool ignoreEscape = false)
         {
             string macro = null;
@@ -566,11 +603,6 @@ namespace Quintity.TestFramework.Core
             }
 
             return macro;
-        }
-
-        new public static string ToString()
-        {
-            return _testPropertyCollection.ToString();
         }
 
         #endregion
