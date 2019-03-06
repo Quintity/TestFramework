@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties1 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
+            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties2 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             this.m_mainMenu = new System.Windows.Forms.MenuStrip();
             this.m_fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_fileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,22 +88,22 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.m_filterToolStripButton = new System.Windows.Forms.Button();
             this.m_tagSelectorLabel = new System.Windows.Forms.Label();
-            this.m_tagComboBox = new Quintity.TestFramework.TestEngineer.CheckedComboBox();
             this.m_samplingRateLabel = new System.Windows.Forms.Label();
             this.m_samplingNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.m_testTreeView = new Quintity.TestFramework.TestEngineer.TestTreeView();
             this.m_treeViewToolStrip = new System.Windows.Forms.ToolStrip();
             this.m_collapseAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_testCasesOnlyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_expandAllToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.m_viewersTabControl = new System.Windows.Forms.TabControl();
             this.m_resultsViewerTabPage = new System.Windows.Forms.TabPage();
-            this.m_resultsViewer = new Quintity.TestFramework.TestEngineer.ResultsViewer();
             this.m_traceViewerTabPage = new System.Windows.Forms.TabPage();
-            this.m_traceViewer = new Quintity.TestFramework.TestEngineer.TraceViewer();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_executionTimer = new System.Windows.Forms.Timer(this.components);
+            this.m_tagComboBox = new Quintity.TestFramework.TestEngineer.CheckedComboBox();
+            this.m_testTreeView = new Quintity.TestFramework.TestEngineer.TestTreeView();
+            this.m_resultsViewer = new Quintity.TestFramework.TestEngineer.ResultsViewer();
+            this.m_traceViewer = new Quintity.TestFramework.TestEngineer.TraceViewer();
             this.m_mainMenu.SuspendLayout();
             this.m_mainToolStrip.SuspendLayout();
             this.m_mainStatusStrip.SuspendLayout();
@@ -552,7 +552,7 @@
             // 
             this.m_testPropertiesStatusBarLabel.AutoSize = false;
             this.m_testPropertiesStatusBarLabel.Name = "m_testPropertiesStatusBarLabel";
-            this.m_testPropertiesStatusBarLabel.Size = new System.Drawing.Size(870, 19);
+            this.m_testPropertiesStatusBarLabel.Size = new System.Drawing.Size(901, 19);
             this.m_testPropertiesStatusBarLabel.Spring = true;
             this.m_testPropertiesStatusBarLabel.Text = "Properties file";
             this.m_testPropertiesStatusBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -737,23 +737,6 @@
             this.m_tagSelectorLabel.Text = "Tag Selector:";
             this.m_tagSelectorLabel.Visible = false;
             // 
-            // m_tagComboBox
-            // 
-            this.m_tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            checkedBoxProperties1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties1;
-            this.m_tagComboBox.DisplayMemberSingleItem = "";
-            this.m_tagComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.m_tagComboBox.Enabled = false;
-            this.m_tagComboBox.FormattingEnabled = true;
-            this.m_tagComboBox.Location = new System.Drawing.Point(573, 2);
-            this.m_tagComboBox.MaxDropDownItems = 20;
-            this.m_tagComboBox.Name = "m_tagComboBox";
-            this.m_tagComboBox.Size = new System.Drawing.Size(160, 21);
-            this.m_tagComboBox.TabIndex = 4;
-            this.m_tagComboBox.Visible = false;
-            this.m_tagComboBox.CheckBoxCheckedChanged += new System.EventHandler(this.m_tagComboBox_CheckBoxCheckedChanged);
-            // 
             // m_samplingRateLabel
             // 
             this.m_samplingRateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -785,26 +768,6 @@
             0});
             this.m_samplingNumericUpDown.Visible = false;
             this.m_samplingNumericUpDown.ValueChanged += new System.EventHandler(this.m_samplingNumericUpDown_ValueChanged);
-            // 
-            // m_testTreeView
-            // 
-            this.m_testTreeView.AllowDrop = true;
-            this.m_testTreeView.CachedTestAssemblies = null;
-            this.m_testTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_testTreeView.FullRowSelect = true;
-            this.m_testTreeView.HideSelection = false;
-            this.m_testTreeView.ImageIndex = 0;
-            this.m_testTreeView.Location = new System.Drawing.Point(0, 25);
-            this.m_testTreeView.Name = "m_testTreeView";
-            this.m_testTreeView.SelectedImageIndex = 0;
-            this.m_testTreeView.SelectedNode = null;
-            this.m_testTreeView.ShowNodeToolTips = true;
-            this.m_testTreeView.Size = new System.Drawing.Size(943, 409);
-            this.m_testTreeView.SuppressExecution = false;
-            this.m_testTreeView.TabIndex = 1;
-            this.m_testTreeView.TestListeners = null;
-            this.m_testTreeView.TestProfile = null;
-            this.m_testTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_testTreeView_AfterSelect);
             // 
             // m_treeViewToolStrip
             // 
@@ -877,17 +840,6 @@
             this.m_resultsViewerTabPage.Text = "Results Viewer";
             this.m_resultsViewerTabPage.UseVisualStyleBackColor = true;
             // 
-            // m_resultsViewer
-            // 
-            this.m_resultsViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.m_resultsViewer.Location = new System.Drawing.Point(3, 3);
-            this.m_resultsViewer.Name = "m_resultsViewer";
-            this.m_resultsViewer.ReadOnly = true;
-            this.m_resultsViewer.Size = new System.Drawing.Size(929, 219);
-            this.m_resultsViewer.TabIndex = 0;
-            this.m_resultsViewer.Text = "";
-            this.m_resultsViewer.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.m_resultsViewer_LinkClicked);
-            // 
             // m_traceViewerTabPage
             // 
             this.m_traceViewerTabPage.Controls.Add(this.m_traceViewer);
@@ -899,6 +851,58 @@
             this.m_traceViewerTabPage.Text = "Trace Output";
             this.m_traceViewerTabPage.UseVisualStyleBackColor = true;
             // 
+            // m_executionTimer
+            // 
+            this.m_executionTimer.Interval = 1000;
+            // 
+            // m_tagComboBox
+            // 
+            this.m_tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            checkedBoxProperties2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties2;
+            this.m_tagComboBox.DisplayMemberSingleItem = "";
+            this.m_tagComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.m_tagComboBox.Enabled = false;
+            this.m_tagComboBox.FormattingEnabled = true;
+            this.m_tagComboBox.Location = new System.Drawing.Point(573, 2);
+            this.m_tagComboBox.MaxDropDownItems = 20;
+            this.m_tagComboBox.Name = "m_tagComboBox";
+            this.m_tagComboBox.Size = new System.Drawing.Size(160, 21);
+            this.m_tagComboBox.TabIndex = 4;
+            this.m_tagComboBox.Visible = false;
+            this.m_tagComboBox.CheckBoxCheckedChanged += new System.EventHandler(this.m_tagComboBox_CheckBoxCheckedChanged);
+            // 
+            // m_testTreeView
+            // 
+            this.m_testTreeView.AllowDrop = true;
+            this.m_testTreeView.CachedTestAssemblies = null;
+            this.m_testTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_testTreeView.FullRowSelect = true;
+            this.m_testTreeView.HideSelection = false;
+            this.m_testTreeView.ImageIndex = 0;
+            this.m_testTreeView.Location = new System.Drawing.Point(0, 25);
+            this.m_testTreeView.Name = "m_testTreeView";
+            this.m_testTreeView.SelectedImageIndex = 0;
+            this.m_testTreeView.SelectedNode = null;
+            this.m_testTreeView.ShowNodeToolTips = true;
+            this.m_testTreeView.Size = new System.Drawing.Size(943, 409);
+            this.m_testTreeView.SuppressExecution = false;
+            this.m_testTreeView.TabIndex = 1;
+            this.m_testTreeView.TestListeners = null;
+            this.m_testTreeView.TestProfile = null;
+            this.m_testTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.m_testTreeView_AfterSelect);
+            // 
+            // m_resultsViewer
+            // 
+            this.m_resultsViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_resultsViewer.Location = new System.Drawing.Point(3, 3);
+            this.m_resultsViewer.Name = "m_resultsViewer";
+            this.m_resultsViewer.ReadOnly = true;
+            this.m_resultsViewer.Size = new System.Drawing.Size(929, 219);
+            this.m_resultsViewer.TabIndex = 0;
+            this.m_resultsViewer.Text = "";
+            this.m_resultsViewer.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.m_resultsViewer_LinkClicked);
+            // 
             // m_traceViewer
             // 
             this.m_traceViewer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -909,10 +913,6 @@
             this.m_traceViewer.TabIndex = 0;
             this.m_traceViewer.Text = "";
             this.m_traceViewer.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.m_traceViewer_LinkClicked);
-            // 
-            // m_executionTimer
-            // 
-            this.m_executionTimer.Interval = 1000;
             // 
             // MainForm
             // 

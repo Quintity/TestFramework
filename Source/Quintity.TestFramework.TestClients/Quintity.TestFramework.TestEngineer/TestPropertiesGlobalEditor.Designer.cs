@@ -149,7 +149,6 @@
             this.m_overriddenColumn.Name = "m_overriddenColumn";
             this.m_overriddenColumn.ReadOnly = true;
             this.m_overriddenColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.m_overriddenColumn.ToolTipText = "Environmentally overridden";
             this.m_overriddenColumn.Width = 16;
             // 
             // m_activeColumn
@@ -268,6 +267,7 @@
             this.Controls.Add(this.m_cancelButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TestPropertiesGlobalEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Test Properties Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestPropertiesGlobalEditor_FormClosing);
             this.Load += new System.EventHandler(this.TestPropertiesGlobalEditor_Load);

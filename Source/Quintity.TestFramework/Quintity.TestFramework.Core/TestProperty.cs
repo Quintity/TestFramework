@@ -36,6 +36,13 @@ namespace Quintity.TestFramework.Core
         { get; set; }
 
         /// <summary>
+        /// Indicates which TestEnvironment contains the override value.
+        /// </summary>
+        [IgnoreDataMember]
+        public string OverrideEnvironment
+        { get; set; }
+
+        /// <summary>
         /// Pre-override value
         /// </summary>
         [IgnoreDataMember]
@@ -77,6 +84,7 @@ namespace Quintity.TestFramework.Core
             Value = testProperty.Value;
             Active = testProperty.Active;
             Overridden = testProperty.Overridden;
+            OverrideEnvironment = testProperty.OverrideEnvironment;
             OverriddenValue = testProperty.OverriddenValue;
             OverriddenDescription = testProperty.OverriddenDescription;
         }

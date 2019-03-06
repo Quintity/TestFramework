@@ -8,6 +8,7 @@ using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
 using System.Drawing;
 using System.Reflection;
+using System.Text;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -74,8 +75,6 @@ namespace Quintity.TestFramework.TestEngineer
 
             registerRuntimeEvents();
 
-            ShowSplash(true);
-
             m_testTreeView.CachedTestAssemblies = Properties.Settings.Default.TestAssemblies;
         }
 
@@ -135,6 +134,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void TestEngineer_Shown(object sender, EventArgs e)
         {
+            ShowSplash(true);
             initializeTestProperties();
             initializeTestListeners();
             initializeTestSuite();
@@ -608,7 +608,12 @@ namespace Quintity.TestFramework.TestEngineer
 
                 if (testPropertyOverrides != null)
                 {
-                    TestProperties.ApplyTestPropertyOverrides(testPropertyOverrides);
+                    var unused = TestProperties.ApplyTestPropertyOverrides(testPropertyOverrides);
+
+                    if (unused.Count > 0)
+                    {
+                        displayUnusedOverridesMessage(unused);
+                    }
                 }
                 else
                 {
@@ -617,6 +622,24 @@ namespace Quintity.TestFramework.TestEngineer
                         "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void displayUnusedOverridesMessage(List<TestPropertyOverride> unusedOverrides)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine();
+
+            foreach(var unusedOverride in unusedOverrides)
+            {
+                sb.AppendLine($"{unusedOverride.Name} ({unusedOverride.Environment})");
+            }
+
+            sb.AppendLine();
+
+            MessageBox.Show(this, 
+                $"The following test property overrides were not applied to the test properties collection:{Environment.NewLine}{sb.ToString()} " +
+                $"In order to be applied the property must already be a member of the current collection.",
+                "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private Uri loadTestProperties(string testPropertiesFile)
@@ -1028,8 +1051,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             SplashDialog splash = new SplashDialog(timer);
             splash.Owner = this;
-            splash.Location = new Point(this.Location.X + this.Width - 3 *
-            splash.Width / 2, this.Location.Y + this.Height - 3 * splash.Height / 2);
+            splash.Location = new Point(Location.X + Width / 2 - splash.Width / 2, Location.Y + Height / 2 - splash.Height / 2) ;
             splash.StartPosition = FormStartPosition.Manual;
             splash.Show();
         }

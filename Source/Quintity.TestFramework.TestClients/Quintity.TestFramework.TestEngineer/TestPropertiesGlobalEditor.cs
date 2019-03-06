@@ -379,7 +379,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
 
             row.Cells[OverriddenColumn].Value = testProperty.Overridden ? "*" : string.Empty;
-            row.Cells[OverriddenColumn].ToolTipText = testProperty.Overridden ? "Overridden test property" : string.Empty;
+            row.Cells[OverriddenColumn].ToolTipText = testProperty.Overridden ? $"Override environment:  {testProperty.OverrideEnvironment}" : string.Empty;
 
             row.Cells[ActiveColumn].Value = testProperty.Active;
             row.Cells[NameColumn].Value = testProperty.Name;

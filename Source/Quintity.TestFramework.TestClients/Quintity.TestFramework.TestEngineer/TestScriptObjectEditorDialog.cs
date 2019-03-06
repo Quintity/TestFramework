@@ -1041,20 +1041,6 @@ namespace Quintity.TestFramework.TestEngineer
             Close();
         }
 
-        /// <summary>
-        /// Default button click event handler.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private void m_defaultBtn_Click(object sender, EventArgs e)
-        //{
-        //    foreach (DataGridViewRow row in m_testParametersGrid.Rows)
-        //    {
-        //        row.Cells[ValueColumn].Value = getParameterDefaultValue((ParameterInfo)(row.Tag), true);
-        //    }
-        //}
-
-
         private ManualResetEvent _executionEvent = null;
 
         /// <summary>

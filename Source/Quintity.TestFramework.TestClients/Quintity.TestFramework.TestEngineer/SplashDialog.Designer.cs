@@ -88,7 +88,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SplashDialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SplashDlg";
             ((System.ComponentModel.ISupportInitialize)(this.m_pbSplash)).EndInit();
             this.ResumeLayout(false);

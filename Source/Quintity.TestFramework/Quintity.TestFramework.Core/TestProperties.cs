@@ -1,13 +1,28 @@
 ﻿using System;
-using System.IO;
-using System.Xml;
-using System.Runtime.Serialization;
-using System.Configuration;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Quintity.TestFramework.Core
 {
+    public class TestPropertyOverride
+    {
+        public string Environment
+        { get; internal set; }
+
+        public string Name
+        { get; internal set; }
+
+        public object Value
+        { get; internal set; }
+
+        public string Description
+        { get; internal set; }
+    }
+
     public static class TestProperties
     {
         #region Class data members
@@ -143,11 +158,12 @@ namespace Quintity.TestFramework.Core
             FireTestPropertiesInitializedEvent();
         }
 
-        public static Hashtable GetTestProperityOverrides(string targetEnvironments)
+        public static List<TestPropertyOverride> GetTestProperityOverrides(string targetEnvironments)
         {
             var environments = targetEnvironments.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Hashtable testPropertyOverrides = new Hashtable();
+            //Hashtable testPropertyOverrides = new Hashtable();
+            var testPropertyOverrides = new List<TestPropertyOverride>();
 
             foreach (string environment in environments)
             {
@@ -157,28 +173,46 @@ namespace Quintity.TestFramework.Core
 
                 if (null != newTestPropertyOverrides)
                 {
-                    testPropertyOverrides = AddToTestPropertyOverrides(testPropertyOverrides, newTestPropertyOverrides);
+                    //testPropertyOverrides = AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
+                    AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
                 }
             }
 
             return testPropertyOverrides;
         }
 
-        public static Hashtable AddToTestPropertyOverrides(Hashtable testPropertyOverrides, Hashtable newTestPropertyOverrides)
+        public static List<TestPropertyOverride> AddToTestPropertyOverrides(
+            string environment, Hashtable newTestPropertyOverrides, List<TestPropertyOverride> testPropertyOverrides)
         {
             foreach (DictionaryEntry newTestPropertyOverride in newTestPropertyOverrides)
             {
-                testPropertyOverrides.Add(newTestPropertyOverride.Key, newTestPropertyOverride.Value);
+                var valueElements = parseOverrideValue2(newTestPropertyOverride);
+
+                var testPropertyOverride = new TestPropertyOverride()
+                {
+                    Environment = environment,
+                    Name = newTestPropertyOverride.Key as string
+                };
+
+                if (valueElements is Array)
+                {
+                    testPropertyOverride.Value = valueElements[0];
+                    testPropertyOverride.Description = valueElements.Length > 1 ? valueElements[1] : null;
+                }
+
+                testPropertyOverrides.Add(testPropertyOverride);
             }
 
             return testPropertyOverrides;
         }
 
-        public static void ApplyTestPropertyOverrides(Hashtable testPropertyOverrides)
+        public static List<TestPropertyOverride> ApplyTestPropertyOverrides(List<TestPropertyOverride> testPropertyOverrides)
         {
-            foreach (DictionaryEntry testPropertyOverride in testPropertyOverrides)
+            List<TestPropertyOverride> unusedOverrides = new List<TestPropertyOverride>();
+
+            foreach (var testPropertyOverride in testPropertyOverrides)
             {
-                var property = TestProperties.GetProperty(testPropertyOverride.Key as string);
+                var property = TestProperties.GetProperty(testPropertyOverride.Name);
 
                 if (property != null)
                 {
@@ -187,26 +221,36 @@ namespace Quintity.TestFramework.Core
                     property.OverriddenDescription = property.Description;
                     property.Overridden = true;
 
-                    // Parse out from value,the new value and possible new description
-                    parseOverrideValue(property, testPropertyOverride);
+                    property.OverrideEnvironment = testPropertyOverride.Environment;
+                    property.Value = testPropertyOverride.Value;
+                    property.Description = testPropertyOverride.Description;
 
                 }
                 else
                 {
-                    // Create new property
-                    property = new TestProperty()
-                    {
-                        Name = testPropertyOverride.Key as string,
-                        Active = true,
-                        Overridden = true
-                    };
-
-                    // Parse out from value,the new value and possible new description
-                    parseOverrideValue(property, testPropertyOverride);
-
-                    TestProperties.AddProperty(property);
+                    unusedOverrides.Add(testPropertyOverride);
                 }
             }
+
+            return unusedOverrides;
+        }
+
+        private static dynamic parseOverrideValue2(DictionaryEntry testPropertyOverride)
+        {
+            // In case value is not string, some other object.
+            dynamic valueElements = testPropertyOverride.Value;
+
+            // If it is a string, parse out elements.
+            if (testPropertyOverride.Value is string)
+            {
+                // Cast to string and parse on description delimiter.
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+
+                // If second string element, new override description
+                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
+            }
+
+            return valueElements;
         }
 
         /// <summary>
