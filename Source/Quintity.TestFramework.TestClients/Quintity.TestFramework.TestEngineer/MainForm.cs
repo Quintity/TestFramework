@@ -579,6 +579,8 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
+        private List<TestPropertyOverride> _testPropertyOverrides = null;
+
         private void initializeTestProperties()
         {
             if (!string.IsNullOrEmpty(Program.TestPropertiesFile))
@@ -604,11 +606,11 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (!string.IsNullOrEmpty(Program.TestEnvironments))
             {
-                var testPropertyOverrides = TestProperties.GetTestProperityOverrides(Program.TestEnvironments);
+                _testPropertyOverrides = TestProperties.GetTestProperityOverrides(Program.TestEnvironments);
 
-                if (testPropertyOverrides != null)
+                if (_testPropertyOverrides != null)
                 {
-                    var unused = TestProperties.ApplyTestPropertyOverrides(testPropertyOverrides);
+                    var unused = TestProperties.ApplyTestPropertyOverrides(_testPropertyOverrides);
 
                     if (unused.Count > 0)
                     {
@@ -1051,7 +1053,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             SplashDialog splash = new SplashDialog(timer);
             splash.Owner = this;
-            splash.Location = new Point(Location.X + Width / 2 - splash.Width / 2, Location.Y + Height / 2 - splash.Height / 2) ;
+            splash.Location = new Point(Location.X + Width / 2 - splash.Width / 2, Location.Y + Height / 2 - splash.Height / 2);
             splash.StartPosition = FormStartPosition.Manual;
             splash.Show();
         }
@@ -1060,8 +1062,11 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_testPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            m_testPropertiesGlobalEditor = new TestPropertiesGlobalEditor();
+            m_testPropertiesGlobalEditor = new TestPropertiesGlobalEditor(_testPropertyOverrides);
             m_testPropertiesGlobalEditor.FormClosed += Editor_FormClosed;
+            m_testPropertiesGlobalEditor.Location = 
+                new Point(Location.X + Width / 2, Location.Y);
+                        m_testPropertiesGlobalEditor.StartPosition = FormStartPosition.Manual;
             m_testPropertiesGlobalEditor.Show(this);
             m_testPropertiesToolStripMenuItem.Enabled = false;
         }

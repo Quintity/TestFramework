@@ -90,6 +90,7 @@
     <Compile Include="TestBreakpoints.cs" />
     <Compile Include="TestCaseResultComposite.cs" />
     <Compile Include="TestProcessorBeginExecutionArgs.cs" />
+    <Compile Include="TestPropertyOverride.cs" />
     <Compile Include="TestScriptResultComposite.cs" />
     <Compile Include="TestScriptResultContainerComposite.cs" />
     <Compile Include="TestStepResultComposite.cs" />

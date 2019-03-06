@@ -29,17 +29,17 @@ namespace Quintity.TestFramework.Core
         { get; set; }
 
         /// <summary>
+        /// Test override values.
+        /// </summary>
+        [IgnoreDataMember]
+        public TestPropertyOverride TestPropertyOverride
+        { get; set; }
+
+        /// <summary>
         /// Indicates where the value has been overridden by and environmental setting.
         /// </summary>
         [IgnoreDataMember]
         public bool Overridden
-        { get; set; }
-
-        /// <summary>
-        /// Indicates which TestEnvironment contains the override value.
-        /// </summary>
-        [IgnoreDataMember]
-        public string OverrideEnvironment
         { get; set; }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace Quintity.TestFramework.Core
             Value = testProperty.Value;
             Active = testProperty.Active;
             Overridden = testProperty.Overridden;
-            OverrideEnvironment = testProperty.OverrideEnvironment;
             OverriddenValue = testProperty.OverriddenValue;
             OverriddenDescription = testProperty.OverriddenDescription;
+            TestPropertyOverride = testProperty.TestPropertyOverride;
         }
 
         #endregion
@@ -98,6 +98,8 @@ namespace Quintity.TestFramework.Core
             string format = "Name:{0}\r\n Description:  {1}\r\n Value:  {2}\r\n Active:  {3}";
             return string.Format(format, Name, Description, Value, Active);
         }
+
+        public bool HasOverride() => TestPropertyOverride is null ? false : true;
 
         #endregion
     }

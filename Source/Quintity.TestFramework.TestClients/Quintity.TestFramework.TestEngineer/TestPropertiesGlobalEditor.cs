@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,6 +24,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private bool _initialLoading = false;
 
+        private List<TestPropertyOverride> _testPropertyOverrides = null;
+
 #pragma warning disable 0414
         private bool _hasChanged = false;
 #pragma warning restore 0414
@@ -33,9 +36,10 @@ namespace Quintity.TestFramework.TestEngineer
 
         #region Constructor
 
-        public TestPropertiesGlobalEditor()
+        public TestPropertiesGlobalEditor(List<TestPropertyOverride> testPropertyOverrides)
         {
             _initialLoading = true;
+            _testPropertyOverrides = testPropertyOverrides;
 
             InitializeComponent();
         }
@@ -47,6 +51,8 @@ namespace Quintity.TestFramework.TestEngineer
         private void TestPropertiesGlobalEditor_Load(object sender, EventArgs e)
         {
             loadDataGrid();
+
+            m_applyOverridesChk.Enabled = m_applyOverridesChk.Checked = TestProperties.HasTestPropertyOverrides();
         }
 
         private void setCaption()
@@ -166,10 +172,6 @@ namespace Quintity.TestFramework.TestEngineer
             catch (Exception e)
             {
                 MessageBox.Show(this, e.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Close();
             }
         }
 
@@ -379,7 +381,8 @@ namespace Quintity.TestFramework.TestEngineer
             }
 
             row.Cells[OverriddenColumn].Value = testProperty.Overridden ? "*" : string.Empty;
-            row.Cells[OverriddenColumn].ToolTipText = testProperty.Overridden ? $"Override environment:  {testProperty.OverrideEnvironment}" : string.Empty;
+            row.Cells[OverriddenColumn].ToolTipText =
+                testProperty.Overridden ? $"Environmental override:  {testProperty.TestPropertyOverride.Environment}" : string.Empty;
 
             row.Cells[ActiveColumn].Value = testProperty.Active;
             row.Cells[NameColumn].Value = testProperty.Name;
@@ -491,8 +494,11 @@ namespace Quintity.TestFramework.TestEngineer
                 TestProperties.Initialize(filePath);
             }
 
+            TestProperties.ApplyTestPropertyOverrides(_testPropertyOverrides);
+
             _initialLoading = true;
             loadDataGrid();
+
             this.m_cancelButton.Text = "Close";
 
         }
@@ -594,6 +600,20 @@ namespace Quintity.TestFramework.TestEngineer
                 m_testPropertiesDataGridView.ResumeLayout();
                 _initialLoading = false;
                 m_testPropertiesDataGridView.Update();
+            }
+        }
+
+        private void m_applyOverridesChk_Click(object sender, EventArgs e)
+        {
+            if (((CheckBox)sender).Checked)
+            {
+                TestProperties.ReapplyTestPropertyOverrides();
+                loadDataGrid();
+            }
+            else
+            {
+                TestProperties.RemoveTestPropertyOverrides();
+                loadDataGrid();
             }
         }
     }

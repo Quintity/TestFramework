@@ -8,21 +8,6 @@ using System.Xml;
 
 namespace Quintity.TestFramework.Core
 {
-    public class TestPropertyOverride
-    {
-        public string Environment
-        { get; internal set; }
-
-        public string Name
-        { get; internal set; }
-
-        public object Value
-        { get; internal set; }
-
-        public string Description
-        { get; internal set; }
-    }
-
     public static class TestProperties
     {
         #region Class data members
@@ -221,10 +206,12 @@ namespace Quintity.TestFramework.Core
                     property.OverriddenDescription = property.Description;
                     property.Overridden = true;
 
-                    property.OverrideEnvironment = testPropertyOverride.Environment;
+                    // Capture test property override
+                    property.TestPropertyOverride = testPropertyOverride;
+
+                    // Set property members to overridden values.
                     property.Value = testPropertyOverride.Value;
                     property.Description = testPropertyOverride.Description;
-
                 }
                 else
                 {
@@ -233,6 +220,36 @@ namespace Quintity.TestFramework.Core
             }
 
             return unusedOverrides;
+        }
+
+        public static void ReapplyTestPropertyOverrides()
+        {
+            var overridden = _testPropertyCollection.FindAll(x => x.TestPropertyOverride != null);
+
+            if (!(overridden is null))
+            {
+                foreach (var testProperty in overridden)
+                {
+                    testProperty.Overridden = true;
+                    testProperty.Value = testProperty.TestPropertyOverride.Value;
+                    testProperty.Description = testProperty.TestPropertyOverride.Description;
+                }
+            }
+        }
+
+        public static void RemoveTestPropertyOverrides()
+        {
+            var overridden = _testPropertyCollection.FindAll(x => x.Overridden == true);
+
+            if (!(overridden is null))
+            {
+                foreach(var testProperty in overridden)
+                {
+                    testProperty.Overridden = false;
+                    testProperty.Value = testProperty.OverriddenValue;
+                    testProperty.Description = testProperty.OverriddenDescription;
+                }
+            }
         }
 
         private static dynamic parseOverrideValue2(DictionaryEntry testPropertyOverride)
@@ -549,7 +566,8 @@ namespace Quintity.TestFramework.Core
 
         public static bool HasTestPropertyOverrides()
         {
-            return true;
+            var overrides = _testPropertyCollection.FindAll(x => x.TestPropertyOverride != null);
+            return overrides != null && overrides.Count > 0 ? true : false;
         }
 
         public static string ExpandString(string source)
