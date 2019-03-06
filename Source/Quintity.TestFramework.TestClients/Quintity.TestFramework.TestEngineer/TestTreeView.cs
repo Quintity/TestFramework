@@ -842,8 +842,6 @@ namespace Quintity.TestFramework.TestEngineer
 
         public void Execute(TestTreeNode testTreeNode)
         {
-            var testPropertyOverrides = getTestProperityOverrides("LocalTest");
-
             try
             {
                 ResetResults(testTreeNode);

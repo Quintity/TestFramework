@@ -51,7 +51,7 @@
   <TestProperty i:type="TestSystemProperty">
     <Name>TestConfigs</Name>
     <Description>Default test configuration files (e.g., test listener configs, test profile configs, etc.)</Description>
-    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\TestConfigs</Value>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\TestConfigss</Value>
     <Active>true</Active>
   </TestProperty>
 </TestPropertyCollection>

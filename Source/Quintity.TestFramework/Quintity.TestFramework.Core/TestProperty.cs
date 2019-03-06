@@ -12,20 +12,48 @@ namespace Quintity.TestFramework.Core
     {
         #region Data members
 
-        [DataMember(Order=0)]
+        [DataMember(Order = 0)]
         public string Name
-        { get; set; }
-
-        [DataMember(Order = 1)]
-        public string Description
         { get; set; }
 
         [DataMember(Order = 2)]
         public object Value
         { get; set; }
 
+        [DataMember(Order = 1)]
+        public string Description
+        { get; set; }
+
         [DataMember(Order = 3)]
         public bool Active
+        { get; set; }
+
+        /// <summary>
+        /// Test override values.
+        /// </summary>
+        [IgnoreDataMember]
+        public TestPropertyOverride TestPropertyOverride
+        { get; set; }
+
+        /// <summary>
+        /// Indicates where the value has been overridden by and environmental setting.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool Overridden
+        { get; set; }
+
+        /// <summary>
+        /// Pre-override value
+        /// </summary>
+        [IgnoreDataMember]
+        public object OverriddenValue
+        { get; set; }
+
+        /// <summary>
+        /// Pre-override description
+        /// </summary>
+        [IgnoreDataMember]
+        public string OverriddenDescription
         { get; set; }
 
         #endregion
@@ -55,6 +83,10 @@ namespace Quintity.TestFramework.Core
             Description = testProperty.Description;
             Value = testProperty.Value;
             Active = testProperty.Active;
+            Overridden = testProperty.Overridden;
+            OverriddenValue = testProperty.OverriddenValue;
+            OverriddenDescription = testProperty.OverriddenDescription;
+            TestPropertyOverride = testProperty.TestPropertyOverride;
         }
 
         #endregion
@@ -66,6 +98,8 @@ namespace Quintity.TestFramework.Core
             string format = "Name:{0}\r\n Description:  {1}\r\n Value:  {2}\r\n Active:  {3}";
             return string.Format(format, Name, Description, Value, Active);
         }
+
+        public bool HasOverride() => TestPropertyOverride is null ? false : true;
 
         #endregion
     }

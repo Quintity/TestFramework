@@ -1,24 +1,54 @@
 ﻿using System;
-using System.IO;
-using System.Xml;
-using System.Runtime.Serialization;
-using System.Configuration;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Quintity.TestFramework.Core
 {
-    public class TestProperties
+    public static class TestProperties
     {
         #region Class data members
 
         static private TestPropertyCollection _testPropertyCollection;
-
         public static TestPropertyCollection TestPropertyCollection
         { get { return _testPropertyCollection; } }
 
+        static private string _testPropertiesFile;
         public static string TestPropertiesFile
-        { get; set; }
+        {
+            get { return _testPropertiesFile; }
+            set
+            {
+                _testPropertiesFile = value;
+
+                FireTestPropertiesFileChangedEvent(_testPropertiesFile);
+            }
+        }
+
+        #endregion
+
+        #region Class events
+
+        // Breakpoint state changed
+        public delegate void TestPropertiesInitializedHandler();
+        public static event TestPropertiesInitializedHandler OnTestPropertiesInitialized;
+
+        private static void FireTestPropertiesInitializedEvent()
+        {
+            OnTestPropertiesInitialized?.Invoke();
+        }
+
+        public delegate void TestPropertiesFileChangedHandler(string newFileName);
+        public static event TestPropertiesFileChangedHandler OnTestPropertiesFileChangedHandler;
+
+        private static void FireTestPropertiesFileChangedEvent(string newFileName)
+        {
+            OnTestPropertiesFileChangedHandler?.Invoke(newFileName);
+        }
+
 
         #endregion
 
@@ -72,6 +102,10 @@ namespace Quintity.TestFramework.Core
             _testPropertyCollection = new TestPropertyCollection();
 
             addSystemProperties();
+
+            TestPropertiesFile = null;
+
+            FireTestPropertiesInitializedEvent();
         }
 
         public static void Initialize(string filePath)
@@ -83,9 +117,9 @@ namespace Quintity.TestFramework.Core
         {
             TestAssert.IsFalse(string.IsNullOrEmpty(filePath), "The file path cannot be a null or empty value.");
 
-            TestPropertiesFile = filePath;
-
             Initialize();
+
+            TestPropertiesFile = filePath;
 
             if (knownTypes == null)
             {
@@ -105,13 +139,16 @@ namespace Quintity.TestFramework.Core
                     AddProperty(property);
                 }
             }
+
+            FireTestPropertiesInitializedEvent();
         }
 
-        public static Hashtable GetTestProperityOverrides(string targetEnvironments)
+        public static List<TestPropertyOverride> GetTestProperityOverrides(string targetEnvironments)
         {
             var environments = targetEnvironments.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Hashtable testPropertyOverrides = new Hashtable();
+            //Hashtable testPropertyOverrides = new Hashtable();
+            var testPropertyOverrides = new List<TestPropertyOverride>();
 
             foreach (string environment in environments)
             {
@@ -121,52 +158,141 @@ namespace Quintity.TestFramework.Core
 
                 if (null != newTestPropertyOverrides)
                 {
-                    testPropertyOverrides = AddToTestPropertyOverrides(testPropertyOverrides, newTestPropertyOverrides);
+                    //testPropertyOverrides = AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
+                    AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
                 }
             }
 
             return testPropertyOverrides;
         }
 
-        public static Hashtable AddToTestPropertyOverrides(Hashtable testPropertyOverrides, Hashtable newTestPropertyOverrides)
+        public static List<TestPropertyOverride> AddToTestPropertyOverrides(
+            string environment, Hashtable newTestPropertyOverrides, List<TestPropertyOverride> testPropertyOverrides)
         {
             foreach (DictionaryEntry newTestPropertyOverride in newTestPropertyOverrides)
             {
-                testPropertyOverrides.Add(newTestPropertyOverride.Key, newTestPropertyOverride.Value);
+                var valueElements = parseOverrideValue2(newTestPropertyOverride);
+
+                var testPropertyOverride = new TestPropertyOverride()
+                {
+                    Environment = environment,
+                    Name = newTestPropertyOverride.Key as string
+                };
+
+                if (valueElements is Array)
+                {
+                    testPropertyOverride.Value = valueElements[0];
+                    testPropertyOverride.Description = valueElements.Length > 1 ? valueElements[1] : null;
+                }
+
+                testPropertyOverrides.Add(testPropertyOverride);
             }
 
             return testPropertyOverrides;
         }
 
-        public static void ApplyTestPropertyOverrides(Hashtable testPropertyOverrides)
+        public static List<TestPropertyOverride> ApplyTestPropertyOverrides(List<TestPropertyOverride> testPropertyOverrides)
         {
-            foreach (DictionaryEntry testPropertyOverride in testPropertyOverrides)
+            List<TestPropertyOverride> unusedOverrides = new List<TestPropertyOverride>();
+
+            foreach (var testPropertyOverride in testPropertyOverrides)
             {
-                var property = TestProperties.GetProperty(testPropertyOverride.Key as string);
+                var property = TestProperties.GetProperty(testPropertyOverride.Name);
 
                 if (property != null)
                 {
+                    // Preserve original value and description
+                    property.OverriddenValue = property.Value;
+                    property.OverriddenDescription = property.Description;
+                    property.Overridden = true;
+
+                    // Capture test property override
+                    property.TestPropertyOverride = testPropertyOverride;
+
+                    // Set property members to overridden values.
                     property.Value = testPropertyOverride.Value;
-                    property.Description += " (Test property override)";
+                    property.Description = testPropertyOverride.Description;
                 }
                 else
                 {
-                    property = new TestProperty()
-                    {
-                        Name = testPropertyOverride.Key as string,
-                        Value = testPropertyOverride.Value,
-                        Description = "Test property override",
-                        Active = true
-                    };
+                    unusedOverrides.Add(testPropertyOverride);
+                }
+            }
 
-                    TestProperties.AddProperty(property);
+            return unusedOverrides;
+        }
+
+        public static void ReapplyTestPropertyOverrides()
+        {
+            var overridden = _testPropertyCollection.FindAll(x => x.TestPropertyOverride != null);
+
+            if (!(overridden is null))
+            {
+                foreach (var testProperty in overridden)
+                {
+                    testProperty.Overridden = true;
+                    testProperty.Value = testProperty.TestPropertyOverride.Value;
+                    testProperty.Description = testProperty.TestPropertyOverride.Description;
                 }
             }
         }
 
-        public static bool IsInitialized()
+        public static void RemoveTestPropertyOverrides()
         {
-            return _testPropertyCollection != null ? true : false;
+            var overridden = _testPropertyCollection.FindAll(x => x.Overridden == true);
+
+            if (!(overridden is null))
+            {
+                foreach(var testProperty in overridden)
+                {
+                    testProperty.Overridden = false;
+                    testProperty.Value = testProperty.OverriddenValue;
+                    testProperty.Description = testProperty.OverriddenDescription;
+                }
+            }
+        }
+
+        private static dynamic parseOverrideValue2(DictionaryEntry testPropertyOverride)
+        {
+            // In case value is not string, some other object.
+            dynamic valueElements = testPropertyOverride.Value;
+
+            // If it is a string, parse out elements.
+            if (testPropertyOverride.Value is string)
+            {
+                // Cast to string and parse on description delimiter.
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+
+                // If second string element, new override description
+                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
+            }
+
+            return valueElements;
+        }
+
+        /// <summary>
+        /// Parses out and updates passed test property with new value object and possible description from test override entry.
+        /// An override value, if a string, can contain a new test override description (delimited by '|').
+        /// </summary>
+        /// <param name="testProperty"></param>
+        /// <param name="testPropertyOverride"></param>
+        private static void parseOverrideValue(TestProperty testProperty, DictionaryEntry testPropertyOverride)
+        {
+            // In case value is not string, some other object.
+            dynamic valueElements = testPropertyOverride.Value;
+
+            // If it is a string, parse out elements.
+            if (testPropertyOverride.Value is string)
+            {
+                // Cast to string and parse on description delimiter.
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+                // First element is always the string value.
+                testProperty.Value = valueElements[0];
+
+                // If second string element, new override description
+                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
+                testProperty.Description = $"{newDescription}";
+            }
         }
 
         public static void AddProperty(TestProperty testProperty)
@@ -234,6 +360,7 @@ namespace Quintity.TestFramework.Core
         {
             return GetPropertyValueAsTimeSpan(name, new TimeSpan());
         }
+
         public static TimeSpan GetPropertyValueAsTimeSpan(string name, TimeSpan @default)
         {
             var @value = GetPropertyValue(name, @default);
@@ -437,6 +564,12 @@ namespace Quintity.TestFramework.Core
             serializeToFile(tempCollection, knownTypes, filePath);
         }
 
+        public static bool HasTestPropertyOverrides()
+        {
+            var overrides = _testPropertyCollection.FindAll(x => x.TestPropertyOverride != null);
+            return overrides != null && overrides.Count > 0 ? true : false;
+        }
+
         public static string ExpandString(string source)
         {
             return ExpandString(source, false);
@@ -496,6 +629,11 @@ namespace Quintity.TestFramework.Core
             return target;
         }
 
+        new public static string ToString()
+        {
+            return _testPropertyCollection.ToString();
+        }
+
         public static string StripMacro(string source, bool ignoreEscape = false)
         {
             string macro = null;
@@ -527,11 +665,6 @@ namespace Quintity.TestFramework.Core
             }
 
             return macro;
-        }
-
-        new public static string ToString()
-        {
-            return _testPropertyCollection.ToString();
         }
 
         #endregion
