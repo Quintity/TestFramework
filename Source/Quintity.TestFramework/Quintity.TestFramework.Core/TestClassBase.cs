@@ -86,6 +86,9 @@ namespace Quintity.TestFramework.Core
             }
         }
 
+        public string TestRunId
+        { get; }
+
         public string TestMessage
         { get; set; }
 

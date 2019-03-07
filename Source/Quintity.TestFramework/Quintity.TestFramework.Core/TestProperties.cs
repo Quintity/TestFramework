@@ -87,6 +87,9 @@ namespace Quintity.TestFramework.Core
         public static TestStep CurrentTestStep
         { get { return GetPropertyValue("CurrentTestStep") as TestStep; } }
 
+        public static string TestRunId
+        { get { return ExpandString(GetPropertyValueAsString("TestRunId")); } }
+
         //public static int VirtualUsers
         //{ get { return GetPropertyValueAsInt("VirtualUsers"); } }
 
@@ -387,6 +390,25 @@ namespace Quintity.TestFramework.Core
             if (@value is int)
             {
                 return (int)@value;
+            }
+            else
+            {
+                return @default;
+            }
+        }
+
+        public static long GetPropertyValueAsLong(string name)
+        {
+            return GetPropertyValueAsInt(name, 0);
+        }
+
+        public static long GetPropertyValueAsLong(string name, int @default)
+        {
+            var @value = GetPropertyValue(name, @default);
+
+            if (@value is long)
+            {
+                return (long)@value;
             }
             else
             {

@@ -63,6 +63,13 @@ namespace Quintity.TestFramework.Core
         [DataMember]
         private TimeSpan _elapsedTime;
 
+        [IgnoreDataMember]
+        public string TestRunId
+        { get { return _testRunId; } }
+
+        [DataMember]
+        private string _testRunId;
+
         #endregion
 
         #region Constructors
@@ -78,6 +85,7 @@ namespace Quintity.TestFramework.Core
             _stopTime = stopTime;
             _elapsedTime = elapsedTime;
             _stateArgs = stateArgs;
+            _testRunId = TestProperties.TestRunId;
         }
 
         #endregion

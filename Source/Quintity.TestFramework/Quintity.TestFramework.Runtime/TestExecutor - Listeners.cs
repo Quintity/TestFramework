@@ -171,6 +171,7 @@ namespace Quintity.TestFramework.Runtime
             TestProperties.RemoveProperty("CurrentTestSuite");
             TestProperties.RemoveProperty("CurrentTestCase");
             TestProperties.RemoveProperty("CurrentTestStep");
+            TestProperties.RemoveProperty("TestRunId");
 
             fireTestExecutionFinalizedEvent();
 

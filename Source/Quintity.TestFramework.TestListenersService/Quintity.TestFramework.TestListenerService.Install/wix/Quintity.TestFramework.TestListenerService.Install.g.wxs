@@ -86,9 +86,19 @@
           </Component>
 
         </Directory>
+
+        <Directory Id="INSTALLDIR.Logs" Name="Logs">
+
+          <Component Id="Component.INSTALLDIR.Logs.EmptyDirectory" Guid="96f03431-cd66-4a3e-958d-e71ff484f730" KeyPath="yes">
+            <CreateFolder />
+            <RemoveFolder Id="INSTALLDIR.Logs" On="uninstall" />
+          </Component>
+
+        </Directory>
       </Directory>
 
       <Component Id="TARGETDIR" Guid="96f03431-cd66-4a3e-958d-e71f5a369b46" KeyPath="yes">
+        <CreateFolder />
         <RemoveFolder Id="TARGETDIR" On="uninstall" />
       </Component>
 
@@ -114,6 +124,7 @@
       <ComponentRef Id="Component.Quintity.TestFramework.TestListenersService.Host.exe.config_1579272792" />
       <ComponentRef Id="Component.Uninstall_TestListenersService" />
       <ComponentRef Id="Component.Quintity_TestLIsteners_Service" />
+      <ComponentRef Id="Component.INSTALLDIR.Logs.EmptyDirectory" />
       <ComponentRef Id="TARGETDIR" />
     </Feature>
 

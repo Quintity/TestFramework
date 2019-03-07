@@ -21,6 +21,8 @@ namespace Quintity.TestFramework.Core
         private string _explanation;
         [DataMember]
         private TimeSpan _elapsedTime;
+        [DataMember]
+        private String _testRunId;
 
         #endregion
 
@@ -46,6 +48,10 @@ namespace Quintity.TestFramework.Core
         public TimeSpan ElapsedTime
         { get { return _elapsedTime; } }
 
+        [IgnoreDataMember]
+        public string TestRunId
+        { get { return _testRunId; } }
+
         #endregion
 
         #region Class constructors
@@ -58,6 +64,7 @@ namespace Quintity.TestFramework.Core
             _terminationSource = terminationSource;
             _explanation = explanation;
             _elapsedTime = elapsedTime;
+            _testRunId = TestProperties.TestRunId;
         }
 
         #endregion

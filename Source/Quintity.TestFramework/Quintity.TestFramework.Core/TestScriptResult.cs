@@ -32,8 +32,11 @@ namespace Quintity.TestFramework.Core
         [DataMember(Order = 5)]
         protected DateTime _endTime;
 
+        [DataMember(Order = 6)]
+        protected string _testRunId;
+
         #endregion
-        
+
         #region Class properties
 
         [IgnoreDataMember]
@@ -64,6 +67,10 @@ namespace Quintity.TestFramework.Core
         public TimeSpan ElapsedTime
         { get { return _endTime - _startTime; } }
 
+        [IgnoreDataMember]
+        public String TestRunId
+        { get { return _testRunId; } }
+
         #endregion
 
         #region Class constructors
@@ -72,6 +79,7 @@ namespace Quintity.TestFramework.Core
             : base()
         {
             _virtualUser = Thread.CurrentThread.Name;
+            _testRunId = TestProperties.GetPropertyValueAsString("TestRunId");
         }
 
         #endregion

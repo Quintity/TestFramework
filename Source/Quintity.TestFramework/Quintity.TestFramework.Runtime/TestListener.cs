@@ -37,7 +37,6 @@ namespace Quintity.TestFramework.Runtime
         public abstract void OnTestSuiteExecutionComplete(TestSuite testSuite, TestSuiteResult testSuiteResult);
         public abstract void OnTestCaseExecutionBegin(TestCase testCase, TestCaseBeginExecutionArgs args);
         public abstract void OnTestCaseExecutionComplete(TestCase testCase, TestCaseResult testCaseResult);
-
         public abstract void OnTestStepExecutionBegin(TestStep testStep, TestStepBeginExecutionArgs args);
         public abstract void OnTestStepExecutionComplete(TestStep testStep, TestStepResult testStepResult);
         public abstract void OnTestCheck(TestCheck testCheck);

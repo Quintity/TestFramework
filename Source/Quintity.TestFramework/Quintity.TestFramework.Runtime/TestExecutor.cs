@@ -130,84 +130,10 @@ namespace Quintity.TestFramework.Runtime
             catch (Exception e)
             {
                 LogEvent.Error(e.Message, e);
+
                 throw;
             }
         }
-
-        /// <summary>
-        /// This is a bit of a hack.  Translates the core TestListenerCollection into a list
-        /// of ListenerService TestListenerDescriptors.  There is probably a better, more elegant
-        /// way to avoid this.
-        /// </summary>
-        /// <param name="testListeners">TestlistenerCollection</param>
-        /// <returns>List of ListenerService test listener d</returns>
-        private List<ListenersService.TestListenerDescriptor> convertToListenerServiceCollection(TestListenerCollection testListeners)
-        {
-            var serviceCollection = new List<ListenersService.TestListenerDescriptor>();
-
-            foreach (TestListenerDescriptor descriptor in testListeners)
-            {
-                serviceCollection.Add(
-                new ListenersService.TestListenerDescriptor()
-                {
-                    Name = descriptor.Name,
-                    Description = descriptor.Description,
-                    Status = descriptor.Status,
-                    OnFailure = descriptor.OnFailure,
-                    Assembly = descriptor.Assembly,
-                    Type = descriptor.Type,
-                    Parameters = descriptor.Parameters
-                }
-                );
-            }
-
-            return serviceCollection;
-        }
-
-        /// <summary>
-        /// Iterates through the test listener collection for active listeners s
-        /// expanding each parameter value for subsequent use.
-        /// </summary>
-        /// <param name="testListeners">The passed in test listener collection.</param>
-        /// <returns>Fixed up collection.</returns>
-        private TestListenerCollection fixupTestListeners(TestListenerCollection testListeners)
-        {
-            var activeListeners = testListeners.FindAll(x => x.Status == Status.Active && x.Parameters != null);
-
-            foreach(var activeListener in activeListeners)
-            {
-                // Create new collection to hold updated values.
-                var newParameters = new Dictionary<string, string>();
-
-                foreach (var parameter in activeListener.Parameters)
-                {
-                    var key = parameter.Key;
-                    var expandedValue = TestProperties.ExpandString(parameter.Value);
-                    newParameters.Add(key, expandedValue);
-                }
-
-                // Replace old collection with fixedup collection.
-                activeListener.Parameters = newParameters;
-            }
-
-            // Return fixed up collection
-            return new TestListenerCollection(activeListeners) ;
-        }
-
-        //private void ListenerClient_OnTestListenersComplete(TestListenerCollection testListeners, TestListenersCompleteArgs args)
-        //{
-        //    _testListenersComplete = true;
-
-        //    if(args.TerminationSource == TerminationReason.ListenerError)
-        //    {
-        //        StopExecution(null, args.TerminationSource, args.Explanation);
-        //    }
-        //    else if (_virtualUserRuntimeState.Count == 0)
-        //    {
-        //        fireTestExecutionFinalizedEvent();
-        //    }
-        //}
-
 
         public void ExecuteTestCase(TestCase testCase, bool suppressExecution)
         {
@@ -264,6 +190,67 @@ namespace Quintity.TestFramework.Runtime
 
         #region Class private methods
 
+        /// <summary>
+        /// This is a bit of a hack.  Translates the core TestListenerCollection into a list
+        /// of ListenerService TestListenerDescriptors.  There is probably a better, more elegant
+        /// way to avoid this.
+        /// </summary>
+        /// <param name="testListeners">TestlistenerCollection</param>
+        /// <returns>List of ListenerService test listener d</returns>
+        private List<ListenersService.TestListenerDescriptor> convertToListenerServiceCollection(TestListenerCollection testListeners)
+        {
+            var serviceCollection = new List<ListenersService.TestListenerDescriptor>();
+
+            foreach (TestListenerDescriptor descriptor in testListeners)
+            {
+                serviceCollection.Add(
+                new ListenersService.TestListenerDescriptor()
+                {
+                    Name = descriptor.Name,
+                    Description = descriptor.Description,
+                    Status = descriptor.Status,
+                    OnFailure = descriptor.OnFailure,
+                    Assembly = descriptor.Assembly,
+                    Type = descriptor.Type,
+                    Parameters = descriptor.Parameters
+                }
+                );
+            }
+
+            return serviceCollection;
+        }
+
+        /// <summary>
+        /// Iterates through the test listener collection for active listeners s
+        /// expanding each parameter value for subsequent use.
+        /// </summary>
+        /// <param name="testListeners">The passed in test listener collection.</param>
+        /// <returns>Fixed up collection.</returns>
+        private TestListenerCollection fixupTestListeners(TestListenerCollection testListeners)
+        {
+            var activeListeners = testListeners.FindAll(x => x.Status == Status.Active && x.Parameters != null);
+
+            foreach (var activeListener in activeListeners)
+            {
+                // Create new collection to hold updated values.
+                var newParameters = new Dictionary<string, string>();
+
+                foreach (var parameter in activeListener.Parameters)
+                {
+                    var key = parameter.Key;
+                    var expandedValue = TestProperties.ExpandString(parameter.Value);
+                    newParameters.Add(key, expandedValue);
+                }
+
+                // Replace old collection with fixedup collection.
+                activeListener.Parameters = newParameters;
+            }
+
+            // Return fixed up collection
+            return new TestListenerCollection(activeListeners);
+        }
+
+
         private ListenerEventsClient getListenerEventsClient()
         {
             NetTcpBinding binding = new NetTcpBinding();
@@ -290,6 +277,9 @@ namespace Quintity.TestFramework.Runtime
         /// <param name="testCases"></param>
         private void executeTestScriptObject(ExecutionParameters executionParameters)
         {
+            // Create test run id and push to test properties.
+            TestProperties.SetPropertyValue("TestRunId", DateTime.Now.Ticks.ToString());
+
             SuppressExecution = executionParameters._suppressExecution;
 
             _initialTestScriptObject = executionParameters._testScriptObject;
