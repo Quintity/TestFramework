@@ -277,8 +277,12 @@ namespace Quintity.TestFramework.Runtime
         /// <param name="testCases"></param>
         private void executeTestScriptObject(ExecutionParameters executionParameters)
         {
-            // Create test run id and push to test properties.
-            TestProperties.SetPropertyValue("TestRunId", DateTime.Now.Ticks.ToString());
+            // Structuring this way as eventually the id or build might be a commmand line item for CI/CD
+            if (TestProperties.GetProperty("TestRunId") == null)
+            {
+                // Not previously set, so create test run id and push to test properties.
+                TestProperties.SetPropertyValue("TestRunId", DateTime.Now.Ticks.ToString());
+            }
 
             SuppressExecution = executionParameters._suppressExecution;
 
