@@ -3,7 +3,7 @@
   <TestProperty i:type="TestSystemProperty">
     <Name>TestHome</Name>
     <Description>Default test home location</Description>
-    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">C:\DevProjects\Quintity\Repos\Quintity.TestFramework.TestListenersService\Quintity.TestFramework.TestListenersService.Test</Value>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestListenersService\Quintity.TestFramework.TestListenersService.Test</Value>
     <Active>true</Active>
   </TestProperty>
   <TestProperty i:type="TestSystemProperty">

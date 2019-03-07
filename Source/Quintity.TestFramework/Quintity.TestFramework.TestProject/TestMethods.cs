@@ -14,6 +14,7 @@ namespace Quintity.TestFramework.TestProject
         [TestMethod]
         public TestVerdict ScratchTest1()
         {
+            var testRunId = TestProperties.GetPropertyValueAsString("TestRunId");
             return TestVerdict;
         }
 

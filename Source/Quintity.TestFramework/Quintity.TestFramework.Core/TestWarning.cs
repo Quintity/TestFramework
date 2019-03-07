@@ -33,11 +33,14 @@ namespace Quintity.TestFramework.Core
         [DataMember(Order = 0)]
         private string _virtualUser;
 
-        [DataMember(Order = 0)]
+        [DataMember(Order = 1)]
         private string _comment;		// Optional comment.
 
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         private string _source;
+
+        [DataMember(Order = 2)]
+        private string _testRunId;
 
         #endregion
 
@@ -54,6 +57,7 @@ namespace Quintity.TestFramework.Core
             _virtualUser = Thread.CurrentThread.Name;
             _comment = comment;
             _source = getSource();
+            _testRunId = TestProperties.TestRunId;
         }
 
         #endregion
@@ -74,6 +78,10 @@ namespace Quintity.TestFramework.Core
         [IgnoreDataMember]
         public string Source
         { get { return _source; } }
+
+        [IgnoreDataMember]
+        public string TestRunId
+        { get { return _testRunId; } }
 
         #endregion properties
 

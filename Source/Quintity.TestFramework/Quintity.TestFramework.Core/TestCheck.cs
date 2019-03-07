@@ -50,6 +50,9 @@ namespace Quintity.TestFramework.Core
         [DataMember(Order = 4)]
         private string _source;
 
+        [DataMember(Order = 5)]
+        private string _testRunId;
+
         #endregion
 
         #region Class constructors
@@ -67,6 +70,7 @@ namespace Quintity.TestFramework.Core
             _verdict = verdict;
             _comment = comment;
             _source = getSource();
+            _testRunId = TestProperties.TestRunId;
         }
 
         #endregion
@@ -112,6 +116,10 @@ namespace Quintity.TestFramework.Core
         [IgnoreDataMember]
         public string Source
         { get { return _source; } }
+
+        [IgnoreDataMember]
+        public string TestRunId
+        { get { return _testRunId; } }
 
         #endregion properties
 
