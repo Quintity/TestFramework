@@ -146,10 +146,15 @@ namespace Quintity.TestFramework.TestEngineer
         {
             try
             {
-                // Query to update config file with override values (they become the defaults.
-                var includeOverrides = DialogResult.Yes == MessageBox.Show(this, "Some of the test properties reflect environmental overrides.  " +
-                    "Do you want to update the configuration file to include the override values?", "Quintity TestFramework",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) ? true : false;
+                bool includeOverrides = false;
+
+                if (TestProperties.HasTestPropertyOverrides())
+                {
+                    // Query to update config file with override values (they become the defaults.
+                    includeOverrides = DialogResult.Yes == MessageBox.Show(this, "Some of the test properties reflect environmental overrides.  " +
+                        "Do you want to update the configuration file to include the override values?", "Quintity TestFramework",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) ? true : false;
+                }
 
                 // Collect new properties and assign properties
                 TestProperties.SetTestPropertyCollection(collectTestPropertiesFromGrid(includeOverrides));

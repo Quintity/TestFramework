@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>15c760fe-32b0-463e-b3e1-71847eb68e7b</SystemID>
+  <UserID />
+  <Title>Master test suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-03-07T11:01:45-08:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>a06bcc81-b573-4eb5-8004-8a47492ea8c6</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>c8adf360-7436-4007-aa1c-47465e3f23d2</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\First Child Suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Second Child Suite.ste</TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\Scratch tests.ste</FilePath>
+</TestSuite>

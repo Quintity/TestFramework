@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>0d18f11f-22ec-4cec-83d0-cb26c6225f23</SystemID>
+  <UserID />
+  <Title>First Child Suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-03-07T12:04:25-08:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>63012a57-9171-4382-86c2-e416806cc60a</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>28165718-dfff-4508-b72e-9061b90dac34</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>cb485d92-7569-4e55-bf2a-b451b9bd0a1b</SystemID>
+      <UserID />
+      <Title>First child suite - First test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-03-07T12:04:25-08:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>79edaa3d-50fd-4c56-badd-255ed65c15fa</SystemID>
+          <UserID />
+          <Title>MyTestMethod</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.ListenerTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.ListenerTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\First Child Suite.ste</FilePath>
+</TestSuite>
