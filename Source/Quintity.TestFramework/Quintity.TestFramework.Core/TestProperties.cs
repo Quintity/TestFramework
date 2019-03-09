@@ -198,27 +198,30 @@ namespace Quintity.TestFramework.Core
         {
             List<TestPropertyOverride> unusedOverrides = new List<TestPropertyOverride>();
 
-            foreach (var testPropertyOverride in testPropertyOverrides)
+            if (!(testPropertyOverrides is null))
             {
-                var property = TestProperties.GetProperty(testPropertyOverride.Name);
-
-                if (property != null)
+                foreach (var testPropertyOverride in testPropertyOverrides)
                 {
-                    // Preserve original value and description
-                    property.OverriddenValue = property.Value;
-                    property.OverriddenDescription = property.Description;
-                    property.Overridden = true;
+                    var property = TestProperties.GetProperty(testPropertyOverride.Name);
 
-                    // Capture test property override
-                    property.TestPropertyOverride = testPropertyOverride;
+                    if (property != null)
+                    {
+                        // Preserve original value and description
+                        property.OverriddenValue = property.Value;
+                        property.OverriddenDescription = property.Description;
+                        property.Overridden = true;
 
-                    // Set property members to overridden values.
-                    property.Value = testPropertyOverride.Value;
-                    property.Description = testPropertyOverride.Description;
-                }
-                else
-                {
-                    unusedOverrides.Add(testPropertyOverride);
+                        // Capture test property override
+                        property.TestPropertyOverride = testPropertyOverride;
+
+                        // Set property members to overridden values.
+                        property.Value = testPropertyOverride.Value;
+                        property.Description = testPropertyOverride.Description;
+                    }
+                    else
+                    {
+                        unusedOverrides.Add(testPropertyOverride);
+                    }
                 }
             }
 

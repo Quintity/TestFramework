@@ -53,7 +53,7 @@ namespace Quintity.TestFramework.Runtime
         DescriptionAttribute("The test listener's type within the test assembly."),
         PropertyOrder(5), ReadOnly(true)]
         // TODO - this may make test listener dialog gag.
-       // [EditorAttribute(typeof(TypeComboEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        //[EditorAttribute(typeof(TypeComboEditor), typeof(System.Drawing.Design.UITypeEditor))]
         [DataMember(Order = 7)]
         public string Type
         { get; set; }
