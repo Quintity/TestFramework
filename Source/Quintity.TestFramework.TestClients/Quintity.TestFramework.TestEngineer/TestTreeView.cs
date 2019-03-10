@@ -564,70 +564,70 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        public void MoveNode(TestTreeNode nodeToMove, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
+        public void MoveNode(TestTreeNode sourceNode, TestTreeNode targetNodeParent, int targetNodeIndex, bool recordHistory = true)
         {
             // Get original parent's container object.
-            TestTreeNode originalParentNode = nodeToMove.Parent;
-            TestScriptObjectContainer originalParentContainer = originalParentNode.TestScriptObjectAsContainer();
-            int oldIndex = originalParentContainer.FindTestScriptObjectIndex(nodeToMove.TestScriptObject);
+            TestTreeNode sourceNodeParent = sourceNode.Parent;
+            TestScriptObjectContainer sourceNodeParentContainer = sourceNodeParent.TestScriptObjectAsContainer();
+            int sourceNodeObjectIndex = sourceNodeParentContainer.FindTestScriptObjectIndex(sourceNode.TestScriptObject);
 
-            // Get parent's container object.
-            TestScriptObjectContainer targetContainer = parentNode.TestScriptObjectAsContainer();
+            // Get target nodes parent's container object.
+            TestScriptObjectContainer targetNodeParentContainer = targetNodeParent.TestScriptObjectAsContainer();
 
             // Get target previous sibling node's container index
-            int newContainerIndex = 0;
+            int newContainerIndex = -1;
 
-            if (nodeIndex != -1)
+            if (targetNodeIndex != -1)
             {
                 // Previous sibling node
-                TestTreeNode siblingNode = parentNode.Nodes[nodeIndex] as TestTreeNode;  // Previous?
+                TestTreeNode siblingNode = targetNodeParent.Nodes[targetNodeIndex] as TestTreeNode;  // Previous?
 
                 // Get siblings container object index, will insert directly after.
                 TestScriptObject siblingObject = siblingNode.TestScriptObject;
 
                 // Remove test script object from original parent (may be same parent).
-                originalParentContainer.RemoveTestScriptObject(nodeToMove.TestScriptObject);
+                sourceNodeParentContainer.RemoveTestScriptObject(sourceNode.TestScriptObject);
 
                 // Determine new index (removed script may preceed in same collection).
-                newContainerIndex = targetContainer.FindTestScriptObjectIndex(siblingObject) + 1;
+                newContainerIndex = targetNodeParentContainer.FindTestScriptObjectIndex(siblingObject) + 1;
 
                 // Remove node from original parent node and reset node index (in case node removed in same collection).
-                parentNode.Nodes.Remove(nodeToMove);
-                nodeIndex = siblingNode.Index + 1;  // Insert after sibling.
+                targetNodeParent.Nodes.Remove(sourceNode);
+                targetNodeIndex = siblingNode.Index + 1;  // Insert after sibling.
             }
             else
             {
                 // Remove test script object from original parent (may be same parent).
-                originalParentContainer.RemoveTestScriptObject(nodeToMove.TestScriptObject);
+                sourceNodeParentContainer.RemoveTestScriptObject(sourceNode.TestScriptObject);
 
                 // Remove node from original parent node
-                parentNode.Nodes.Remove(nodeToMove);
+                targetNodeParent.Nodes.Remove(sourceNode);
 
-                nodeIndex++;
+                targetNodeIndex++;
             }
 
             // Add test script object to container to follow sibling in collection.
-            targetContainer.AddTestScriptObject(nodeToMove.TestScriptObject, newContainerIndex);
+            targetNodeParentContainer.AddTestScriptObject(sourceNode.TestScriptObject, newContainerIndex);
 
             // Add node to move to new parent.
-            parentNode.Nodes.Insert(nodeIndex, nodeToMove);
+            targetNodeParent.Nodes.Insert(targetNodeIndex, sourceNode);
 
             // Update UI for moved node and previous parent
-            markAsChanged(originalParentNode);
-            markAsChanged(nodeToMove);
+            markAsChanged(sourceNodeParent);
+            markAsChanged(sourceNode);
 
-            this.SelectedNode = nodeToMove;
+            this.SelectedNode = sourceNode;
 
             // Create change event with parents container object and index.
             if (recordHistory)
             {
                 // Create old location object
-                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(originalParentContainer, oldIndex);
+                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(sourceNodeParentContainer, sourceNodeObjectIndex);
 
                 // Create new location object
-                TestScriptObjectLocation newLocation = new TestScriptObjectLocation(targetContainer, newContainerIndex);
+                TestScriptObjectLocation newLocation = new TestScriptObjectLocation(targetNodeParentContainer, newContainerIndex);
 
-                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToMove.TestScriptObject, ChangeType.Move, newLocation, oldLocation, nodeToMove));
+                m_changeHistory.RecordEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, newLocation, oldLocation, sourceNode));
             }
         }
 
@@ -1891,7 +1891,7 @@ namespace Quintity.TestFramework.TestEngineer
                 {
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        MoveNode(sourceNode: sourceNode, targetNodeParent: targetNode.Parent, targetNodeIndex: targetNode.Index + 1);
                     }
                     else if (action == ChangeType.Copy)
                     {

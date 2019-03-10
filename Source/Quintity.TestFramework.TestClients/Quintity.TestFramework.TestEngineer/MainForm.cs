@@ -1079,6 +1079,7 @@ namespace Quintity.TestFramework.TestEngineer
         private void testListenersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             m_listenersEditorDlg = new TestListenersEditorDialog(Program.TestListenersFile);
+            m_listenersEditorDlg.Text = "Test Listeners Editor";
             m_listenersEditorDlg.FormClosed += m_listenersEditorDlg_FormClosed;
             m_listenersEditorDlg.ShowDialog(this);
         }

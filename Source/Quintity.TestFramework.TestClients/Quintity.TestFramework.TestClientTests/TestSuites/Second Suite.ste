@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>4f3273ee-a7f2-491b-8093-39916e32d2c7</SystemID>
+  <UserID />
+  <Title>Second Suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-03-10T08:17:12-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>3d9740bd-45f6-4803-a8bc-44bf1e3043bd</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>5e00b151-52a1-4003-957e-4121ac9032b1</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>f11aa738-d095-4dd1-8d53-f5cd90aec0aa</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-03-10T08:17:12-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
+          <SystemID>8fc65c5d-6130-4c7d-82c9-dc85f745bfc9</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly />
+            <TestClass />
+            <TestMethod />
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestClientTests\TestSuites\Second Suite.ste</FilePath>
+</TestSuite>

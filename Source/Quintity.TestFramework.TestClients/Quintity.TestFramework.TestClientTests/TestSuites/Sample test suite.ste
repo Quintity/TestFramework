@@ -46,7 +46,7 @@
     <TestScriptObject type="TestCase" status="Active">
       <SystemID>53c7d49f-f95b-48dd-9d7e-387777037c69</SystemID>
       <UserID />
-      <Title>Untitled test case</Title>
+      <Title>Target node</Title>
       <Author>jmoth</Author>
       <Created>2019-01-31T10:36:38-08:00</Created>
       <FunctionalArea />
