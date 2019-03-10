@@ -53,7 +53,7 @@
     <TestScriptObject type="TestCase" status="Active">
       <SystemID>7b947ce4-c115-4970-a09a-f8628d0b4ed0</SystemID>
       <UserID />
-      <Title>Untitled test case</Title>
+      <Title>Source node</Title>
       <Author>jmoth</Author>
       <Created>2018-06-09T08:12:29-07:00</Created>
       <FunctionalArea />
@@ -92,6 +92,7 @@
       </TestScriptObjects>
     </TestScriptObject>
     <TestScriptObject type="TestSuite">[TestSuites]\Sample test suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestClientTests\TestSuites\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
 </TestSuite>

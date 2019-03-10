@@ -177,7 +177,6 @@
     <Compile Include="TraceViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TypeComboEditor.cs" />
     <EmbeddedResource Include="CheckedComboBox\PopupComboBox.resx">
       <DependentUpon>PopupComboBox.cs</DependentUpon>
     </EmbeddedResource>

@@ -164,7 +164,7 @@
             // m_newBtn
             // 
             this.m_newBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.m_newBtn.Location = new System.Drawing.Point(12, 408);
+            this.m_newBtn.Location = new System.Drawing.Point(418, 408);
             this.m_newBtn.Name = "m_newBtn";
             this.m_newBtn.Size = new System.Drawing.Size(75, 23);
             this.m_newBtn.TabIndex = 5;
@@ -175,7 +175,7 @@
             // m_openBtn
             // 
             this.m_openBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.m_openBtn.Location = new System.Drawing.Point(93, 408);
+            this.m_openBtn.Location = new System.Drawing.Point(499, 408);
             this.m_openBtn.Name = "m_openBtn";
             this.m_openBtn.Size = new System.Drawing.Size(75, 23);
             this.m_openBtn.TabIndex = 6;
@@ -186,7 +186,7 @@
             // m_saveAsBtn
             // 
             this.m_saveAsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.m_saveAsBtn.Location = new System.Drawing.Point(174, 408);
+            this.m_saveAsBtn.Location = new System.Drawing.Point(580, 408);
             this.m_saveAsBtn.Name = "m_saveAsBtn";
             this.m_saveAsBtn.Size = new System.Drawing.Size(75, 23);
             this.m_saveAsBtn.TabIndex = 7;

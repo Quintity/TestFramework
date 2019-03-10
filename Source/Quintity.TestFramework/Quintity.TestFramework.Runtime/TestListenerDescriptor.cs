@@ -52,15 +52,13 @@ namespace Quintity.TestFramework.Runtime
         [CategoryAttribute("Test Listener"), 
         DescriptionAttribute("The test listener's type within the test assembly."),
         PropertyOrder(5), ReadOnly(true)]
-        // TODO - this may make test listener dialog gag.
-        //[EditorAttribute(typeof(TypeComboEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        [EditorAttribute(typeof(TypeComboEditor), typeof(System.Drawing.Design.UITypeEditor))]
         [DataMember(Order = 7)]
         public string Type
         { get; set; }
 
         [DataMember(Order =8)]
-        //TODO:  Need to figure out Wexman piece.
-        //[Editor(typeof(Wexman.Design.GenericDictionaryEditor<string,string>), typeof(System.Drawing.Design.UITypeEditor))]
+        [Editor(typeof(Wexman.Design.GenericDictionaryEditor<string,string>), typeof(System.Drawing.Design.UITypeEditor))]
         public Dictionary<string, string> Parameters
         { get; set; }
 
@@ -78,6 +76,13 @@ namespace Quintity.TestFramework.Runtime
             OnFailure = Core.OnFailure.Stop;
             Status = Core.Status.Inactive;
             Parameters = new Dictionary<string, string>();
+
+            var properties = this.GetType().GetProperties();
+            var bob = properties[6].GetCustomAttributesData();
+            var attribute = properties[6].GetCustomAttributes(true)[1];
+
+            //PropertyInfo prop = obj.GetType().GetProperty(propertyName);
+            //object[] dbFieldAtts = prop.GetCustomAttributes(typeof(DatabaseFieldAttribute), true);
         }
 
         #endregion
