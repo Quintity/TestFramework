@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>b1b01f5a-49b8-4374-86ef-4f30692d075e</SystemID>
+  <SystemID>6fbcb1f3-d94b-4c89-8265-b7ad20215b11</SystemID>
   <UserID />
-  <Title>Sample test suite</Title>
+  <Title>Copy of Sample test suite</Title>
   <Author>jmoth</Author>
   <Created>2019-01-31T10:36:38-08:00</Created>
   <Project />
@@ -11,7 +11,7 @@
   <Description><![CDATA[]]></Description>
   <TestProperties />
   <TestPreprocessor>
-    <SystemID>501c6ca9-4a55-4b6e-abce-2bf7a056ff03</SystemID>
+    <SystemID>f4e58168-d814-4255-bbcc-128f01cee3bf</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -27,7 +27,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>f06ef1a7-4c51-4861-89fa-dee7f0002f8a</SystemID>
+    <SystemID>35c4f7e2-45a7-4274-ac3c-caee01cac2c2</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -43,8 +43,9 @@
   </TestPostprocessor>
   <PostProcess />
   <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\sork.ste</TestScriptObject>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>21db0284-f8f9-4ea7-89dd-093a5bf43ed4</SystemID>
+      <SystemID>f0207932-685a-48f3-a134-e00acefa54b0</SystemID>
       <UserID />
       <Title>Untitled test case</Title>
       <Author>jmoth</Author>
@@ -59,7 +60,7 @@
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>5770b495-b824-46c3-8901-6880e0597b0f</SystemID>
+          <SystemID>eedc3916-41d1-434c-b563-e4ec9f11c93c</SystemID>
           <UserID />
           <Title>Untitled test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
@@ -77,6 +78,7 @@
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\New test case.ste</TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\Sample test suite.ste</FilePath>
+  <FilePath>[TestSuites]\vvcvvv.ste</FilePath>
 </TestSuite>

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>b1b01f5a-49b8-4374-86ef-4f30692d075e</SystemID>
+  <SystemID>d00a0cf7-6c5f-4f3d-9f26-06655f157400</SystemID>
   <UserID />
-  <Title>Sample test suite</Title>
+  <Title>this is a test</Title>
   <Author>jmoth</Author>
   <Created>2019-01-31T10:36:38-08:00</Created>
   <Project />
@@ -11,7 +11,7 @@
   <Description><![CDATA[]]></Description>
   <TestProperties />
   <TestPreprocessor>
-    <SystemID>501c6ca9-4a55-4b6e-abce-2bf7a056ff03</SystemID>
+    <SystemID>86f3262b-b46b-4dd2-b7ef-75301076f621</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -27,7 +27,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>f06ef1a7-4c51-4861-89fa-dee7f0002f8a</SystemID>
+    <SystemID>d2c93eef-1748-4c31-8e33-0315aafc878e</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -44,7 +44,7 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>21db0284-f8f9-4ea7-89dd-093a5bf43ed4</SystemID>
+      <SystemID>8b29ab8f-9fc5-442e-aa1d-389144bb0293</SystemID>
       <UserID />
       <Title>Untitled test case</Title>
       <Author>jmoth</Author>
@@ -58,10 +58,10 @@
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>5770b495-b824-46c3-8901-6880e0597b0f</SystemID>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>6600a6ad-7f90-4863-bd55-340914e32642</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>DumpProperties</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -69,14 +69,14 @@
           <Description><![CDATA[]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>DumpProperties</TestMethod>
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\Sample test suite.ste</FilePath>
+  <FilePath>[TestSuites]\this is a test.ste</FilePath>
 </TestSuite>

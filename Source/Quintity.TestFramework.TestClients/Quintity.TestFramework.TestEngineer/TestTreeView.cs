@@ -165,6 +165,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             InitializeComponent();
 
+            Clipboard.Clear();
+
             m_nodeMapping = new Dictionary<Guid, TestTreeNode>();
 
             registerRuntimeEvents();
@@ -475,7 +477,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
 
                 // Add test script object to container to follow sibling in collection.
-                parentContainer.AddTestScriptObject(testScriptObject, newContainerIndex);
+                parentContainer.InsertTestScriptObject(testScriptObject, newContainerIndex);
 
                 // Add to tree view parent node at node index.
                 parentNode.Nodes.Insert(nodeIndex, newNode);
@@ -564,53 +566,137 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        public void MoveNode(TestTreeNode sourceNode, TestTreeNode targetNodeParent, int targetNodeIndex, bool recordHistory = true)
+        private struct TargetInsertInfo
         {
-            // Get original parent's container object.
-            TestTreeNode sourceNodeParent = sourceNode.Parent;
-            TestScriptObjectContainer sourceNodeParentContainer = sourceNodeParent.TestScriptObjectAsContainer();
-            int sourceNodeObjectIndex = sourceNodeParentContainer.FindTestScriptObjectIndex(sourceNode.TestScriptObject);
+            public TestTreeNode IargetContainerNode;
+            public int InsertIndex;
+        }
 
-            // Get target nodes parent's container object.
-            TestScriptObjectContainer targetNodeParentContainer = targetNodeParent.TestScriptObjectAsContainer();
+        /// <summary>
+        /// Moves the selected "Cut" source object to the target node location.
+        /// </summary>
+        /// <param name="nodeToCopy"></param>
+        /// <param name="targetNode"></param>
+        public void CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            var sourceNodeParent = nodeToCopy.Parent;
+            var sourceParentScriptObject = nodeToCopy.Parent.TestScriptObject as TestScriptObjectContainer;
+            var sourceScriptObject = nodeToCopy.TestScriptObject;
 
-            // Get target previous sibling node's container index
-            int newContainerIndex = -1;
+            // Create copy of node's test script object
+            TestScriptObject testScriptObjectCopy = null;
 
-            if (targetNodeIndex != -1)
+            if (nodeToCopy.IsTestSuite())
             {
-                // Previous sibling node
-                TestTreeNode siblingNode = targetNodeParent.Nodes[targetNodeIndex] as TestTreeNode;  // Previous?
-
-                // Get siblings container object index, will insert directly after.
-                TestScriptObject siblingObject = siblingNode.TestScriptObject;
-
-                // Remove test script object from original parent (may be same parent).
-                sourceNodeParentContainer.RemoveTestScriptObject(sourceNode.TestScriptObject);
-
-                // Determine new index (removed script may preceed in same collection).
-                newContainerIndex = targetNodeParentContainer.FindTestScriptObjectIndex(siblingObject) + 1;
-
-                // Remove node from original parent node and reset node index (in case node removed in same collection).
-                targetNodeParent.Nodes.Remove(sourceNode);
-                targetNodeIndex = siblingNode.Index + 1;  // Insert after sibling.
+                testScriptObjectCopy = new TestSuite(nodeToCopy.TestScriptObject as TestSuite, null, null);
             }
-            else
+            else if (nodeToCopy.IsTestCase())
             {
-                // Remove test script object from original parent (may be same parent).
-                sourceNodeParentContainer.RemoveTestScriptObject(sourceNode.TestScriptObject);
-
-                // Remove node from original parent node
-                targetNodeParent.Nodes.Remove(sourceNode);
-
-                targetNodeIndex++;
+                testScriptObjectCopy = new TestCase(nodeToCopy.TestScriptObject as TestCase, null);
+            }
+            else if (nodeToCopy.IsTestStep())
+            {
+                testScriptObjectCopy = new TestStep(nodeToCopy.TestScriptObject as TestStep, null);
             }
 
-            // Add test script object to container to follow sibling in collection.
-            targetNodeParentContainer.AddTestScriptObject(sourceNode.TestScriptObject, newContainerIndex);
+            // Change the singular item (not it's children if container) to indicate copy.
+            testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
 
-            // Add node to move to new parent.
-            targetNodeParent.Nodes.Insert(targetNodeIndex, sourceNode);
+            // Create new node for test script object.
+            TestTreeNode copyNode = new TestTreeNode(testScriptObjectCopy);
+
+            if (copyNode.IsTestSuite())
+            {
+                if (promptToSaveTestSuite(copyNode, false) == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            // Get new insertion info (based on rules).
+            var targetInsertInfo = GetTargetInsertInfo(copyNode, targetNode);
+
+            // Insert into parent containertree node accordingly
+            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
+
+            // Remove from old test script object container
+            //var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
+
+            // Insert into new test script object target container
+            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
+
+            // Add copied objects children to copyNode;
+            constructNodeTreeFragment(copyNode, testScriptObjectCopy);
+
+            // Update UI for moved node and previous parent
+            markAsChanged(copyNode);
+
+            this.SelectedNode = copyNode;
+
+            // Create change event with parents container object and index.
+            if (recordHistory)
+            {
+                // Create new location object.
+                TestScriptObjectLocation newLocation =
+                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
+
+                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToCopy.TestScriptObject, ChangeType.Add, newLocation, null, nodeToCopy));
+            }
+
+            fireTestTreeNodeAddedEvent(copyNode);
+        }
+
+        private DialogResult promptToSaveTestSuite(TestTreeNode currentNode, bool recordHistory = true)
+        {
+            DialogResult result = DialogResult.OK;
+
+            if (currentNode != null)
+            {
+                m_saveFileDialog.Title = "Save Test Suite As";
+                m_saveFileDialog.InitialDirectory = TestProperties.TestSuites;
+                m_saveFileDialog.RestoreDirectory = true;
+                m_saveFileDialog.Filter = "Test suites (*.ste)|*.ste";
+                m_saveFileDialog.FilterIndex = 1;
+
+                result = m_saveFileDialog.ShowDialog();
+            }
+
+            if (result == DialogResult.OK)
+            {
+                var testSuite = currentNode.TestScriptObjectAsTestSuite();
+                testSuite.FilePath = TestProperties.FixupString(m_saveFileDialog.FileName, "TestSuites");
+                testSuite.Title = Path.GetFileNameWithoutExtension(m_saveFileDialog.FileName);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Moves the selected "Cut" source object to the target node location.
+        /// </summary>
+        /// <param name="sourceNode"></param>
+        /// <param name="targetNode"></param>
+        public void MoveNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            var sourceNodeParent = sourceNode.Parent;
+            var sourceParentScriptObject = sourceNode.Parent.TestScriptObject as TestScriptObjectContainer;
+            var sourceScriptObject = sourceNode.TestScriptObject;
+
+            // Remove from source container node
+            sourceNodeParent.Nodes.Remove(sourceNode);
+            fireTestTreeNodeRemovedEvent(sourceNode);
+
+            // Get new insertion info (based on rules).
+            var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
+
+            // Insert into parent containertree node accordingly
+            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
+
+            // Remove from old test script object container
+            var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
+
+            // Insert into new test script object target container
+            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
 
             // Update UI for moved node and previous parent
             markAsChanged(sourceNodeParent);
@@ -622,13 +708,64 @@ namespace Quintity.TestFramework.TestEngineer
             if (recordHistory)
             {
                 // Create old location object
-                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(sourceNodeParentContainer, sourceNodeObjectIndex);
+                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
 
-                // Create new location object
-                TestScriptObjectLocation newLocation = new TestScriptObjectLocation(targetNodeParentContainer, newContainerIndex);
+                // Create new location object.
+                TestScriptObjectLocation newLocation =
+                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
 
                 m_changeHistory.RecordEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, newLocation, oldLocation, sourceNode));
             }
+
+            Clipboard.Clear();
+        }
+
+        private TargetInsertInfo GetTargetInsertInfo(TestTreeNode sourceNode, TestTreeNode targetNode)
+        {
+            TestTreeNode targetContainerNode = null;
+            int insertIndex = -1;
+
+            if (sourceNode.IsTestSuite())
+            {
+                if (targetNode.IsTestSuite())
+                {
+                    targetContainerNode = targetNode;
+                    insertIndex = 0;
+                }
+                else if (targetNode.IsTestCase())
+                {
+                    targetContainerNode = targetNode.Parent;
+                    insertIndex = targetNode.Index + 1;
+                }
+            }
+            else if (sourceNode.IsTestCase())
+            {
+                if (targetNode.IsTestCase())
+                {
+                    targetContainerNode = targetNode.Parent;
+                    insertIndex = targetNode.Index + 1;
+                }
+                else if (targetNode.IsTestSuite())
+                {
+                    targetContainerNode = targetNode;
+                    insertIndex = 0;
+                }
+            }
+            else if (sourceNode.IsTestStep())
+            {
+                if (targetNode.IsTestStep())
+                {
+                    targetContainerNode = targetNode.Parent;
+                    insertIndex = targetNode.Index + 1;
+                }
+                else if (targetNode.IsTestCase())
+                {
+                    targetContainerNode = targetNode;
+                    insertIndex = 0;
+                }
+            }
+
+            return new TargetInsertInfo() { IargetContainerNode = targetContainerNode, InsertIndex = insertIndex };
         }
 
         public TestTreeNode SetTestSuite(TestSuite testSuite)
@@ -766,6 +903,23 @@ namespace Quintity.TestFramework.TestEngineer
         public bool IsTestSuiteLoaded()
         {
             return Nodes.Count > 0 ? true : false;
+        }
+
+        public List<TestTreeNode> GetAllNotes(TestTreeNode startNode)
+        {
+            var allNodes = new List<TestTreeNode>();
+
+            TraverseNodes(startNode, getAllNodes, allNodes);
+
+            return allNodes;
+        }
+
+        private bool getAllNodes(TestTreeNode node, object tag)
+        {
+            var allNodes = tag as List<TestTreeNode>;
+            allNodes.Add(node);
+
+            return true;
         }
 
         public void ShowAllTestCases()
@@ -1530,6 +1684,8 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.m_miOpenEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miActivate = new System.Windows.Forms.ToolStripMenuItem();
@@ -1543,20 +1699,18 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
-            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDeleteBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miChangeBreakpointState = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.m_treeViewContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1600,6 +1754,22 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
             this.m_toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miExecute
+            // 
+            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miExecute.Name = "m_miExecute";
+            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
+            this.m_miExecute.Text = "Execute";
+            // 
+            // m_miResetResults
+            // 
+            this.m_miResetResults.Image = ((System.Drawing.Image)(resources.GetObject("m_miResetResults.Image")));
+            this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miResetResults.Name = "m_miResetResults";
+            this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
+            this.m_miResetResults.Text = "Reset Results";
             // 
             // m_miSaveResults
             // 
@@ -1682,10 +1852,80 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
             this.m_miBreakpoint.Text = "Breakpoint";
             // 
+            // m_miInsertBreakpoint
+            // 
+            this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable1;
+            this.m_miInsertBreakpoint.Name = "m_miInsertBreakpoint";
+            this.m_miInsertBreakpoint.Size = new System.Drawing.Size(172, 22);
+            this.m_miInsertBreakpoint.Text = "Insert Breakpoint";
+            this.m_miInsertBreakpoint.ToolTipText = "Inserts new breakpoint";
+            // 
+            // m_miDeleteBreakpoint
+            // 
+            this.m_miDeleteBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.DeleteBreakpoint;
+            this.m_miDeleteBreakpoint.Name = "m_miDeleteBreakpoint";
+            this.m_miDeleteBreakpoint.Size = new System.Drawing.Size(172, 22);
+            this.m_miDeleteBreakpoint.Text = "Delete Breakpoint";
+            // 
+            // m_miChangeBreakpointState
+            // 
+            this.m_miChangeBreakpointState.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ToggleAllBreakpoints;
+            this.m_miChangeBreakpointState.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
+            this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
+            this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
+            // 
             // m_toolStripSeparator6
             // 
             this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
             this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miCut
+            // 
+            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
+            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCut.Name = "m_miCut";
+            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.m_miCut.Size = new System.Drawing.Size(201, 22);
+            this.m_miCut.Text = "Cut";
+            // 
+            // m_miCopy
+            // 
+            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
+            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCopy.Name = "m_miCopy";
+            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
+            this.m_miCopy.Text = "Copy";
+            // 
+            // m_miPaste
+            // 
+            this.m_miPaste.Enabled = false;
+            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
+            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miPaste.Name = "m_miPaste";
+            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
+            this.m_miPaste.Text = "Paste";
+            // 
+            // m_miDelete
+            // 
+            this.m_miDelete.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
+            this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miDelete.Name = "m_miDelete";
+            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
+            this.m_miDelete.Text = "Del";
+            // 
+            // m_miRename
+            // 
+            this.m_miRename.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Rename;
+            this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miRename.Name = "m_miRename";
+            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.m_miRename.Size = new System.Drawing.Size(201, 22);
+            this.m_miRename.Text = "Rename";
+            this.m_miRename.ToolTipText = "Rename the selected item.";
             // 
             // m_treeViewImages
             // 
@@ -1718,91 +1958,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(24, "breakpoint.enabled");
             this.m_treeViewImages.Images.SetKeyName(25, "breakpoint.disabled");
             this.m_treeViewImages.Images.SetKeyName(26, "BreakpointEnable.png");
-            // 
-            // m_miExecute
-            // 
-            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
-            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miExecute.Name = "m_miExecute";
-            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
-            this.m_miExecute.Text = "Execute";
-            // 
-            // m_miResetResults
-            // 
-            this.m_miResetResults.Image = ((System.Drawing.Image)(resources.GetObject("m_miResetResults.Image")));
-            this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miResetResults.Name = "m_miResetResults";
-            this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
-            this.m_miResetResults.Text = "Reset Results";
-            // 
-            // m_miInsertBreakpoint
-            // 
-            this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable1;
-            this.m_miInsertBreakpoint.Name = "m_miInsertBreakpoint";
-            this.m_miInsertBreakpoint.Size = new System.Drawing.Size(172, 22);
-            this.m_miInsertBreakpoint.Text = "Insert Breakpoint";
-            this.m_miInsertBreakpoint.ToolTipText = "Inserts new breakpoint";
-            // 
-            // m_miDeleteBreakpoint
-            // 
-            this.m_miDeleteBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.DeleteBreakpoint;
-            this.m_miDeleteBreakpoint.Name = "m_miDeleteBreakpoint";
-            this.m_miDeleteBreakpoint.Size = new System.Drawing.Size(172, 22);
-            this.m_miDeleteBreakpoint.Text = "Delete Breakpoint";
-            // 
-            // m_miChangeBreakpointState
-            // 
-            this.m_miChangeBreakpointState.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ToggleAllBreakpoints;
-            this.m_miChangeBreakpointState.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
-            this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
-            this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
-            // 
-            // m_miCut
-            // 
-            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
-            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCut.Name = "m_miCut";
-            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.m_miCut.Size = new System.Drawing.Size(201, 22);
-            this.m_miCut.Text = "Cut";
-            // 
-            // m_miCopy
-            // 
-            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
-            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCopy.Name = "m_miCopy";
-            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
-            this.m_miCopy.Text = "Copy";
-            // 
-            // m_miPaste
-            // 
-            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
-            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miPaste.Name = "m_miPaste";
-            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
-            this.m_miPaste.Text = "Paste";
-            // 
-            // m_miDelete
-            // 
-            this.m_miDelete.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
-            this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miDelete.Name = "m_miDelete";
-            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
-            this.m_miDelete.Text = "Del";
-            // 
-            // m_miRename
-            // 
-            this.m_miRename.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Rename;
-            this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miRename.Name = "m_miRename";
-            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_miRename.Size = new System.Drawing.Size(201, 22);
-            this.m_miRename.Text = "Rename";
-            this.m_miRename.ToolTipText = "Rename the selected item.";
             // 
             // TestTreeView
             // 
@@ -1841,11 +1996,13 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy as first child of target suite.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode, -1);
+                        // MoveNode(sourceNode, targetNode, -1);
+                        MoveNode(sourceNode, targetNode);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode, -1);
+                        CopyNode(sourceNode, targetNode);
+                        //CopyNode(sourceNode, targetNode, -1);
                     }
                 }
                 else if (targetNode.IsTestCase())
@@ -1853,11 +2010,13 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy immediately after target test case.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        //MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        MoveNode(sourceNode, targetNode);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        CopyNode(sourceNode, targetNode);
+                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
                     }
                 }
                 //else if (targetNode.IsTestStep())
@@ -1880,22 +2039,26 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy as first child of target suite.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode, -1);
+                        MoveNode(sourceNode, targetNode);
+                        //MoveNode(sourceNode, targetNode, -1);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode, -1);
+                        CopyNode(sourceNode, targetNode);
+                        //CopyNode(sourceNode, targetNode, -1);
                     }
                 }
                 else if (targetNode.IsTestCase())
                 {
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode: sourceNode, targetNodeParent: targetNode.Parent, targetNodeIndex: targetNode.Index + 1);
+                        MoveNode(sourceNode, targetNode);
+                        //MoveNode(sourceNode: sourceNode, targetNodeParent: targetNode.Parent, targetNodeIndex: targetNode.Index + 1);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        CopyNode(sourceNode, targetNode);
                     }
                 }
                 else if (targetNode.IsTestStep())
@@ -1903,11 +2066,13 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy immediately after target steps parent case.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
+                        MoveNode(sourceNode, targetNode);
+                        // MoveNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
+                        CopyNode(sourceNode, targetNode);
+                        //CopyNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
                     }
 
                     SelectedNode = sourceNode;
@@ -1920,11 +2085,13 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy as first child of target case.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode, -1);
+                        MoveNode(sourceNode, targetNode);
+                        //MoveNode(sourceNode, targetNode, -1);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode, -1);
+                        //CopyNode(sourceNode, targetNode, -1);
+                        CopyNode(sourceNode, targetNode);
                     }
                 }
                 else if (targetNode.IsTestStep())
@@ -1932,11 +2099,13 @@ namespace Quintity.TestFramework.TestEngineer
                     // Add/Copy immediately after target step.
                     if (action == ChangeType.Move)
                     {
-                        MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        MoveNode(sourceNode, targetNode);
+                        //MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
                     }
                     else if (action == ChangeType.Copy)
                     {
-                        CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
+                        CopyNode(sourceNode, targetNode);
+                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
                     }
                 }
             }
@@ -2138,7 +2307,7 @@ namespace Quintity.TestFramework.TestEngineer
                 case ChangeType.Remove:
                     {
                         TestScriptObjectLocation location = changeEvent.FormerValue as TestScriptObjectLocation;
-                        location.Parent.AddTestScriptObject(changeEvent.TestScriptObject, location.Index);
+                        location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
                         Filter(m_currentFilter);
 
                         TestTreeNode parentNode = FindNode(location.Parent);
@@ -2187,7 +2356,7 @@ namespace Quintity.TestFramework.TestEngineer
                 case ChangeType.Add:  // If node was added, need to remove it.
                     {
                         TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        location.Parent.AddTestScriptObject(changeEvent.TestScriptObject, location.Index);
+                        location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
 
                         Filter(m_currentFilter);
 
@@ -2357,7 +2526,7 @@ namespace Quintity.TestFramework.TestEngineer
                     primaryContainer.Find(testTreeNode.Parent.TestScriptObject.SystemID) as TestScriptObjectContainer;
 
                 testTreeNode.TestScriptObject.SetParent(parentContainer);
-                parentContainer.AddTestScriptObject(testTreeNode.TestScriptObject);
+                parentContainer.InsertTestScriptObject(testTreeNode.TestScriptObject);
             }
 
             return true;
@@ -2547,9 +2716,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
             }
 
-            bool containsData = Clipboard.ContainsData("SystemID");
-
-            if (containsData && !unavailable)
+            if (isValidPaste(m_clipboardAction) && !unavailable)
             {
                 m_miPaste.Enabled = true;
 
@@ -2571,6 +2738,45 @@ namespace Quintity.TestFramework.TestEngineer
             m_miResetResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
             m_miExecute.Enabled = selectedNode.TestScriptObject.Status == Status.Active ? true : false;
             m_miSaveResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
+        }
+
+        private bool isValidPaste(ChangeType changeType)
+        {
+            bool isValid = false;
+
+            if (Clipboard.ContainsData("SystemID"))
+            {
+                var sourceNode = this.FindNode((Guid)Clipboard.GetData("SystemID"));
+
+                // Make sure we are not trying to paste item into the cut fragment.
+                if (changeType == ChangeType.Move && !sourceNode.IsTestStep() ? isDescendantNode(sourceNode, SelectedNode) : false)
+                {
+                    // Can't paste into its deleted self.
+                    return isValid;
+                }
+
+                if (sourceNode.IsTestSuite())
+                {
+                    isValid = SelectedNode.IsTestStep() ? false : true;
+                }
+                else if (sourceNode.IsTestCase())
+                {
+                    isValid = SelectedNode.IsTestStep() ? false : true;
+                }
+                else if (sourceNode.IsTestStep())
+                {
+                    isValid = SelectedNode.IsTestSuite() ? false : true;
+                }
+            }
+
+            return isValid;
+        }
+
+        private bool isDescendantNode(TestTreeNode startNode, TestTreeNode queryNode)
+        {
+            var nodes = GetAllNotes(startNode);
+
+            return nodes.FindAll(x => x.TestScriptObject.SystemID.Equals(queryNode.TestScriptObject.SystemID)).Count > 0 ? true : false;
         }
 
         private void configureDelete()

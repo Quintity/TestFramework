@@ -268,9 +268,11 @@ namespace Quintity.TestFramework.Core
             {
                 // Cast to string and parse on description delimiter.
                 valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+                valueElements[0].Trim();
+
 
                 // If second string element, new override description
-                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
+                var newDescription = valueElements.Length > 1 ? valueElements[1].Trim() : string.Empty;
             }
 
             return valueElements;

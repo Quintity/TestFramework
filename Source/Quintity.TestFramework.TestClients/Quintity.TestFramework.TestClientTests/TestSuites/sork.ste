@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>b1b01f5a-49b8-4374-86ef-4f30692d075e</SystemID>
+  <SystemID>773230a4-755e-4cfe-a1a7-74e4a46fe607</SystemID>
   <UserID />
-  <Title>Sample test suite</Title>
+  <Title>sork</Title>
   <Author>jmoth</Author>
   <Created>2019-01-31T10:36:38-08:00</Created>
   <Project />
@@ -11,7 +11,7 @@
   <Description><![CDATA[]]></Description>
   <TestProperties />
   <TestPreprocessor>
-    <SystemID>501c6ca9-4a55-4b6e-abce-2bf7a056ff03</SystemID>
+    <SystemID>c88a9d8f-7923-4cbd-949b-173e333b1e35</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -27,7 +27,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>f06ef1a7-4c51-4861-89fa-dee7f0002f8a</SystemID>
+    <SystemID>48cc22a5-f703-4115-bcec-e774671115bb</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -44,7 +44,7 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>21db0284-f8f9-4ea7-89dd-093a5bf43ed4</SystemID>
+      <SystemID>7534a76e-93c5-4a7a-90ff-9f6192344734</SystemID>
       <UserID />
       <Title>Untitled test case</Title>
       <Author>jmoth</Author>
@@ -59,7 +59,7 @@
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>5770b495-b824-46c3-8901-6880e0597b0f</SystemID>
+          <SystemID>738f169e-7b3b-44e2-9897-4a7335d67887</SystemID>
           <UserID />
           <Title>Untitled test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
@@ -78,5 +78,5 @@
       </TestScriptObjects>
     </TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\Sample test suite.ste</FilePath>
+  <FilePath>[TestSuites]\sork.ste</FilePath>
 </TestSuite>

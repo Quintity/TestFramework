@@ -50,6 +50,7 @@
   </TestPostprocessor>
   <PostProcess />
   <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\this is a test.ste</TestScriptObject>
     <TestScriptObject type="TestCase" status="Active">
       <SystemID>7b947ce4-c115-4970-a09a-f8628d0b4ed0</SystemID>
       <UserID />
@@ -92,7 +93,7 @@
       </TestScriptObjects>
     </TestScriptObject>
     <TestScriptObject type="TestSuite">[TestSuites]\Sample test suite.ste</TestScriptObject>
-    <TestScriptObject type="TestSuite">C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestClientTests\TestSuites\Second Suite.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
 </TestSuite>
