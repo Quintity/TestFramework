@@ -533,6 +533,10 @@ namespace Quintity.TestFramework.TestEngineer
 
             return copyNode;
         }
+        public void RemoveNode()
+        {
+            RemoveNode(SelectedNode);
+        }
 
         public void RemoveNode(TestTreeNode nodeToRemove, bool recordHistory = true)
         {
@@ -1545,21 +1549,6 @@ namespace Quintity.TestFramework.TestEngineer
                 default:
                     break;
             }
-
-            //if (e.Button == MouseButtons.Left)
-            //{
-            //    if (SelectedNode == GetNodeAt(e.X, e.Y))
-            //    {
-            //        if (_wasDoubleClick)
-            //        {
-            //            _wasDoubleClick = false;
-            //        }
-            //        else
-            //        {
-            //            _triggerLabelEdit = true;
-            //        }
-            //    }
-            //}
 
             base.OnMouseUp(e);
         }
@@ -3032,6 +3021,23 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_miCut_Click(object sender, EventArgs e)
         {
+            ClipboardCut();
+        }
+
+        
+
+        private void m_miCopy_Click(object sender, EventArgs e)
+        {
+            ClipboardCopy();
+        }
+
+        private void m_miPaste_Click(object sender, EventArgs e)
+        {
+            ClipboardPaste();
+        }
+
+        internal void ClipboardCut()
+        {
             if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
             {
                 var systemId = SelectedNode.TestScriptObject.SystemID;
@@ -3040,7 +3046,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        private void m_miCopy_Click(object sender, EventArgs e)
+        internal void ClipboardCopy()
         {
             if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
             {
@@ -3050,7 +3056,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        private void m_miPaste_Click(object sender, EventArgs e)
+        internal void ClipboardPaste()
         {
             TestTreeNode target = SelectedNode;
 
