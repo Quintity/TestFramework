@@ -1091,7 +1091,6 @@ namespace Quintity.TestFramework.TestEngineer
             TestBreakpoints.InsertBreakpoint(currentNode.TestScriptObject);
         }
 
-        // TODO - cleanup
         private Image mergeImages(Image backgroundImage, Image overlayImage)
         {
             Image mergedImage = backgroundImage;
@@ -1970,125 +1969,13 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void performTreeEdit(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType action)
         {
-            if (sourceNode.IsTestSuite())
+            if (action == ChangeType.Move)
             {
-                if (targetNode.IsTestSuite())
-                {
-                    // Add/Copy as first child of target suite.
-                    if (action == ChangeType.Move)
-                    {
-                        // MoveNode(sourceNode, targetNode, -1);
-                        MoveNode(sourceNode, targetNode);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        CopyNode(sourceNode, targetNode);
-                        //CopyNode(sourceNode, targetNode, -1);
-                    }
-                }
-                else if (targetNode.IsTestCase())
-                {
-                    // Add/Copy immediately after target test case.
-                    if (action == ChangeType.Move)
-                    {
-                        //MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
-                        MoveNode(sourceNode, targetNode);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        CopyNode(sourceNode, targetNode);
-                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
-                    }
-                }
-                //else if (targetNode.IsTestStep())
-                //{
-                //    // Add/Copy immediately after target steps parent case's parent.
-                //    if (action == ChangeType.Move)
-                //    {
-                //        MoveNode(sourceNode, targetNode.Parent.Parent, targetNode.Index);
-                //    }
-                //    else if (action == ChangeType.Copy)
-                //    {
-                //        CopyNode(sourceNode, targetNode.Parent.Parent, targetNode.Index);
-                //    }
-                //}
+                MoveNode(sourceNode, targetNode);
             }
-            else if (sourceNode.IsTestCase())
+            else if(action == ChangeType.Copy)
             {
-                if (targetNode.IsTestSuite())
-                {
-                    // Add/Copy as first child of target suite.
-                    if (action == ChangeType.Move)
-                    {
-                        MoveNode(sourceNode, targetNode);
-                        //MoveNode(sourceNode, targetNode, -1);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        CopyNode(sourceNode, targetNode);
-                        //CopyNode(sourceNode, targetNode, -1);
-                    }
-                }
-                else if (targetNode.IsTestCase())
-                {
-                    if (action == ChangeType.Move)
-                    {
-                        MoveNode(sourceNode, targetNode);
-                        //MoveNode(sourceNode: sourceNode, targetNodeParent: targetNode.Parent, targetNodeIndex: targetNode.Index + 1);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
-                        CopyNode(sourceNode, targetNode);
-                    }
-                }
-                else if (targetNode.IsTestStep())
-                {
-                    // Add/Copy immediately after target steps parent case.
-                    if (action == ChangeType.Move)
-                    {
-                        MoveNode(sourceNode, targetNode);
-                        // MoveNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        CopyNode(sourceNode, targetNode);
-                        //CopyNode(sourceNode, targetNode.Parent.Parent, targetNode.Parent.Index);
-                    }
-
-                    SelectedNode = sourceNode;
-                }
-            }
-            else if (sourceNode.IsTestStep())
-            {
-                if (targetNode.IsTestCase())
-                {
-                    // Add/Copy as first child of target case.
-                    if (action == ChangeType.Move)
-                    {
-                        MoveNode(sourceNode, targetNode);
-                        //MoveNode(sourceNode, targetNode, -1);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        //CopyNode(sourceNode, targetNode, -1);
-                        CopyNode(sourceNode, targetNode);
-                    }
-                }
-                else if (targetNode.IsTestStep())
-                {
-                    // Add/Copy immediately after target step.
-                    if (action == ChangeType.Move)
-                    {
-                        MoveNode(sourceNode, targetNode);
-                        //MoveNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
-                    }
-                    else if (action == ChangeType.Copy)
-                    {
-                        CopyNode(sourceNode, targetNode);
-                        //CopyNode(sourceNode, targetNode.Parent, targetNode.Index + 1);
-                    }
-                }
+                CopyNode(sourceNode, targetNode);
             }
         }
 

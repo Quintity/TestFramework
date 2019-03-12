@@ -271,7 +271,11 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_editDeleteMenuItem_Click(object sender, EventArgs e)
         {
-            m_testTreeView.RemoveNode();
+            if (DialogResult.Yes == MessageBox.Show(this, $"Do you want to delete \"{m_testTreeView.SelectedNode.TestScriptObject.Title}\"?",
+                "Quintity TestFramework", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                m_testTreeView.RemoveNode();
+            }
         }
 
         #endregion
