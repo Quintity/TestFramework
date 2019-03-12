@@ -1591,12 +1591,12 @@ namespace Quintity.TestFramework.TestEngineer
         }
 
         protected override void OnQueryContinueDrag(QueryContinueDragEventArgs qcdevent)
-        { }
+        {
+            int i = 1;
+        }
 
         protected override void OnDragEnter(DragEventArgs e)
         {
-            var node = nodeFromSystemPoint(new Point(e.X, e.Y));
-
             if (e.KeyState == 1)
             {
                 e.Effect = DragDropEffects.Move;
@@ -1605,45 +1605,36 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 e.Effect = DragDropEffects.Copy;
             }
-
-            string[] formats = e.Data.GetFormats();
-
-            object spud = e.Data.GetData(formats[0]);
-        }
-
-        protected override void OnDragLeave(EventArgs e)
-        {
-            base.OnDragLeave(e);
         }
 
         protected override void OnDragOver(DragEventArgs e)
         {
             TestTreeNode targetNode = nodeFromSystemPoint(new Point(e.X, e.Y));
 
+            if (targetNode is null)
+            {
+                int i = 1;
+                return;
+            }
             TestTreeNode sourceNode = e.Data.GetData(typeof(TestTreeNode)) as TestTreeNode;
-            Debug.WriteLine(string.Format("OnDragOver - Node:  {0}",
+
+            Debug.WriteLine(string.Format("OnDragOver - Node:  {1} {0}",
+                targetNode != null ? targetNode.TestScriptObject.GetType().ToString() : "Bonkers",
                 targetNode != null ? targetNode.TestScriptObject.Title : "Not over tree node."));
 
             SelectedNode = targetNode;
 
-            if (sourceNode.Parent == null || (sourceNode.IsTestStep() && targetNode.IsTestSuite()))
+            if (e.KeyState == 1)
             {
-                e.Effect = DragDropEffects.None;
+                e.Effect = isValidPaste(sourceNode, targetNode, ChangeType.Move) ? DragDropEffects.Move : DragDropEffects.None;
+            }
+            else if (e.KeyState == 9)
+            {
+                e.Effect = isValidPaste(sourceNode, targetNode, ChangeType.Copy) ? DragDropEffects.Move : DragDropEffects.None;
             }
             else
             {
-                if (e.KeyState == 1)
-                {
-                    e.Effect = DragDropEffects.Move;
-                }
-                else if (e.KeyState == 9)
-                {
-                    e.Effect = DragDropEffects.Copy;
-                }
-                else
-                {
-                    e.Effect = DragDropEffects.None;
-                }
+                e.Effect = DragDropEffects.None;
             }
         }
 
@@ -1664,12 +1655,13 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (action != ChangeType.Unknown)
             {
-                TestTreeNode targetNode = nodeFromSystemPoint(new Point(e.X, e.Y));
-                TestTreeNode sourceNode = e.Data.GetData(typeof(TestTreeNode)) as TestTreeNode;
-                performTreeEdit(
-                    e.Data.GetData(typeof(TestTreeNode)) as TestTreeNode,  // Source node.
-                    nodeFromSystemPoint(new Point(e.X, e.Y)), // Target node
-                    action);  // Action
+                var targetNode = nodeFromSystemPoint(new Point(e.X, e.Y));
+                var sourceNode = e.Data.GetData(typeof(TestTreeNode)) as TestTreeNode;
+
+                if (targetNode != null)
+                {
+                    performTreeEdit(sourceNode, targetNode, action);
+                }
             }
         }
 
@@ -2716,17 +2708,22 @@ namespace Quintity.TestFramework.TestEngineer
                 }
             }
 
-            if (isValidPaste(m_clipboardAction) && !unavailable)
+            if (Clipboard.ContainsData("SystemID"))
             {
-                m_miPaste.Enabled = true;
+                var sourceNode = this.FindNode((Guid)Clipboard.GetData("SystemID"));
 
-                if (m_clipboardAction == ChangeType.Copy)
+                if (isValidPaste(sourceNode, SelectedNode, m_clipboardAction) && !unavailable)
                 {
-                    m_miPaste.ToolTipText = string.Format("Copy node \"{0}\" to selected location.", selectedNode.Text);
-                }
-                else if (m_clipboardAction == ChangeType.Move)
-                {
-                    m_miPaste.ToolTipText = string.Format("Move node \"{0}\" to selected location.", selectedNode.Text);
+                    m_miPaste.Enabled = true;
+
+                    if (m_clipboardAction == ChangeType.Copy)
+                    {
+                        m_miPaste.ToolTipText = string.Format("Copy node \"{0}\" to selected location.", selectedNode.Text);
+                    }
+                    else if (m_clipboardAction == ChangeType.Move)
+                    {
+                        m_miPaste.ToolTipText = string.Format("Move node \"{0}\" to selected location.", selectedNode.Text);
+                    }
                 }
             }
             else
@@ -2740,33 +2737,28 @@ namespace Quintity.TestFramework.TestEngineer
             m_miSaveResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
         }
 
-        private bool isValidPaste(ChangeType changeType)
+        private bool isValidPaste(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType changeType)
         {
             bool isValid = false;
 
-            if (Clipboard.ContainsData("SystemID"))
+            // Make sure we are not trying to paste item into the cut fragment.
+            if (changeType == ChangeType.Move && !sourceNode.IsTestStep() ? isDescendantNode(sourceNode, targetNode) : false)
             {
-                var sourceNode = this.FindNode((Guid)Clipboard.GetData("SystemID"));
+                // Can't paste into its deleted self.
+                return isValid;
+            }
 
-                // Make sure we are not trying to paste item into the cut fragment.
-                if (changeType == ChangeType.Move && !sourceNode.IsTestStep() ? isDescendantNode(sourceNode, SelectedNode) : false)
-                {
-                    // Can't paste into its deleted self.
-                    return isValid;
-                }
-
-                if (sourceNode.IsTestSuite())
-                {
-                    isValid = SelectedNode.IsTestStep() ? false : true;
-                }
-                else if (sourceNode.IsTestCase())
-                {
-                    isValid = SelectedNode.IsTestStep() ? false : true;
-                }
-                else if (sourceNode.IsTestStep())
-                {
-                    isValid = SelectedNode.IsTestSuite() ? false : true;
-                }
+            if (sourceNode.IsTestSuite())
+            {
+                isValid = targetNode.IsTestStep() ? false : true;
+            }
+            else if (sourceNode.IsTestCase())
+            {
+                isValid = targetNode.IsTestStep() ? false : true;
+            }
+            else if (sourceNode.IsTestStep())
+            {
+                isValid = targetNode.IsTestSuite() ? false : true;
             }
 
             return isValid;
