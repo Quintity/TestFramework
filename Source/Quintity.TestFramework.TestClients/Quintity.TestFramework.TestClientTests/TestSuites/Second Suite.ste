@@ -43,10 +43,124 @@
   </TestPostprocessor>
   <PostProcess />
   <TestScriptObjects>
+    <TestScriptObject type="TestSuite">[TestSuites]\xxxxx.ste</TestScriptObject>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>53c7d49f-f95b-48dd-9d7e-387777037c69</SystemID>
+      <UserID />
+      <Title>Target node</Title>
+      <Author>jmoth</Author>
+      <Created>2019-01-31T10:36:38-08:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a2542ed8-e41b-4239-9ddc-016969dbf8f5</SystemID>
+          <UserID />
+          <Title>Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>7edbfa60-5516-40f5-9c3d-87a58889a93b</SystemID>
+          <UserID />
+          <Title>Copy of Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SetBreakPoint</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>systemId</DisplayName>
+                <Name>systemId</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>2c54b57c-2238-48c0-9a9d-ee5526ba90ad</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>2c54b57c-2238-48c0-9a9d-ee5526ba90ad</SystemID>
+          <UserID />
+          <Title>Copy of Sleep</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
+          <UserID />
+          <Title>This is a simple test</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[This is the description]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
     <TestScriptObject type="TestCase" status="Active">
       <SystemID>f11aa738-d095-4dd1-8d53-f5cd90aec0aa</SystemID>
       <UserID />
-      <Title>Untitled test case</Title>
+      <Title>New names</Title>
       <Author>jmoth</Author>
       <Created>2019-03-10T08:17:12-07:00</Created>
       <FunctionalArea />
@@ -61,7 +175,7 @@
         <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
           <SystemID>8fc65c5d-6130-4c7d-82c9-dc85f745bfc9</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>Source test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -77,6 +191,7 @@
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\vvcvvv.ste</TestScriptObject>
   </TestScriptObjects>
-  <FilePath>C:\DevProjects\Quintity\Repos\TestFramework\Source\Quintity.TestFramework.TestClients\Quintity.TestFramework.TestClientTests\TestSuites\Second Suite.ste</FilePath>
+  <FilePath>[TestSuites]\Second Suite.ste</FilePath>
 </TestSuite>

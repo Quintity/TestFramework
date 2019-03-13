@@ -180,6 +180,11 @@ namespace Quintity.TestFramework.Core
 
         private TestScriptObject m_foundTestScriptObject;
 
+        public TestScriptObject Find(TestScriptObject testScriptObject)
+        {
+                                                                                                                                return Find(testScriptObject.SystemID);
+        }
+
         public TestScriptObject Find(Guid systemId)
         {
             m_foundTestScriptObject = null;
@@ -211,12 +216,12 @@ namespace Quintity.TestFramework.Core
 
         #region Class internal methods
 
-        public TestScriptObject AddTestScriptObject(TestScriptObject testScriptObject)
+        public TestScriptObject InsertTestScriptObject(TestScriptObject testScriptObject)
         {
-            return AddTestScriptObject(testScriptObject, -1);
+            return InsertTestScriptObject(testScriptObject, -1);
         }
 
-        public TestScriptObject AddTestScriptObject(TestScriptObject testScriptObject, int index)
+        public TestScriptObject InsertTestScriptObject(TestScriptObject testScriptObject, int index)
         {
             testScriptObject.SetParent(this);
             _testScriptObjects.Insert(index == -1 ? _testScriptObjects.Count : index, testScriptObject);

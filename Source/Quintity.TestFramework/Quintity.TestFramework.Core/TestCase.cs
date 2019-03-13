@@ -177,7 +177,7 @@ namespace Quintity.TestFramework.Core
 
         public TestStep AddTestStep(TestStep testStep, int index = -1)
         {
-            return AddTestScriptObject(testStep, index) as TestStep;
+            return InsertTestScriptObject(testStep, index) as TestStep;
         }
 
         public bool RemoveTestStep(TestStep testStep)

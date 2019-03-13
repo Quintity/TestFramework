@@ -263,7 +263,7 @@ namespace Quintity.TestFramework.Core
 
         public TestSuite AddTestSuite(TestSuite testSuite, int index = -1)
         {
-            return AddTestScriptObject(testSuite, index) as TestSuite;
+            return InsertTestScriptObject(testSuite, index) as TestSuite;
         }
 
         public TestCase AddTestCase(string title, int index = -1)
@@ -273,7 +273,7 @@ namespace Quintity.TestFramework.Core
 
         public TestCase AddTestCase(TestCase testCase, int index = -1)
         {
-            return AddTestScriptObject(testCase, index) as TestCase;
+            return InsertTestScriptObject(testCase, index) as TestCase;
         }
 
         public void ClearTestScriptObjectCollection()

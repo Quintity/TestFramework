@@ -268,7 +268,15 @@ namespace Quintity.TestFramework.TestEngineer
             }
             else
             {
-                var fileText = TestScriptObject is TestSuite ? $"File:  {TestProperties.ExpandString(((TestSuite)TestScriptObject).FilePath)}" : string.Empty;
+                string filePath = string.Empty;
+
+                if (TestScriptObject is TestSuite)
+                {
+                    var testSuite = TestScriptObject as TestSuite;
+                    filePath = string.IsNullOrEmpty(testSuite.FilePath) ? string.Empty : testSuite.FilePath;
+                }
+
+                var fileText = !string.IsNullOrEmpty(filePath) ? $"File:  {TestProperties.ExpandString(((TestSuite)TestScriptObject).FilePath)}" : string.Empty;
 
                 ToolTipText = string.Format("Title:  {0}\r\nStatus:  {1}\r\n{2}\r\nDescription:  {3}",
                 TestScriptObject.Title,

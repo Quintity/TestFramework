@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties2 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
+            Quintity.TestFramework.TestEngineer.CheckedBoxProperties checkedBoxProperties1 = new Quintity.TestFramework.TestEngineer.CheckedBoxProperties();
             this.m_mainMenu = new System.Windows.Forms.MenuStrip();
             this.m_fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_fileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -218,7 +218,6 @@
             this.m_editCopyMenuItem,
             this.m_editPasteMenuItem,
             this.m_editDeleteMenuItem});
-            this.m_editMenuItem.Enabled = false;
             this.m_editMenuItem.Name = "m_editMenuItem";
             this.m_editMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.m_editMenuItem.Size = new System.Drawing.Size(39, 20);
@@ -252,6 +251,7 @@
             // 
             // m_editCutMenuItem
             // 
+            this.m_editCutMenuItem.Enabled = false;
             this.m_editCutMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
             this.m_editCutMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_editCutMenuItem.Name = "m_editCutMenuItem";
@@ -262,6 +262,7 @@
             // 
             // m_editCopyMenuItem
             // 
+            this.m_editCopyMenuItem.Enabled = false;
             this.m_editCopyMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
             this.m_editCopyMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_editCopyMenuItem.Name = "m_editCopyMenuItem";
@@ -272,6 +273,7 @@
             // 
             // m_editPasteMenuItem
             // 
+            this.m_editPasteMenuItem.Enabled = false;
             this.m_editPasteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
             this.m_editPasteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_editPasteMenuItem.Name = "m_editPasteMenuItem";
@@ -282,6 +284,7 @@
             // 
             // m_editDeleteMenuItem
             // 
+            this.m_editDeleteMenuItem.Enabled = false;
             this.m_editDeleteMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
             this.m_editDeleteMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_editDeleteMenuItem.Name = "m_editDeleteMenuItem";
@@ -302,7 +305,6 @@
             this.m_suiteToggleBreakpointMenuItem,
             this.m_suiteDeleteAllBreakpointsMenuItem,
             this.m_suiteDisableAllBreakpointsMenuItem});
-            this.m_suiteMenuItem.Enabled = false;
             this.m_suiteMenuItem.Name = "m_suiteMenuItem";
             this.m_suiteMenuItem.Size = new System.Drawing.Size(69, 20);
             this.m_suiteMenuItem.Text = "Test &Suite";
@@ -425,7 +427,7 @@
             // 
             this.aboutToolStripMenuItem.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.AboutBox;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -858,8 +860,8 @@
             // m_tagComboBox
             // 
             this.m_tagComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            checkedBoxProperties2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties2;
+            checkedBoxProperties1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.m_tagComboBox.CheckBoxProperties = checkedBoxProperties1;
             this.m_tagComboBox.DisplayMemberSingleItem = "";
             this.m_tagComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.m_tagComboBox.Enabled = false;

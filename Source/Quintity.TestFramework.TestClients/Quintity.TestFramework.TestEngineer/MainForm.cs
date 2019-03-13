@@ -236,6 +236,12 @@ namespace Quintity.TestFramework.TestEngineer
         {
             m_editUndoMenuItem.Enabled = m_testTreeView.UndoAvailable();
             m_editRedoMenuItem.Enabled = m_testTreeView.RedoAvailable();
+
+            // If treeview items selected and not root, enable edit picks
+            m_editPasteMenuItem.Enabled = Clipboard.ContainsData("SystemID");
+            m_editCutMenuItem.Enabled = m_editCopyMenuItem.Enabled = 
+                m_editDeleteMenuItem.Enabled = !(m_testTreeView.SelectedNode is null)  
+                && !m_testTreeView.SelectedNode.Equals(m_testTreeView.RootNode) ? true : false;
         }
 
         private void m_editUndoMenuItem_Click(object sender, EventArgs e)
@@ -250,22 +256,26 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_editCutMenuItem_Click(object sender, EventArgs e)
         {
-
+            m_testTreeView.ClipboardCut();
         }
 
         private void m_editCopyMenuItem_Click(object sender, EventArgs e)
         {
-
+            m_testTreeView.ClipboardCopy();
         }
 
         private void m_editPasteMenuItem_Click(object sender, EventArgs e)
         {
-
+            m_testTreeView.ClipboardPaste();
         }
 
         private void m_editDeleteMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (DialogResult.Yes == MessageBox.Show(this, $"Do you want to delete \"{m_testTreeView.SelectedNode.TestScriptObject.Title}\"?",
+                "Quintity TestFramework", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                m_testTreeView.RemoveNode();
+            }
         }
 
         #endregion
