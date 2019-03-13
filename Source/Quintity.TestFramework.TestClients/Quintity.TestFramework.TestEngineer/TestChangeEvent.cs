@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Quintity.TestFramework.Core;
 
-namespace Quintity.TestFramework.Core
+namespace Quintity.TestFramework.TestEngineer
 {
     public class TestScriptObjectLocation
     {

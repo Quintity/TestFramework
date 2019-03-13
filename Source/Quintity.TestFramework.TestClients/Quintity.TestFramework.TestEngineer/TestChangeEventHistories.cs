@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quintity.TestFramework.Core
+namespace Quintity.TestFramework.TestEngineer
 {
     public class TestChangeEventHistories
     {

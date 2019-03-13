@@ -1304,8 +1304,8 @@ namespace Quintity.TestFramework.TestEngineer
 
         private bool filterTestTree(TestScriptObject testScriptObject, object tag)
         {
-            TestTreeNode currentNode = getNodeMapping(testScriptObject);
-            TestTreeNode parentNode = getNodeMapping(testScriptObject.ParentID);
+            TestTreeNode currentNode = FindNode(testScriptObject);
+            TestTreeNode parentNode = FindNode(testScriptObject.ParentID);
 
             // If test suite node, clear it nodes...
             if (currentNode.IsTestSuite() && !isRootNode(currentNode))
@@ -2266,42 +2266,26 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool undo = true)
         {
-            // Want to provide visual response to user.
-            SelectedNode = getNodeMapping(changeEvent.TestScriptObject);
-            TestScriptObject testScriptObject = null;
+            // Turn painting off
+            BeginUpdate();
 
-            if (changeEvent.Tag is TestPreprocessor)
-            {
-                testScriptObject = changeEvent.Tag as TestScriptObject;
-
-            }
-            else if (changeEvent.Tag is TestPostprocessor)
-            {
-                testScriptObject = changeEvent.Tag as TestScriptObject;
-            }
-            else
-            {
-                testScriptObject = changeEvent.TestScriptObject;
-            }
+            var applicableNode = SelectedNode = !(changeEvent.TestScriptObject is TestPreprocessor) ? 
+                FindNode(changeEvent.TestScriptObject) : FindNode(changeEvent.TestScriptObject.ParentID);
 
             // Get changed property through reflection.
-            Type type = testScriptObject.GetType();
+            Type type = changeEvent.TestScriptObject.GetType();
             PropertyInfo pinfo = type.GetProperty(changeEvent.Property);
 
             // Set property to old value.
             object value = undo ? changeEvent.FormerValue : changeEvent.CurrentValue;
-            pinfo.SetValue(testScriptObject, value, null);
-
-            // Give a moment a second for user to catch up.
-            Thread.Sleep(125);
-
-            // Bit of a hack, forces node to repaint so user can see change occur.
-            SelectedNode = RootNode;
-            SelectedNode = getNodeMapping(changeEvent.TestScriptObject);
+            pinfo.SetValue(changeEvent.TestScriptObject, value, null);
 
             // Update node UI if necessary.
-            SelectedNode.UpdateTitleAndToolTip();
-            SelectedNode.UpdateUI();
+            applicableNode.UpdateTitleAndToolTip();
+            applicableNode.UpdateUI();
+
+            // Turn painting on.
+            EndUpdate();
         }
         #endregion
 
@@ -2356,7 +2340,6 @@ namespace Quintity.TestFramework.TestEngineer
                 TestTreeNode newNode = new TestTreeNode(testScriptObject);
                 TestTreeNode parentNode = FindNode(m_parentNode, testScriptObject.ParentID);
                 parentNode.Nodes.Add(newNode);
-                //m_nodeMapping.Add(testScriptObject.SystemID, newNode);
             }
 
             return true;
