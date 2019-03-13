@@ -2205,6 +2205,12 @@ namespace Quintity.TestFramework.TestEngineer
                     break;
             }
 
+            // If not more changes, reset change flags and UI
+            if (!m_changeHistory.CanUndo())
+            {
+                ResetHasChangedFlags();
+            }
+
             m_recordHistory = true;
 
             EndUpdate();
