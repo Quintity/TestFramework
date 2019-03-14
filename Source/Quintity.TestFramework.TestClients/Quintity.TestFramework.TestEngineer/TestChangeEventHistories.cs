@@ -46,7 +46,7 @@ namespace Quintity.TestFramework.TestEngineer
             return m_redoStack.Count > 0 ? true : false;
         }
 
-        public void RecordEvent(TestChangeEvent changeEvent)
+        public void RecordChangeEvent(TestChangeEvent changeEvent)
         {
             Debug.WriteLine("Event recorded:  " + changeEvent.ToString());
 
@@ -63,7 +63,7 @@ namespace Quintity.TestFramework.TestEngineer
 
                 Debug.WriteLine("Undo event popped:  " + changeEvent.ToString());
 
-                createTestHistoryUndoEvent(changeEvent);
+                fireUndoEvent(changeEvent);
 
                 m_redoStack.Push(changeEvent);
             }
@@ -75,7 +75,7 @@ namespace Quintity.TestFramework.TestEngineer
              {
                  TestChangeEvent changeEvent = m_redoStack.Pop();
 
-                 createTestHistoryRedoEvent(changeEvent);
+                 fireRedoEvent(changeEvent);
 
                  m_undoStack.Push(changeEvent);
              }
@@ -94,26 +94,20 @@ namespace Quintity.TestFramework.TestEngineer
         /// Creates a createTestHistoryUndoEvent for undo entity.
         /// </summary>
         /// <param name="testObject">Entity from undo stack.</param>
-        private void createTestHistoryUndoEvent(TestChangeEvent entity)
+        private void fireUndoEvent(TestChangeEvent entity)
         {
             // If client event handler defined...
-            if (OnTestHistoryUndoEvent != null)
-            {
-                OnTestHistoryUndoEvent(entity);
-            }
+            OnTestHistoryUndoEvent?.Invoke(entity);
         }
 
         /// <summary>
         /// Creates a createTestHistoryRedoEvent for undo entity.
         /// </summary>
         /// <param name="testObject">Entity from undo stack.</param>
-        private void createTestHistoryRedoEvent(TestChangeEvent entity)
+        private void fireRedoEvent(TestChangeEvent entity)
         {
             // If client event handler defined...
-            if (OnTestHistoryRedoEvent != null)
-            {
-                OnTestHistoryRedoEvent(entity);
-            }
+            OnTestHistoryRedoEvent?.Invoke(entity);
         }
     }
 }

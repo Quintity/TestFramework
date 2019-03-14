@@ -30,10 +30,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void fireTestTreeNodeAddedEvent(TestTreeNode nodeAdded)
         {
-            if (OnTestTreeNodeAdded != null)
-            {
-                OnTestTreeNodeAdded(this, nodeAdded);
-            }
+            OnTestTreeNodeAdded?.Invoke(this, nodeAdded);
         }
 
         public delegate void TestTreeNodeRemoved(TestTreeView testTreeView, TestTreeNode nodeRemoved);
@@ -41,10 +38,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void fireTestTreeNodeRemovedEvent(TestTreeNode nodeRemoved)
         {
-            if (OnTestTreeNodeRemoved != null)
-            {
-                OnTestTreeNodeRemoved(this, nodeRemoved);
-            }
+            OnTestTreeNodeRemoved?.Invoke(this, nodeRemoved);
         }
 
         // Delegate and method to traverse all tree nodes starting at name node.
@@ -441,16 +435,18 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode InsertNode(TestScriptObject testScriptObject, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
         {
+            return InsertNode(new TestTreeNode(testScriptObject), parentNode, nodeIndex, recordHistory);
+        }
+
+        public TestTreeNode InsertNode(TestTreeNode nodeToInsert, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
+        {
             TestScriptObjectContainer parentContainer = null;
             int newContainerIndex = 0;
-
-            // Create new node for test script object.
-            TestTreeNode newNode = new TestTreeNode(testScriptObject);
 
             if (null == parentNode)  // Must be root node.
             {
                 Nodes.Clear();
-                this.Nodes.Insert(0, newNode);
+                this.Nodes.Insert(0, nodeToInsert);
             }
             else
             {
@@ -477,27 +473,27 @@ namespace Quintity.TestFramework.TestEngineer
                 }
 
                 // Add test script object to container to follow sibling in collection.
-                parentContainer.InsertTestScriptObject(testScriptObject, newContainerIndex);
+                parentContainer.InsertTestScriptObject(nodeToInsert.TestScriptObject, newContainerIndex);
 
                 // Add to tree view parent node at node index.
-                parentNode.Nodes.Insert(nodeIndex, newNode);
+                parentNode.Nodes.Insert(nodeIndex, nodeToInsert);
             }
 
             // Update UI
-            markAsChanged(newNode);
-            this.SelectedNode = newNode;
+            markAsChanged(nodeToInsert);
+            this.SelectedNode = nodeToInsert;
             //this.m_nodeMapping.Add(testScriptObject.SystemID, newNode);
 
             // Create change event with parents container object and index.
             if (recordHistory)
             {
                 TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, newContainerIndex);
-                m_changeHistory.RecordEvent(new TestChangeEvent(testScriptObject, ChangeType.Add, location, null, newNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(nodeToInsert.TestScriptObject, ChangeType.Add, location, null, tag: nodeToInsert));
             }
 
-            fireTestTreeNodeAddedEvent(newNode);
+            fireTestTreeNodeAddedEvent(nodeToInsert);
 
-            return newNode;
+            return nodeToInsert;
         }
 
         public TestTreeNode CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, int nodeIndex, bool recordHistory = true)
@@ -538,6 +534,12 @@ namespace Quintity.TestFramework.TestEngineer
             RemoveNode(SelectedNode);
         }
 
+        public void RemoveNode(TestScriptObject testScriptObject, bool recordHistory = true)
+        {
+            var nodeToRemove = FindNode(testScriptObject);
+            RemoveNode(nodeToRemove, recordHistory);
+        }
+
         public void RemoveNode(TestTreeNode nodeToRemove, bool recordHistory = true)
         {
             // Get parent's container object.
@@ -566,13 +568,15 @@ namespace Quintity.TestFramework.TestEngineer
             if (recordHistory)
             {
                 TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, index);
-                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToRemove.TestScriptObject, ChangeType.Remove, null, location, nodeToRemove));
+
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject: nodeToRemove.TestScriptObject,
+                    editAction: ChangeType.Remove, formerValue: location));
             }
         }
 
         private struct TargetInsertInfo
         {
-            public TestTreeNode IargetContainerNode;
+            public TestTreeNode TargetContainerNode;
             public int InsertIndex;
         }
 
@@ -621,13 +625,13 @@ namespace Quintity.TestFramework.TestEngineer
             var targetInsertInfo = GetTargetInsertInfo(copyNode, targetNode);
 
             // Insert into parent containertree node accordingly
-            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
 
             // Remove from old test script object container
             //var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
 
             // Insert into new test script object target container
-            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
 
             // Add copied objects children to copyNode;
             constructNodeTreeFragment(copyNode, testScriptObjectCopy);
@@ -642,9 +646,10 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 // Create new location object.
                 TestScriptObjectLocation newLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
+                    new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
 
-                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToCopy.TestScriptObject, ChangeType.Add, newLocation, null, nodeToCopy));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject: nodeToCopy.TestScriptObject,
+                    editAction: ChangeType.Add, currentValue: newLocation, formerValue: null, tag: copyNode));
             }
 
             fireTestTreeNodeAddedEvent(copyNode);
@@ -675,6 +680,15 @@ namespace Quintity.TestFramework.TestEngineer
             return result;
         }
 
+        public void MoveNode(TestTreeNode sourceNode, TestScriptObjectContainer  targetContainer,  int index, bool recordHistory = true)
+        {
+            var parentNode = FindNode(targetContainer);
+
+            // If parent nodes is empty, target is parent
+            var targetNode = parentNode.Nodes.Count != 0 ? parentNode.Nodes[index] as TestTreeNode : parentNode;
+
+            MoveNode(sourceNode, targetNode, recordHistory);
+        }
         /// <summary>
         /// Moves the selected "Cut" source object to the target node location.
         /// </summary>
@@ -694,13 +708,13 @@ namespace Quintity.TestFramework.TestEngineer
             var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
 
             // Insert into parent containertree node accordingly
-            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
 
             // Remove from old test script object container
             var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
 
             // Insert into new test script object target container
-            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
 
             // Update UI for moved node and previous parent
             markAsChanged(sourceNodeParent);
@@ -712,13 +726,13 @@ namespace Quintity.TestFramework.TestEngineer
             if (recordHistory)
             {
                 // Create old location object
-                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
+                TestScriptObjectLocation sourceLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
 
                 // Create new location object.
-                TestScriptObjectLocation newLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
+                TestScriptObjectLocation targetLocation =
+                    new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
 
-                m_changeHistory.RecordEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, newLocation, oldLocation, sourceNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, targetLocation, sourceLocation, tag: sourceNode));
             }
 
             Clipboard.Clear();
@@ -769,7 +783,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
             }
 
-            return new TargetInsertInfo() { IargetContainerNode = targetContainerNode, InsertIndex = insertIndex };
+            return new TargetInsertInfo() { TargetContainerNode = targetContainerNode, InsertIndex = insertIndex };
         }
 
         public TestTreeNode SetTestSuite(TestSuite testSuite)
@@ -1973,7 +1987,7 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 MoveNode(sourceNode, targetNode);
             }
-            else if(action == ChangeType.Copy)
+            else if (action == ChangeType.Copy)
             {
                 CopyNode(sourceNode, targetNode);
             }
@@ -2053,7 +2067,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (m_recordHistory)
             {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testSuiteNode.TestScriptObject, ChangeType.Remove, currentLocation, testSuiteNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testSuiteNode.TestScriptObject, ChangeType.Remove, currentLocation, tag: testSuiteNode));
             }
         }
 
@@ -2069,7 +2083,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (m_recordHistory)
             {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testCaseNode.TestScriptObject, ChangeType.Remove, currentLocation, testCaseNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testCaseNode.TestScriptObject,
+                    ChangeType.Remove, formerValue: currentLocation, tag: testCaseNode));
             }
         }
 
@@ -2088,7 +2103,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (m_recordHistory)
             {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testStepNode.TestScriptObject, ChangeType.Remove, currentLocation, testStepNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testStepNode.TestScriptObject,
+                    ChangeType.Remove, formerValue: currentLocation, tag: testStepNode));
             }
         }
 
@@ -2163,22 +2179,29 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 case ChangeType.Update:
                     {
-                        undoRedoNodePropertyChange(changeEvent);
+                        // Change property back to original value.
+                        undoRedoNodePropertyChange(changeEvent, false);
                     }
                     break;
                 case ChangeType.Add:  // If node was added, need to remove it.
                     {
+                        // Removed recently added node
                         RemoveNode(changeEventNode, false);
                     }
 
                     break;
                 case ChangeType.Remove:
                     {
+                        // Restore previouly removed node.
                         TestScriptObjectLocation location = changeEvent.FormerValue as TestScriptObjectLocation;
-                        location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
-                        Filter(m_currentFilter);
+                        //location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
+                        //this.InsertNode(changeEvent.TestScriptObject, cha)
+                        // Filter(m_currentFilter);
 
                         TestTreeNode parentNode = FindNode(location.Parent);
+                        this.InsertNode(changeEventNode, parentNode, location.Index, false);
+                        //parentNode.Nodes.Insert(location.Index, changeEventNode);
+
 
                         if (parentNode != null)
                         {
@@ -2190,14 +2213,20 @@ namespace Quintity.TestFramework.TestEngineer
                     break;
                 case ChangeType.Copy:
                     {
+                        // Removed recently added/copied node.
                         RemoveNode(changeEventNode, false);
                     }
 
                     break;
                 case ChangeType.Move:
                     {
+                        // Reverse recent node move
                         TestScriptObjectLocation formerLocation = changeEvent.FormerValue as TestScriptObjectLocation;
-                        // MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index);
+
+                        //var parentNode = FindNode(formerLocation.Parent);
+                        //var targetNode = parentNode.Nodes.Count != 0 ? parentNode.Nodes[formerLocation.Index] as TestTreeNode : parentNode;
+
+                         this.MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index, false);
                     }
                     break;
                 default:
@@ -2275,7 +2304,7 @@ namespace Quintity.TestFramework.TestEngineer
             // Turn painting off
             BeginUpdate();
 
-            var applicableNode = SelectedNode = !(changeEvent.TestScriptObject is TestPreprocessor) ? 
+            var applicableNode = SelectedNode = !(changeEvent.TestScriptObject is TestPreprocessor) ?
                 FindNode(changeEvent.TestScriptObject) : FindNode(changeEvent.TestScriptObject.ParentID);
 
             // Get changed property through reflection.
@@ -2312,7 +2341,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (m_recordHistory)
             {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testScriptObject, ChangeType.Update,
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject, ChangeType.Update,
                     args.Property, args.CurrentValue, args.FormerValue, testScriptObject));
             }
         }
@@ -2900,7 +2929,7 @@ namespace Quintity.TestFramework.TestEngineer
             ClipboardCut();
         }
 
-        
+
 
         private void m_miCopy_Click(object sender, EventArgs e)
         {
