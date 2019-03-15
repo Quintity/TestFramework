@@ -680,7 +680,7 @@ namespace Quintity.TestFramework.TestEngineer
             return result;
         }
 
-        public void MoveNode(TestTreeNode sourceNode, TestScriptObjectContainer  targetContainer,  int index, bool recordHistory = true)
+        public void MoveNode(TestTreeNode sourceNode, TestScriptObjectContainer targetContainer, int index, bool recordHistory = true)
         {
             var parentNode = FindNode(targetContainer);
 
@@ -712,6 +712,64 @@ namespace Quintity.TestFramework.TestEngineer
 
             // Remove from old test script object container
             var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
+
+            // Insert into new test script object target container
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
+
+            // Update UI for moved node and previous parent
+            markAsChanged(sourceNodeParent);
+            markAsChanged(sourceNode);
+
+            this.SelectedNode = sourceNode;
+
+            // Create change event with parents container object and index.
+            if (recordHistory)
+            {
+                // Create old location object
+                TestScriptObjectLocation sourceLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
+
+                // Create new location object.
+                TestScriptObjectLocation targetLocation =
+                    new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
+
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, targetLocation, sourceLocation, tag: sourceNode));
+            }
+
+            bob(sourceNode, true, sourceNode, new TargetInsertInfo());
+
+            Clipboard.Clear();
+        }
+
+        private void bob(TestTreeNode testTreeNode, params dynamic[] list)
+        {
+            int i = 1;
+            if (list[0])
+            {
+                ;
+            }
+
+            var title = list[1].Text;
+            var index = list[2].InsertIndex;
+        }
+
+        /// <summary>
+        /// Inserts an existing node in relationship to target node.  Relationship defined by type of node (e.g., suite, case or step)
+        /// </summary>
+        /// <param name="sourceNode"></param>
+        /// <param name="targetNode"></param>
+        public void InsertNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            var sourceNodeParent = sourceNode.Parent;
+            var sourceParentScriptObject = sourceNode.Parent.TestScriptObject as TestScriptObjectContainer;
+            var sourceScriptObject = sourceNode.TestScriptObject;
+
+            bob(sourceNode, true, sourceNode, new TargetInsertInfo());
+
+            // Get new insertion info (based on rules).
+            var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
+
+            // Insert into parent containertree node accordingly
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
 
             // Insert into new test script object target container
             targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
@@ -2226,7 +2284,7 @@ namespace Quintity.TestFramework.TestEngineer
                         //var parentNode = FindNode(formerLocation.Parent);
                         //var targetNode = parentNode.Nodes.Count != 0 ? parentNode.Nodes[formerLocation.Index] as TestTreeNode : parentNode;
 
-                         this.MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index, false);
+                        this.MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index, false);
                     }
                     break;
                 default:
