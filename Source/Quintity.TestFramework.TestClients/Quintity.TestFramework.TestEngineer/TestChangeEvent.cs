@@ -29,7 +29,7 @@ namespace Quintity.TestFramework.TestEngineer
     public class TestChangeEvent
     {
         private TestScriptObject m_testScriptObject;
-        private ChangeType m_changeType;
+        //private ChangeType m_changeType;
         private string m_property;
         private object m_currentState;
         private object m_formerState;
@@ -42,7 +42,7 @@ namespace Quintity.TestFramework.TestEngineer
         public dynamic ChangeObject => _changeObject;
 
         private ChangeType _changeType;
-        public ChangeType ChangeTypex => _changeType;
+        public ChangeType ChangeType => _changeType;
 
         private dynamic[] _changeValues;
         public dynamic[] ChangeValues => _changeValues;
@@ -66,7 +66,7 @@ namespace Quintity.TestFramework.TestEngineer
             string property, object currentValue, object formerValue, object tag = null)
         {
             this.m_testScriptObject = testScriptObject;
-            this.m_changeType = editAction;
+            //this.m_changeType = editAction;
             this.m_property = property;
             this.m_currentState = currentValue;
             this.m_formerState = formerValue;
@@ -78,10 +78,10 @@ namespace Quintity.TestFramework.TestEngineer
             get { return this.m_testScriptObject; }
         }
 
-        public ChangeType ChangeType
-        {
-            get { return this.m_changeType; }
-        }
+        //public ChangeType ChangeType
+        //{
+        //    get { return this._changeType; }
+        //}
 
         public string Property
         {

@@ -484,12 +484,13 @@ namespace Quintity.TestFramework.TestEngineer
             this.SelectedNode = nodeToInsert;
             //this.m_nodeMapping.Add(testScriptObject.SystemID, newNode);
 
+            // TODO - Cleanup
             // Create change event with parents container object and index.
-            if (recordHistory)
-            {
-                TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, newContainerIndex);
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(nodeToInsert.TestScriptObject, ChangeType.Add, location, null, tag: nodeToInsert));
-            }
+            //if (recordHistory)
+            //{
+            //    TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, newContainerIndex);
+            //    m_changeHistory.RecordChangeEvent(new TestChangeEvent(nodeToInsert.TestScriptObject, ChangeType.Add, location, null, tag: nodeToInsert));
+            //}
 
             fireTestTreeNodeAddedEvent(nodeToInsert);
 
@@ -2212,12 +2213,12 @@ namespace Quintity.TestFramework.TestEngineer
         {
             BeginUpdate();
 
-            switch (changeEvent.ChangeTypex)
+            switch (changeEvent.ChangeType)
             {
                 case ChangeType.Update:
                     {
                         // Change property back to original value.
-                        undoRedoNodePropertyChange(changeEvent, false);
+                        undoRedoNodePropertyChange(changeEvent);
                     }
                     break;
                 case ChangeType.Add:  // If node was added, need to remove it.
@@ -2285,10 +2286,11 @@ namespace Quintity.TestFramework.TestEngineer
         {
             BeginUpdate();
 
-            switch (changeEvent.ChangeTypex)
+            switch (changeEvent.ChangeType)
             {
                 case ChangeType.Update:
                     {
+                        // Redo previously undone property change.
                         undoRedoNodePropertyChange(changeEvent, false);
                     }
                     break;
@@ -2338,25 +2340,27 @@ namespace Quintity.TestFramework.TestEngineer
             EndUpdate();
         }
 
-        private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool undo = true)
+        private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool isUndo = true)
         {
             // Turn painting off
             BeginUpdate();
 
-            var applicableNode = SelectedNode = !(changeEvent.TestScriptObject is TestPreprocessor) ?
-                FindNode(changeEvent.TestScriptObject) : FindNode(changeEvent.TestScriptObject.ParentID);
+            SelectedNode = changeEvent.ChangeObject;
 
             // Get changed property through reflection.
-            Type type = changeEvent.TestScriptObject.GetType();
-            PropertyInfo pinfo = type.GetProperty(changeEvent.Property);
+            Type type = changeEvent.ChangeValues[0].GetType();
+            PropertyInfo pinfo = type.GetProperty(changeEvent.ChangeValues[1]);
 
             // Set property to old value.
-            object value = undo ? changeEvent.FormerValue : changeEvent.CurrentValue;
-            pinfo.SetValue(changeEvent.TestScriptObject, value, null);
+            object value = isUndo ? changeEvent.ChangeValues[3] : changeEvent.ChangeValues[2];
+
+            m_recordHistory = false;
+            pinfo.SetValue(changeEvent.ChangeValues[0], value, null);
+            m_recordHistory = true;
 
             // Update node UI if necessary.
-            applicableNode.UpdateTitleAndToolTip();
-            applicableNode.UpdateUI();
+            changeEvent.ChangeObject.UpdateTitleAndToolTip();
+            changeEvent.ChangeObject.UpdateUI();
 
             // Turn painting on.
             EndUpdate();
@@ -2365,23 +2369,28 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void TestScriptObject_OnTestPropertyChanged(TestScriptObject testScriptObject, TestPropertyChangedEventArgs args)
         {
-            TestTreeNode node = null;
+            // TODO - Cleanup
+            TestTreeNode testTreeNode = testScriptObject is TestProcessor ? FindNode(testScriptObject.ParentID) : FindNode(testScriptObject);
 
-            if (testScriptObject is TestProcessor)
-            {
-                node = FindNode(testScriptObject.ParentID);
-            }
-            else
-            {
-                node = FindNode(testScriptObject);
-            }
+            //if (testScriptObject is TestProcessor)
+            //{
+            //    testTreeNode = FindNode(testScriptObject.ParentID);
+            //}
+            //else
+            //{
+            //    testTreeNode = FindNode(testScriptObject);
+            //}
 
-            markAsChanged(node);
+            //markAsChanged(testTreeNode);
 
             if (m_recordHistory)
             {
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject, ChangeType.Update,
-                    args.Property, args.CurrentValue, args.FormerValue, testScriptObject));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Update, testTreeNode,
+                    testScriptObject, args.Property, args.CurrentValue, args.FormerValue));
+
+                // TODO -cleanup/delete
+                //m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject, ChangeType.Update,
+                //    args.Property, args.CurrentValue, args.FormerValue, testScriptObject));
             }
         }
 
