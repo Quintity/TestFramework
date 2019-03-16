@@ -547,6 +547,9 @@ namespace Quintity.TestFramework.TestEngineer
             TestScriptObjectContainer parentContainer = nodeToRemove.Parent.TestScriptObjectAsContainer();
             int index = parentContainer.FindTestScriptObjectIndex(nodeToRemove.TestScriptObject);
 
+            // Need to determine for undo purposes (will beocme the undo target node.
+            var undoTargetNode = nodeToRemove.Index != 0 ? nodeToRemove.Nodes[nodeToRemove.Index - 1] : parentNode;
+
             // Remove from parent container
             parentContainer.RemoveTestScriptObject(nodeToRemove.TestScriptObject);
 
@@ -567,10 +570,10 @@ namespace Quintity.TestFramework.TestEngineer
             // Create change event with parents container object and index.
             if (recordHistory)
             {
-                TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, index);
+                // TODO - remove TestScriptObjectLocation
+                //TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, index);
 
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject: nodeToRemove.TestScriptObject,
-                    editAction: ChangeType.Remove, formerValue: location));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Remove, nodeToRemove, undoTargetNode));
             }
         }
 
@@ -580,45 +583,55 @@ namespace Quintity.TestFramework.TestEngineer
             public int InsertIndex;
         }
 
+        public TestTreeNode CopyNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            return CopyNode(sourceNode, targetNode, null, recordHistory);
+        }
+
         /// <summary>
         /// Moves the selected "Cut" source object to the target node location.
         /// </summary>
-        /// <param name="nodeToCopy"></param>
+        /// <param name="sourceNode"></param>
         /// <param name="targetNode"></param>
-        public void CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, bool recordHistory = true)
+        public TestTreeNode CopyNode(TestTreeNode sourceNode, TestTreeNode targetNode, TestTreeNode copyNode, bool recordHistory = true)
         {
-            var sourceNodeParent = nodeToCopy.Parent;
-            var sourceParentScriptObject = nodeToCopy.Parent.TestScriptObject as TestScriptObjectContainer;
-            var sourceScriptObject = nodeToCopy.TestScriptObject;
+            var testScriptObjectCopy = copyNode?.TestScriptObject;
 
-            // Create copy of node's test script object
-            TestScriptObject testScriptObjectCopy = null;
-
-            if (nodeToCopy.IsTestSuite())
+            // If copied node is not supplied (doesn't already exist), create it.
+            if (testScriptObjectCopy is null)
             {
-                testScriptObjectCopy = new TestSuite(nodeToCopy.TestScriptObject as TestSuite, null, null);
-            }
-            else if (nodeToCopy.IsTestCase())
-            {
-                testScriptObjectCopy = new TestCase(nodeToCopy.TestScriptObject as TestCase, null);
-            }
-            else if (nodeToCopy.IsTestStep())
-            {
-                testScriptObjectCopy = new TestStep(nodeToCopy.TestScriptObject as TestStep, null);
-            }
-
-            // Change the singular item (not it's children if container) to indicate copy.
-            testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
-
-            // Create new node for test script object.
-            TestTreeNode copyNode = new TestTreeNode(testScriptObjectCopy);
-
-            if (copyNode.IsTestSuite())
-            {
-                if (promptToSaveTestSuite(copyNode, false) == DialogResult.Cancel)
+                if (sourceNode.IsTestSuite())
                 {
-                    return;
+                    testScriptObjectCopy = new TestSuite(sourceNode.TestScriptObject as TestSuite, null, null);
                 }
+                else if (sourceNode.IsTestCase())
+                {
+                    testScriptObjectCopy = new TestCase(sourceNode.TestScriptObject as TestCase, null);
+                }
+                else if (sourceNode.IsTestStep())
+                {
+                    testScriptObjectCopy = new TestStep(sourceNode.TestScriptObject as TestStep, null);
+                }
+
+                // Change the singular item (not it's children if container) to indicate copy.
+                testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
+
+                // A little hacky, change title generates a undo change history (don't want).
+                m_changeHistory.PopFromUndoStack();
+
+                // Create new node for test script object.
+                copyNode = new TestTreeNode(testScriptObjectCopy);
+
+                if (copyNode.IsTestSuite())
+                {
+                    if (promptToSaveTestSuite(copyNode, false) == DialogResult.Cancel)
+                    {
+                        return null;
+                    }
+                }
+
+                // Add copied objects children to copyNode;
+                constructNodeTreeFragment(copyNode, testScriptObjectCopy);
             }
 
             // Get new insertion info (based on rules).
@@ -627,14 +640,8 @@ namespace Quintity.TestFramework.TestEngineer
             // Insert into parent containertree node accordingly
             targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
 
-            // Remove from old test script object container
-            //var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
-
             // Insert into new test script object target container
             targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
-
-            // Add copied objects children to copyNode;
-            constructNodeTreeFragment(copyNode, testScriptObjectCopy);
 
             // Update UI for moved node and previous parent
             markAsChanged(copyNode);
@@ -644,15 +651,12 @@ namespace Quintity.TestFramework.TestEngineer
             // Create change event with parents container object and index.
             if (recordHistory)
             {
-                // Create new location object.
-                TestScriptObjectLocation newLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
-
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(testScriptObject: nodeToCopy.TestScriptObject,
-                    editAction: ChangeType.Add, currentValue: newLocation, formerValue: null, tag: copyNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Copy, copyNode, sourceNode, targetNode));
             }
 
             fireTestTreeNodeAddedEvent(copyNode);
+
+            return copyNode;
         }
 
         private DialogResult promptToSaveTestSuite(TestTreeNode currentNode, bool recordHistory = true)
@@ -700,6 +704,9 @@ namespace Quintity.TestFramework.TestEngineer
             var sourceParentScriptObject = sourceNode.Parent.TestScriptObject as TestScriptObjectContainer;
             var sourceScriptObject = sourceNode.TestScriptObject;
 
+            // Need to determine for undo purposes (will beocme the undo target node.
+            var undoTargetNode = sourceNode.Index != 0 ? sourceNodeParent.Nodes[sourceNode.Index - 1] : sourceNodeParent;
+
             // Remove from source container node
             sourceNodeParent.Nodes.Remove(sourceNode);
             fireTestTreeNodeRemovedEvent(sourceNode);
@@ -732,24 +739,10 @@ namespace Quintity.TestFramework.TestEngineer
                 TestScriptObjectLocation targetLocation =
                     new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
 
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, targetLocation, sourceLocation, tag: sourceNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Move, sourceNode, targetNode, undoTargetNode));
             }
-
-            bob(sourceNode, true, sourceNode, new TargetInsertInfo());
 
             Clipboard.Clear();
-        }
-
-        private void bob(TestTreeNode testTreeNode, params dynamic[] list)
-        {
-            int i = 1;
-            if (list[0])
-            {
-                ;
-            }
-
-            var title = list[1].Text;
-            var index = list[2].InsertIndex;
         }
 
         /// <summary>
@@ -760,10 +753,7 @@ namespace Quintity.TestFramework.TestEngineer
         public void InsertNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
         {
             var sourceNodeParent = sourceNode.Parent;
-            var sourceParentScriptObject = sourceNode.Parent.TestScriptObject as TestScriptObjectContainer;
             var sourceScriptObject = sourceNode.TestScriptObject;
-
-            bob(sourceNode, true, sourceNode, new TargetInsertInfo());
 
             // Get new insertion info (based on rules).
             var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
@@ -780,18 +770,11 @@ namespace Quintity.TestFramework.TestEngineer
 
             this.SelectedNode = sourceNode;
 
-            // Create change event with parents container object and index.
-            if (recordHistory)
-            {
-                // Create old location object
-                TestScriptObjectLocation sourceLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
-
-                // Create new location object.
-                TestScriptObjectLocation targetLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
-
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, targetLocation, sourceLocation, tag: sourceNode));
-            }
+            //// Create change event with parents container object and index.
+            //if (recordHistory)
+            //{
+            //    //m_changeHistory.RecordChangeEvent(new TestChangeEvent(sourceNode, ChangeType.Move, targetLocation, sourceLocation, tag: sourceNode));
+            //}
 
             Clipboard.Clear();
         }
@@ -2227,13 +2210,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void undoChangeEvent(TestChangeEvent changeEvent)
         {
-            TestTreeNode changeEventNode = changeEvent.Tag as TestTreeNode;
-
-            m_recordHistory = false;
-
             BeginUpdate();
 
-            switch (changeEvent.ChangeType)
+            switch (changeEvent.ChangeTypex)
             {
                 case ChangeType.Update:
                     {
@@ -2244,47 +2223,46 @@ namespace Quintity.TestFramework.TestEngineer
                 case ChangeType.Add:  // If node was added, need to remove it.
                     {
                         // Removed recently added node
-                        RemoveNode(changeEventNode, false);
+                        //RemoveNode(changeEventNode, false);
                     }
 
                     break;
                 case ChangeType.Remove:
                     {
+                        InsertNode(changeEvent.ChangeObject, changeEvent.ChangeValues[0]);
                         // Restore previouly removed node.
                         TestScriptObjectLocation location = changeEvent.FormerValue as TestScriptObjectLocation;
                         //location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
                         //this.InsertNode(changeEvent.TestScriptObject, cha)
                         // Filter(m_currentFilter);
 
-                        TestTreeNode parentNode = FindNode(location.Parent);
-                        this.InsertNode(changeEventNode, parentNode, location.Index, false);
+                        //TestTreeNode parentNode = FindNode(location.Parent);
+                        //this.InsertNode(changeEventNode, parentNode, location.Index, false);
                         //parentNode.Nodes.Insert(location.Index, changeEventNode);
 
 
-                        if (parentNode != null)
-                        {
-                            parentNode.Expand();
-                            markAsChanged(changeEventNode);
-                            SelectedNode = changeEventNode;
-                        }
+                        //if (parentNode != null)
+                        //{
+                        //    parentNode.Expand();
+                        //    markAsChanged(changeEventNode);
+                        //    SelectedNode = changeEventNode;
+                        //}
                     }
                     break;
                 case ChangeType.Copy:
                     {
+                        //TODO - cleanup
                         // Removed recently added/copied node.
-                        RemoveNode(changeEventNode, false);
+                        //RemoveNode(changeEventNode, false);
+                        RemoveNode(changeEvent.ChangeObject, false);
+                        //var targetNode = changeEvent.ChangeValues[0];
                     }
 
                     break;
                 case ChangeType.Move:
                     {
-                        // Reverse recent node move
-                        TestScriptObjectLocation formerLocation = changeEvent.FormerValue as TestScriptObjectLocation;
-
-                        //var parentNode = FindNode(formerLocation.Parent);
-                        //var targetNode = parentNode.Nodes.Count != 0 ? parentNode.Nodes[formerLocation.Index] as TestTreeNode : parentNode;
-
-                        this.MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index, false);
+                        // Reverse the move.
+                        MoveNode(changeEvent.ChangeObject, changeEvent.ChangeValues[1], false);
                     }
                     break;
                 default:
@@ -2305,9 +2283,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void redoChangeEvent(TestChangeEvent changeEvent)
         {
-            TestTreeNode changeEventNode = getNodeMapping(changeEvent.TestScriptObject);
+            BeginUpdate();
 
-            switch (changeEvent.ChangeType)
+            switch (changeEvent.ChangeTypex)
             {
                 case ChangeType.Update:
                     {
@@ -2316,6 +2294,8 @@ namespace Quintity.TestFramework.TestEngineer
                     break;
                 case ChangeType.Add:  // If node was added, need to remove it.
                     {
+                        var changeEventNode = changeEvent.TestTreeNode;
+
                         TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
                         location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
 
@@ -2333,28 +2313,29 @@ namespace Quintity.TestFramework.TestEngineer
                     break;
                 case ChangeType.Remove:
                     {
+                        var changeEventNode = changeEvent.TestTreeNode;
                         removeNode(changeEventNode);
                     }
 
                     break;
                 case ChangeType.Copy:
                     {
-                        TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        //location.Parent.Nodes.Insert(location.Index, changeEventNode);
-                        SelectedNode = changeEventNode;
+                        SelectedNode = CopyNode(changeEvent.ChangeValues[0],
+                            changeEvent.ChangeValues[1], changeEvent.ChangeObject, false);
                     }
 
                     break;
                 case ChangeType.Move:
                     {
-                        TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        //MoveNode(changeEventNode, location.Parent, location.Index);
+                        MoveNode(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
                     }
                     break;
                 default:
                     { }
                     break;
             }
+
+            EndUpdate();
         }
 
         private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool undo = true)

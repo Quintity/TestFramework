@@ -35,6 +35,25 @@ namespace Quintity.TestFramework.TestEngineer
         private object m_formerState;
         private object m_tag;
 
+        private TestTreeNode _testTreeNode;
+        public TestTreeNode TestTreeNode => _testTreeNode;
+
+        private TestTreeNode _changeObject;
+        public dynamic ChangeObject => _changeObject;
+
+        private ChangeType _changeType;
+        public ChangeType ChangeTypex => _changeType;
+
+        private dynamic[] _changeValues;
+        public dynamic[] ChangeValues => _changeValues;
+
+        public TestChangeEvent(ChangeType changeType, dynamic changeObject, params dynamic[] changeValues)
+        {
+            _changeType = changeType;
+            _changeObject = changeObject;
+            _changeValues = changeValues;
+        }
+
         public TestChangeEvent(TestScriptObject testScriptObject, ChangeType editAction, object formerValue, object tag = null)
             : this(testScriptObject, editAction, null, null, formerValue, tag)
         { }
@@ -84,14 +103,16 @@ namespace Quintity.TestFramework.TestEngineer
             get { return m_tag; }
         }
 
+        // TODO - Cleanup
         public override string ToString()
         {
-            return string.Format("TestScriptObject:  {0}, Action:  {1}, Property:  {2}, Current: {3}, Former:  {4}, Tag:  {5}",
-                m_testScriptObject.Title, m_changeType,
-                m_property  != null ? m_property : "N/A",
-                m_currentState != null ? m_currentState.ToString() : "N/A",
-                m_formerState != null ? m_formerState.ToString() : "N/A",
-                m_tag != null ? m_tag.ToString() : "N/A");
+            return string.Empty;
+            //return string.Format("TestScriptObject:  {0}, Action:  {1}, Property:  {2}, Current: {3}, Former:  {4}, Tag:  {5}",
+            //    m_testScriptObject.Title, m_changeType,
+            //    m_property  != null ? m_property : "N/A",
+            //    m_currentState != null ? m_currentState.ToString() : "N/A",
+            //    m_formerState != null ? m_formerState.ToString() : "N/A",
+            //    m_tag != null ? m_tag.ToString() : "N/A");
         }
 
     }

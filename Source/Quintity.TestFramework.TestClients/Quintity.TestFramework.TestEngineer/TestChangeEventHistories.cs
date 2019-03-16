@@ -88,6 +88,16 @@ namespace Quintity.TestFramework.TestEngineer
             m_undoStack.Clear();
         }
 
+        internal TestChangeEvent PopFromUndoStack()
+        {
+            return m_undoStack.Pop();
+        }
+
+        internal TestChangeEvent PopFromRedoStack()
+        {
+            return m_redoStack.Pop();
+        }
+
         #endregion
 
         /// <summary>
