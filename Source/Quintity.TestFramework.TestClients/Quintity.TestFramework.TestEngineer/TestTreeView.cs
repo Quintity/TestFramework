@@ -2169,16 +2169,6 @@ namespace Quintity.TestFramework.TestEngineer
 
         #region Undo/Redo methods
 
-        private void m_changeHistory_OnTestHistoryUndoEvent(TestChangeEvent e)
-        {
-            undoChangeEvent(e);
-        }
-
-        private void m_changeHistory_OnTestHistoryRedoEvent(TestChangeEvent e)
-        {
-            redoChangeEvent(e);
-        }
-
         private void undoChangeEvent(TestChangeEvent changeEvent)
         {
             BeginUpdate();
@@ -2201,14 +2191,6 @@ namespace Quintity.TestFramework.TestEngineer
                     {
                         // Reinsert recently removed node.
                         InsertNodeExt(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
-
-                        // TODO Do this?
-                        //if (parentNode != null)
-                        //{
-                        //    parentNode.Expand();
-                        //    markAsChanged(changeEventNode);
-                        //    SelectedNode = changeEventNode;
-                        //}
                     }
                     break;
                 case ChangeType.Copy:
@@ -2309,34 +2291,6 @@ namespace Quintity.TestFramework.TestEngineer
             EndUpdate();
         }
         #endregion
-
-        private void TestScriptObject_OnTestPropertyChanged(TestScriptObject testScriptObject, TestPropertyChangedEventArgs args)
-        {
-            TestTreeNode testTreeNode = testScriptObject is TestProcessor ? FindNode(testScriptObject.ParentID) : FindNode(testScriptObject);
-
-            markAsChanged(testTreeNode);
-
-            if (m_recordHistory)
-            {
-                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Update, testTreeNode,
-                    testScriptObject, args.Property, args.CurrentValue, args.FormerValue));
-            }
-        }
-
-        private void TestTreeView_OnTestTreeChanged(TestTreeView testTreeView, TestTreeChangedEventArgs args)
-        {
-            switch (args.NodeAction)
-            {
-                case ChangeType.Add:
-                    break;
-                case ChangeType.Remove:
-                    break;
-                case ChangeType.Move:
-                    break;
-                default:
-                    break;
-            }
-        }
 
         #endregion
 
@@ -2837,6 +2791,29 @@ namespace Quintity.TestFramework.TestEngineer
 
         #region Other event handlers
 
+        private void m_changeHistory_OnTestHistoryUndoEvent(TestChangeEvent e)
+        {
+            undoChangeEvent(e);
+        }
+
+        private void m_changeHistory_OnTestHistoryRedoEvent(TestChangeEvent e)
+        {
+            redoChangeEvent(e);
+        }
+
+        private void TestScriptObject_OnTestPropertyChanged(TestScriptObject testScriptObject, TestPropertyChangedEventArgs args)
+        {
+            TestTreeNode testTreeNode = testScriptObject is TestProcessor ? FindNode(testScriptObject.ParentID) : FindNode(testScriptObject);
+
+            markAsChanged(testTreeNode);
+
+            if (m_recordHistory)
+            {
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Update, testTreeNode,
+                    testScriptObject, args.Property, args.CurrentValue, args.FormerValue));
+            }
+        }
+
         void TestScriptObjectEditorDialog_OnTestScriptObjectEditorClosed(object sender, TestScriptObjectEditorDialog.TestScriptObjectEditorClosedArgs e)
         {
             if (!(e.TestScriptObject is TestProcessor))
@@ -2859,8 +2836,6 @@ namespace Quintity.TestFramework.TestEngineer
             displayTestScriptObjectEditorDialog();
         }
 
-        #endregion
-
         private void TestTreeView_AfterExpand(object sender, TreeViewEventArgs e)
         {
             if (SelectedNode != null)
@@ -2874,5 +2849,7 @@ namespace Quintity.TestFramework.TestEngineer
             if (SelectedNode != null)
                 SelectedNode.UpdateUI();
         }
+
+        #endregion
     }
 }
