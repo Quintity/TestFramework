@@ -30,10 +30,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void fireTestTreeNodeAddedEvent(TestTreeNode nodeAdded)
         {
-            if (OnTestTreeNodeAdded != null)
-            {
-                OnTestTreeNodeAdded(this, nodeAdded);
-            }
+            OnTestTreeNodeAdded?.Invoke(this, nodeAdded);
         }
 
         public delegate void TestTreeNodeRemoved(TestTreeView testTreeView, TestTreeNode nodeRemoved);
@@ -41,10 +38,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void fireTestTreeNodeRemovedEvent(TestTreeNode nodeRemoved)
         {
-            if (OnTestTreeNodeRemoved != null)
-            {
-                OnTestTreeNodeRemoved(this, nodeRemoved);
-            }
+            OnTestTreeNodeRemoved?.Invoke(this, nodeRemoved);
         }
 
         // Delegate and method to traverse all tree nodes starting at name node.
@@ -115,8 +109,6 @@ namespace Quintity.TestFramework.TestEngineer
         bool m_recordHistory = true;
         private ChangeType m_clipboardAction = ChangeType.Unknown;
 
-        private Dictionary<Guid, TestTreeNode> m_nodeMapping;
-
         private const int WM_TIMER = 0x0113;
         private bool _triggerLabelEdit = false;
         private bool _wasDoubleClick = false;
@@ -145,7 +137,6 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miAddTestSuite;
         private ToolStripSeparator m_toolStripSeparator5;
         private OpenFileDialog m_openFileDialog;
-        private ToolStripMenuItem m_miReloadTestSuite;
         private ToolStripMenuItem m_miRename;
         private ToolStripSeparator m_toolStripSeparator6;
         private ToolStripMenuItem m_miBreakpoint;
@@ -166,8 +157,6 @@ namespace Quintity.TestFramework.TestEngineer
             InitializeComponent();
 
             Clipboard.Clear();
-
-            m_nodeMapping = new Dictionary<Guid, TestTreeNode>();
 
             registerRuntimeEvents();
 
@@ -200,7 +189,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miActivate.Click += m_miActivate_Click;
             this.m_miActivateAll.Click += m_miActivateAll_Click;
             this.m_miAddTestSuite.Click += m_miAddTestSuite_Click;
-            this.m_miReloadTestSuite.Click += m_miReloadTestSuite_Click;
             this.m_miNewTestSuite.Click += m_miNewTestSuite_Click;
             this.m_miNewTestCase.Click += m_miNewTestCase_Click;
             this.m_miNewTestStep.Click += m_miNewTestStep_Click;
@@ -285,7 +273,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         #endregion
 
-        #region Public methods
+        #region Public and internal methods
 
         /// <summary>
         /// Traverses TestTreeView for all nodes.
@@ -312,7 +300,6 @@ namespace Quintity.TestFramework.TestEngineer
             nodes.Add(node);
             return true;
         }
-
 
         public TestTreeNode OpenExistingTestSuite(TestTreeNode currentNode, bool recordHistory = true)
         {
@@ -389,11 +376,73 @@ namespace Quintity.TestFramework.TestEngineer
 
                 var testcase = testSuite.AddTestCase(new TestCase("Untitled test case"));
                 testcase.AddTestStep(new TestStep("Untitled test step"));
+                newNode = new TestTreeNode(testSuite);
+                constructNodeTreeFragment(newNode, testSuite);
+                InsertNodeExt(newNode, currentNode, false);
 
-                newNode = insertTestSuite(testSuite, currentNode);
+                if (recordHistory)
+                {
+                    m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Add, newNode, currentNode));
+                }
+            }
 
-                newNode.HasChanged = false;
-                newNode.UpdateTitleAndToolTip();
+            return newNode;
+        }
+
+        public TestTreeNode AddExistingTestSuite(TestTreeNode currentNode, bool recordHistory = true)
+        {
+            m_openFileDialog.Reset();
+            m_openFileDialog.Title = "Select test suite to add";
+            m_openFileDialog.InitialDirectory = TestProperties.TestSuites;
+            m_openFileDialog.Filter = "Test suites (*.ste)|*.ste";
+            m_openFileDialog.FilterIndex = 1;
+
+            TestTreeNode newNode = null;
+
+            try
+            {
+                if (DialogResult.OK == m_openFileDialog.ShowDialog())
+                {
+                    var testSuite = TestSuite.ReadFromFile(m_openFileDialog.FileName);
+
+                    Cursor = Cursors.WaitCursor;
+                    var existingNode = FindNode(testSuite);
+                    Cursor = Cursors.Default;
+
+                    if (existingNode == null)
+                    {
+                        newNode = new TestTreeNode(testSuite);
+                        constructNodeTreeFragment(newNode, testSuite);
+                        newNode.Expand();
+                        InsertNodeExt(newNode, currentNode, false);
+
+                        if (recordHistory)
+                        {
+                            m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Add, newNode, currentNode));
+                        }
+                    }
+                    else
+                    {
+                        SelectedNode = existingNode;
+
+                        MessageBox.Show(
+                          string.Format("Test suite \"{0}\" is already a test suite member.", testSuite.Title),
+                          "Quintity TestFramework", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+            }
+            catch (System.Runtime.Serialization.SerializationException)
+            {
+                MessageBox.Show(this,
+                    string.Format(" \"{0}\" does not appear to be a valid test suite file", m_openFileDialog.FileName),
+                    "Quintity TestFramework",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(this, exception.Message,
+                    "Quintity TestFramework",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
             return newNode;
@@ -401,141 +450,42 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestCase(TestTreeNode currentNode, bool recordHistory = true)
         {
-            TestTreeNode newNode = null;
-            TestCase testCase = new TestCase("Untitled test case");
-
-            if (currentNode.IsTestSuite())
-            {
-                newNode = InsertNode(testCase, currentNode, -1, recordHistory);
-            }
-            else if (currentNode.IsTestCase())
-            {
-                newNode = InsertNode(testCase, currentNode.Parent, currentNode.Index + 1, recordHistory);
-            }
+            var newNode = InsertNodeExt(new TestCase("Untitled test case"), currentNode, false);
 
             // Initialize test case with a single test step.
             AddNewTestStep(newNode, false);
+
+            newNode.Expand();
+
+            if (recordHistory)
+            {
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Add, newNode, currentNode));
+            }
 
             return newNode;
         }
 
         public TestTreeNode AddNewTestStep(TestTreeNode currentNode, bool recordHistory = true)
         {
-            TestTreeNode newNode = null;
+            var newNode = InsertNodeExt(new TestStep("Untitle test step"), currentNode, false);
 
-            // Create test step
-            TestStep testStep = new TestStep("Untitled test step");
-
-            if (currentNode.IsTestCase())
-            {
-                newNode = InsertNode(testStep, currentNode, -1, recordHistory);
-
-            }
-            else if (currentNode.IsTestStep())
-            {
-                newNode = InsertNode(testStep, currentNode.Parent, currentNode.Index + 1, recordHistory);
-            }
-
-            return newNode;
-        }
-
-        public TestTreeNode InsertNode(TestScriptObject testScriptObject, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
-        {
-            TestScriptObjectContainer parentContainer = null;
-            int newContainerIndex = 0;
-
-            // Create new node for test script object.
-            TestTreeNode newNode = new TestTreeNode(testScriptObject);
-
-            if (null == parentNode)  // Must be root node.
-            {
-                Nodes.Clear();
-                this.Nodes.Insert(0, newNode);
-            }
-            else
-            {
-                // Get parent's container object.
-                parentContainer = parentNode.TestScriptObjectAsContainer();
-
-                // Get previous sibling node's container index
-                if (nodeIndex != -1)
-                {
-                    if (nodeIndex != 0)
-                    {
-                        TestTreeNode siblingNode = parentNode.Nodes[nodeIndex - 1] as TestTreeNode;  // Previous?
-
-                        TestScriptObject siblingObject = siblingNode.TestScriptObject;
-
-                        newContainerIndex = parentContainer.FindTestScriptObjectIndex(siblingObject) + 1;
-
-                        nodeIndex = siblingNode.Index + 1;
-                    }
-                }
-                else
-                {
-                    nodeIndex++;
-                }
-
-                // Add test script object to container to follow sibling in collection.
-                parentContainer.InsertTestScriptObject(testScriptObject, newContainerIndex);
-
-                // Add to tree view parent node at node index.
-                parentNode.Nodes.Insert(nodeIndex, newNode);
-            }
-
-            // Update UI
-            markAsChanged(newNode);
-            this.SelectedNode = newNode;
-            //this.m_nodeMapping.Add(testScriptObject.SystemID, newNode);
-
-            // Create change event with parents container object and index.
             if (recordHistory)
             {
-                TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, newContainerIndex);
-                m_changeHistory.RecordEvent(new TestChangeEvent(testScriptObject, ChangeType.Add, location, null, newNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Add, newNode, currentNode));
             }
-
-            fireTestTreeNodeAddedEvent(newNode);
 
             return newNode;
         }
 
-        public TestTreeNode CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, int nodeIndex, bool recordHistory = true)
-        {
-            // Get parent's container object.
-            TestScriptObjectContainer parentContainer = nodeToCopy.Parent.TestScriptObjectAsContainer();
-            int index = parentContainer.FindTestScriptObjectIndex(nodeToCopy.TestScriptObject);
-
-            // Create copy of node's test script object
-            TestScriptObject objectCopy = null;
-
-            if (nodeToCopy.IsTestSuite())
-            {
-                objectCopy = new TestSuite(nodeToCopy.TestScriptObject as TestSuite, null, null);
-            }
-            else if (nodeToCopy.IsTestCase())
-            {
-                objectCopy = new TestCase(nodeToCopy.TestScriptObject as TestCase, null);
-            }
-            else if (nodeToCopy.IsTestStep())
-            {
-                objectCopy = new TestStep(nodeToCopy.TestScriptObject as TestStep, null);
-            }
-
-            // Change the singular item (not it's children if container) to indicate copy.
-            objectCopy.Title = "Copy of " + objectCopy.Title;
-
-            // Add node to tree
-            TestTreeNode copyNode = InsertNode(objectCopy, targetNode, nodeIndex, recordHistory);
-
-            // Add copied objects children to copyNode;
-            constructNodeTreeFragment(copyNode, objectCopy);
-
-            return copyNode;
-        }
         public void RemoveNode()
         {
             RemoveNode(SelectedNode);
+        }
+
+        public void RemoveNode(TestScriptObject testScriptObject, bool recordHistory = true)
+        {
+            var nodeToRemove = FindNode(testScriptObject);
+            RemoveNode(nodeToRemove, recordHistory);
         }
 
         public void RemoveNode(TestTreeNode nodeToRemove, bool recordHistory = true)
@@ -545,13 +495,11 @@ namespace Quintity.TestFramework.TestEngineer
             TestScriptObjectContainer parentContainer = nodeToRemove.Parent.TestScriptObjectAsContainer();
             int index = parentContainer.FindTestScriptObjectIndex(nodeToRemove.TestScriptObject);
 
+            // Need to determine for undo purposes (will beocme the undo target node.
+            var undoTargetNode = nodeToRemove.Index != 0 ? parentNode.Nodes[nodeToRemove.Index - 1] : parentNode;
+
             // Remove from parent container
             parentContainer.RemoveTestScriptObject(nodeToRemove.TestScriptObject);
-
-            if (nodeToRemove.HasBreakpoint())
-            {
-                TestBreakpoints.DeleteBreakpoint(nodeToRemove.TestScriptObject);
-            }
 
             // Remove node from tree
             nodeToRemove.Remove();
@@ -565,72 +513,74 @@ namespace Quintity.TestFramework.TestEngineer
             // Create change event with parents container object and index.
             if (recordHistory)
             {
-                TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, index);
-                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToRemove.TestScriptObject, ChangeType.Remove, null, location, nodeToRemove));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Remove, nodeToRemove, undoTargetNode));
             }
         }
 
         private struct TargetInsertInfo
         {
-            public TestTreeNode IargetContainerNode;
+            public TestTreeNode TargetContainerNode;
             public int InsertIndex;
+        }
+
+        public TestTreeNode CopyNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            return CopyNode(sourceNode, targetNode, null, recordHistory);
         }
 
         /// <summary>
         /// Moves the selected "Cut" source object to the target node location.
         /// </summary>
-        /// <param name="nodeToCopy"></param>
+        /// <param name="sourceNode"></param>
         /// <param name="targetNode"></param>
-        public void CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, bool recordHistory = true)
+        public TestTreeNode CopyNode(TestTreeNode sourceNode, TestTreeNode targetNode, TestTreeNode copyNode, bool recordHistory = true)
         {
-            var sourceNodeParent = nodeToCopy.Parent;
-            var sourceParentScriptObject = nodeToCopy.Parent.TestScriptObject as TestScriptObjectContainer;
-            var sourceScriptObject = nodeToCopy.TestScriptObject;
+            var testScriptObjectCopy = copyNode?.TestScriptObject;
 
-            // Create copy of node's test script object
-            TestScriptObject testScriptObjectCopy = null;
-
-            if (nodeToCopy.IsTestSuite())
+            // If copied node is not supplied (doesn't already exist), create it.
+            if (testScriptObjectCopy is null)
             {
-                testScriptObjectCopy = new TestSuite(nodeToCopy.TestScriptObject as TestSuite, null, null);
-            }
-            else if (nodeToCopy.IsTestCase())
-            {
-                testScriptObjectCopy = new TestCase(nodeToCopy.TestScriptObject as TestCase, null);
-            }
-            else if (nodeToCopy.IsTestStep())
-            {
-                testScriptObjectCopy = new TestStep(nodeToCopy.TestScriptObject as TestStep, null);
-            }
-
-            // Change the singular item (not it's children if container) to indicate copy.
-            testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
-
-            // Create new node for test script object.
-            TestTreeNode copyNode = new TestTreeNode(testScriptObjectCopy);
-
-            if (copyNode.IsTestSuite())
-            {
-                if (promptToSaveTestSuite(copyNode, false) == DialogResult.Cancel)
+                if (sourceNode.IsTestSuite())
                 {
-                    return;
+                    testScriptObjectCopy = new TestSuite(sourceNode.TestScriptObject as TestSuite, null, null);
                 }
+                else if (sourceNode.IsTestCase())
+                {
+                    testScriptObjectCopy = new TestCase(sourceNode.TestScriptObject as TestCase, null);
+                }
+                else if (sourceNode.IsTestStep())
+                {
+                    testScriptObjectCopy = new TestStep(sourceNode.TestScriptObject as TestStep, null);
+                }
+
+                // Change title to reflect is copy (suppress undo event)
+                m_recordHistory = false;
+                testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
+                m_recordHistory = true;
+
+                // Create new node for test script object.
+                copyNode = new TestTreeNode(testScriptObjectCopy);
+
+                if (copyNode.IsTestSuite())
+                {
+                    if (promptToSaveTestSuite(copyNode, false) == DialogResult.Cancel)
+                    {
+                        return null;
+                    }
+                }
+
+                // Add copied objects children to copyNode;
+                constructNodeTreeFragment(copyNode, testScriptObjectCopy);
             }
 
             // Get new insertion info (based on rules).
             var targetInsertInfo = GetTargetInsertInfo(copyNode, targetNode);
 
             // Insert into parent containertree node accordingly
-            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
-
-            // Remove from old test script object container
-            //var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, copyNode);
 
             // Insert into new test script object target container
-            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
-
-            // Add copied objects children to copyNode;
-            constructNodeTreeFragment(copyNode, testScriptObjectCopy);
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(testScriptObjectCopy, targetInsertInfo.InsertIndex);
 
             // Update UI for moved node and previous parent
             markAsChanged(copyNode);
@@ -640,14 +590,12 @@ namespace Quintity.TestFramework.TestEngineer
             // Create change event with parents container object and index.
             if (recordHistory)
             {
-                // Create new location object.
-                TestScriptObjectLocation newLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
-
-                m_changeHistory.RecordEvent(new TestChangeEvent(nodeToCopy.TestScriptObject, ChangeType.Add, newLocation, null, nodeToCopy));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Copy, copyNode, sourceNode, targetNode));
             }
 
             fireTestTreeNodeAddedEvent(copyNode);
+
+            return copyNode;
         }
 
         private DialogResult promptToSaveTestSuite(TestTreeNode currentNode, bool recordHistory = true)
@@ -675,6 +623,15 @@ namespace Quintity.TestFramework.TestEngineer
             return result;
         }
 
+        public void MoveNode(TestTreeNode sourceNode, TestScriptObjectContainer targetContainer, int index, bool recordHistory = true)
+        {
+            var parentNode = FindNode(targetContainer);
+
+            // If parent nodes is empty, target is parent
+            var targetNode = parentNode.Nodes.Count != 0 ? parentNode.Nodes[index] as TestTreeNode : parentNode;
+
+            MoveNode(sourceNode, targetNode, recordHistory);
+        }
         /// <summary>
         /// Moves the selected "Cut" source object to the target node location.
         /// </summary>
@@ -686,6 +643,9 @@ namespace Quintity.TestFramework.TestEngineer
             var sourceParentScriptObject = sourceNode.Parent.TestScriptObject as TestScriptObjectContainer;
             var sourceScriptObject = sourceNode.TestScriptObject;
 
+            // Need to determine for undo purposes (will beocme the undo target node.
+            var undoTargetNode = sourceNode.Index != 0 ? sourceNodeParent.Nodes[sourceNode.Index - 1] : sourceNodeParent;
+
             // Remove from source container node
             sourceNodeParent.Nodes.Remove(sourceNode);
             fireTestTreeNodeRemovedEvent(sourceNode);
@@ -694,34 +654,67 @@ namespace Quintity.TestFramework.TestEngineer
             var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
 
             // Insert into parent containertree node accordingly
-            targetInsertInfo.IargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
 
             // Remove from old test script object container
             var success = sourceParentScriptObject.RemoveTestScriptObject(sourceScriptObject);
 
             // Insert into new test script object target container
-            targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
 
             // Update UI for moved node and previous parent
             markAsChanged(sourceNodeParent);
             markAsChanged(sourceNode);
 
             this.SelectedNode = sourceNode;
-
+            
             // Create change event with parents container object and index.
             if (recordHistory)
             {
-                // Create old location object
-                TestScriptObjectLocation oldLocation = new TestScriptObjectLocation(sourceParentScriptObject, sourceNode.Index);
-
-                // Create new location object.
-                TestScriptObjectLocation newLocation =
-                    new TestScriptObjectLocation(targetInsertInfo.IargetContainerNode.TestScriptObjectAsContainer(), targetInsertInfo.InsertIndex);
-
-                m_changeHistory.RecordEvent(new TestChangeEvent(sourceNode.TestScriptObject, ChangeType.Move, newLocation, oldLocation, sourceNode));
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Move, sourceNode, targetNode, undoTargetNode));
             }
 
             Clipboard.Clear();
+        }
+
+        internal void ResetChangeEventHistory() => m_changeHistory.Reset();
+
+        public TestTreeNode InsertNodeExt(TestScriptObject testScriptObject, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            return InsertNodeExt(new TestTreeNode(testScriptObject), targetNode, recordHistory);
+        }
+
+        /// <summary>
+        /// Inserts an existing node in relationship to target node.  Relationship defined by type of node (e.g., suite, case or step)
+        /// </summary>
+        /// <param name="sourceNode"></param>
+        /// <param name="targetNode"></param>
+        public TestTreeNode InsertNodeExt(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        {
+            BeginUpdate();
+
+            var sourceNodeParent = sourceNode.Parent;
+            var sourceScriptObject = sourceNode.TestScriptObject;
+
+            // Get new insertion info (based on rules).
+            var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
+
+            // Insert into parent containertree node accordingly
+            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
+
+            // Insert into new test script object target container
+            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
+
+            // Node and parents as changed.
+            markAsChanged(sourceNode);
+
+            this.SelectedNode = sourceNode;
+
+            Clipboard.Clear();
+
+            EndUpdate();
+
+            return sourceNode;
         }
 
         private TargetInsertInfo GetTargetInsertInfo(TestTreeNode sourceNode, TestTreeNode targetNode)
@@ -769,13 +762,12 @@ namespace Quintity.TestFramework.TestEngineer
                 }
             }
 
-            return new TargetInsertInfo() { IargetContainerNode = targetContainerNode, InsertIndex = insertIndex };
+            return new TargetInsertInfo() { TargetContainerNode = targetContainerNode, InsertIndex = insertIndex };
         }
 
         public TestTreeNode SetTestSuite(TestSuite testSuite)
         {
             m_testSuite = testSuite;
-            m_nodeMapping.Clear();
 
             BeginUpdate();
 
@@ -790,7 +782,6 @@ namespace Quintity.TestFramework.TestEngineer
             var start = DateTime.Now;
             constructNodeTreeFragment(RootNode, testSuite);
             var elapsed = DateTime.Now - start;
-            var count = m_nodeMapping.Count;
 
             // Set breakpoints for newly loaded test suite.
             setTestBreakpoints();
@@ -954,21 +945,6 @@ namespace Quintity.TestFramework.TestEngineer
             //}
 
             return true;
-        }
-
-        private TestTreeNode getNodeMapping(TestScriptObject testScriptObject)
-        {
-            return getNodeMapping(testScriptObject.SystemID);
-        }
-
-        private TestTreeNode getNodeMapping(Guid systemId)
-        {
-            TestTreeNode mappedNode;
-
-            m_nodeMapping.TryGetValue(systemId, out mappedNode);
-
-            return mappedNode;
-
         }
 
         public void Undo()
@@ -1299,13 +1275,47 @@ namespace Quintity.TestFramework.TestEngineer
             EndUpdate();
         }
 
+        internal void ClipboardCut()
+        {
+            if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
+            {
+                var systemId = SelectedNode.TestScriptObject.SystemID;
+                Clipboard.SetData("SystemID", systemId);
+                m_clipboardAction = ChangeType.Move;
+            }
+        }
+
+        internal void ClipboardCopy()
+        {
+            if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
+            {
+                var systemId = SelectedNode.TestScriptObject.SystemID;
+                Clipboard.SetData("SystemID", systemId);
+                m_clipboardAction = ChangeType.Copy;
+            }
+        }
+
+        internal void ClipboardPaste()
+        {
+            TestTreeNode target = SelectedNode;
+
+            Guid systemID = (Guid)Clipboard.GetData("SystemID");
+
+            performTreeEdit(systemID, target, m_clipboardAction);
+
+            if (m_clipboardAction == ChangeType.Move)
+            {
+                m_clipboardAction = ChangeType.Unknown;
+            }
+        }
+
         private TestFilter m_currentFilter;
         private List<TestCase> m_qualifiedTestCases;
 
         private bool filterTestTree(TestScriptObject testScriptObject, object tag)
         {
-            TestTreeNode currentNode = getNodeMapping(testScriptObject);
-            TestTreeNode parentNode = getNodeMapping(testScriptObject.ParentID);
+            TestTreeNode currentNode = FindNode(testScriptObject);
+            TestTreeNode parentNode = FindNode(testScriptObject.ParentID);
 
             // If test suite node, clear it nodes...
             if (currentNode.IsTestSuite() && !isRootNode(currentNode))
@@ -1655,695 +1665,6 @@ namespace Quintity.TestFramework.TestEngineer
 
         #endregion
 
-        #region Private methods
-
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTreeView));
-            this.m_treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.m_miOpenEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miActivate = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miActivateAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miNewTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miNewTestCase = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miNewTestStep = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miAddTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miDeleteBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miChangeBreakpointState = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
-            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.m_treeViewContextMenu.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // m_treeViewContextMenu
-            // 
-            this.m_treeViewContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_miOpenEditor,
-            this.m_toolStripSeparator1,
-            this.m_miExecute,
-            this.m_miResetResults,
-            this.m_miSaveResults,
-            this.m_mitoolStripSeparator2,
-            this.m_miActivate,
-            this.m_miActivateAll,
-            this.m_toolStripSeparator3,
-            this.m_miNewTestSuite,
-            this.m_miNewTestCase,
-            this.m_miNewTestStep,
-            this.m_toolStripSeparator4,
-            this.m_miAddTestSuite,
-            this.m_miReloadTestSuite,
-            this.m_toolStripSeparator5,
-            this.m_miBreakpoint,
-            this.m_toolStripSeparator6,
-            this.m_miCut,
-            this.m_miCopy,
-            this.m_miPaste,
-            this.m_miDelete,
-            this.m_miRename});
-            this.m_treeViewContextMenu.Name = "m_treeViewContextMenu";
-            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 414);
-            this.m_treeViewContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.m_treeViewContextMenu_Opening);
-            // 
-            // m_miOpenEditor
-            // 
-            this.m_miOpenEditor.Name = "m_miOpenEditor";
-            this.m_miOpenEditor.Size = new System.Drawing.Size(201, 22);
-            this.m_miOpenEditor.Text = "Open Editor...";
-            // 
-            // m_toolStripSeparator1
-            // 
-            this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
-            this.m_toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miExecute
-            // 
-            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
-            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miExecute.Name = "m_miExecute";
-            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
-            this.m_miExecute.Text = "Execute";
-            // 
-            // m_miResetResults
-            // 
-            this.m_miResetResults.Image = ((System.Drawing.Image)(resources.GetObject("m_miResetResults.Image")));
-            this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miResetResults.Name = "m_miResetResults";
-            this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
-            this.m_miResetResults.Text = "Reset Results";
-            // 
-            // m_miSaveResults
-            // 
-            this.m_miSaveResults.Name = "m_miSaveResults";
-            this.m_miSaveResults.Size = new System.Drawing.Size(201, 22);
-            this.m_miSaveResults.Text = "Save Results...";
-            // 
-            // m_mitoolStripSeparator2
-            // 
-            this.m_mitoolStripSeparator2.Name = "m_mitoolStripSeparator2";
-            this.m_mitoolStripSeparator2.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miActivate
-            // 
-            this.m_miActivate.Name = "m_miActivate";
-            this.m_miActivate.Size = new System.Drawing.Size(201, 22);
-            this.m_miActivate.Text = "Activate";
-            // 
-            // m_miActivateAll
-            // 
-            this.m_miActivateAll.Name = "m_miActivateAll";
-            this.m_miActivateAll.Size = new System.Drawing.Size(201, 22);
-            this.m_miActivateAll.Text = "Activate All";
-            // 
-            // m_toolStripSeparator3
-            // 
-            this.m_toolStripSeparator3.Name = "m_toolStripSeparator3";
-            this.m_toolStripSeparator3.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miNewTestSuite
-            // 
-            this.m_miNewTestSuite.Name = "m_miNewTestSuite";
-            this.m_miNewTestSuite.Size = new System.Drawing.Size(201, 22);
-            this.m_miNewTestSuite.Text = "New Test Suite...";
-            this.m_miNewTestSuite.ToolTipText = "Add a new test suite";
-            // 
-            // m_miNewTestCase
-            // 
-            this.m_miNewTestCase.Name = "m_miNewTestCase";
-            this.m_miNewTestCase.Size = new System.Drawing.Size(201, 22);
-            this.m_miNewTestCase.Text = "New Test Case";
-            // 
-            // m_miNewTestStep
-            // 
-            this.m_miNewTestStep.Name = "m_miNewTestStep";
-            this.m_miNewTestStep.Size = new System.Drawing.Size(201, 22);
-            this.m_miNewTestStep.Text = "New Test Step";
-            // 
-            // m_toolStripSeparator4
-            // 
-            this.m_toolStripSeparator4.Name = "m_toolStripSeparator4";
-            this.m_toolStripSeparator4.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miAddTestSuite
-            // 
-            this.m_miAddTestSuite.Name = "m_miAddTestSuite";
-            this.m_miAddTestSuite.Size = new System.Drawing.Size(201, 22);
-            this.m_miAddTestSuite.Text = "Add Existing Test Suite...";
-            this.m_miAddTestSuite.ToolTipText = "Add an existing test suite";
-            // 
-            // m_miReloadTestSuite
-            // 
-            this.m_miReloadTestSuite.Name = "m_miReloadTestSuite";
-            this.m_miReloadTestSuite.Size = new System.Drawing.Size(201, 22);
-            this.m_miReloadTestSuite.Text = "Reload Test Suite...";
-            this.m_miReloadTestSuite.ToolTipText = "Reload an existing test suite.";
-            // 
-            // m_toolStripSeparator5
-            // 
-            this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
-            this.m_toolStripSeparator5.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miBreakpoint
-            // 
-            this.m_miBreakpoint.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.m_miInsertBreakpoint,
-            this.m_miDeleteBreakpoint,
-            this.m_miChangeBreakpointState});
-            this.m_miBreakpoint.Name = "m_miBreakpoint";
-            this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
-            this.m_miBreakpoint.Text = "Breakpoint";
-            // 
-            // m_miInsertBreakpoint
-            // 
-            this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable1;
-            this.m_miInsertBreakpoint.Name = "m_miInsertBreakpoint";
-            this.m_miInsertBreakpoint.Size = new System.Drawing.Size(172, 22);
-            this.m_miInsertBreakpoint.Text = "Insert Breakpoint";
-            this.m_miInsertBreakpoint.ToolTipText = "Inserts new breakpoint";
-            // 
-            // m_miDeleteBreakpoint
-            // 
-            this.m_miDeleteBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.DeleteBreakpoint;
-            this.m_miDeleteBreakpoint.Name = "m_miDeleteBreakpoint";
-            this.m_miDeleteBreakpoint.Size = new System.Drawing.Size(172, 22);
-            this.m_miDeleteBreakpoint.Text = "Delete Breakpoint";
-            // 
-            // m_miChangeBreakpointState
-            // 
-            this.m_miChangeBreakpointState.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ToggleAllBreakpoints;
-            this.m_miChangeBreakpointState.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
-            this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
-            this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
-            // 
-            // m_toolStripSeparator6
-            // 
-            this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
-            this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
-            // 
-            // m_miCut
-            // 
-            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
-            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCut.Name = "m_miCut";
-            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.m_miCut.Size = new System.Drawing.Size(201, 22);
-            this.m_miCut.Text = "Cut";
-            // 
-            // m_miCopy
-            // 
-            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
-            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miCopy.Name = "m_miCopy";
-            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
-            this.m_miCopy.Text = "Copy";
-            // 
-            // m_miPaste
-            // 
-            this.m_miPaste.Enabled = false;
-            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
-            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miPaste.Name = "m_miPaste";
-            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
-            this.m_miPaste.Text = "Paste";
-            // 
-            // m_miDelete
-            // 
-            this.m_miDelete.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
-            this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miDelete.Name = "m_miDelete";
-            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
-            this.m_miDelete.Text = "Del";
-            // 
-            // m_miRename
-            // 
-            this.m_miRename.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Rename;
-            this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.m_miRename.Name = "m_miRename";
-            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_miRename.Size = new System.Drawing.Size(201, 22);
-            this.m_miRename.Text = "Rename";
-            this.m_miRename.ToolTipText = "Rename the selected item.";
-            // 
-            // m_treeViewImages
-            // 
-            this.m_treeViewImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("m_treeViewImages.ImageStream")));
-            this.m_treeViewImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.m_treeViewImages.Images.SetKeyName(0, "folder.closed");
-            this.m_treeViewImages.Images.SetKeyName(1, "folder.open");
-            this.m_treeViewImages.Images.SetKeyName(2, "teststep.active");
-            this.m_treeViewImages.Images.SetKeyName(3, "teststep.error");
-            this.m_treeViewImages.Images.SetKeyName(4, "teststep.inactive");
-            this.m_treeViewImages.Images.SetKeyName(5, "teststep.fail");
-            this.m_treeViewImages.Images.SetKeyName(6, "teststep.pass");
-            this.m_treeViewImages.Images.SetKeyName(7, "teststep.incomplete");
-            this.m_treeViewImages.Images.SetKeyName(8, "folder.closed");
-            this.m_treeViewImages.Images.SetKeyName(9, "folder.closed.deactivated");
-            this.m_treeViewImages.Images.SetKeyName(10, "folder.closed.fail");
-            this.m_treeViewImages.Images.SetKeyName(11, "folder.closed.pass");
-            this.m_treeViewImages.Images.SetKeyName(12, "folder.open");
-            this.m_treeViewImages.Images.SetKeyName(13, "folder.open.deactivated");
-            this.m_treeViewImages.Images.SetKeyName(14, "folder.open.fail");
-            this.m_treeViewImages.Images.SetKeyName(15, "folder.open.pass");
-            this.m_treeViewImages.Images.SetKeyName(16, "execution.arrow");
-            this.m_treeViewImages.Images.SetKeyName(17, "teststep.manual.active");
-            this.m_treeViewImages.Images.SetKeyName(18, "teststep.manual.error");
-            this.m_treeViewImages.Images.SetKeyName(19, "teststep.manual.fail");
-            this.m_treeViewImages.Images.SetKeyName(20, "teststep.manual.inactive");
-            this.m_treeViewImages.Images.SetKeyName(21, "teststep.manual.pass");
-            this.m_treeViewImages.Images.SetKeyName(22, "folder.closed.didnotexecute");
-            this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute");
-            this.m_treeViewImages.Images.SetKeyName(24, "breakpoint.enabled");
-            this.m_treeViewImages.Images.SetKeyName(25, "breakpoint.disabled");
-            this.m_treeViewImages.Images.SetKeyName(26, "BreakpointEnable.png");
-            // 
-            // TestTreeView
-            // 
-            this.ContextMenuStrip = this.m_treeViewContextMenu;
-            this.FullRowSelect = true;
-            this.ImageIndex = 0;
-            this.ImageList = this.m_treeViewImages;
-            this.LineColor = System.Drawing.Color.Black;
-            this.SelectedImageIndex = 0;
-            this.ShowNodeToolTips = true;
-            this.StateImageList = this.m_treeViewImages;
-            this.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.TestTreeView_AfterCollapse);
-            this.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.TestTreeView_AfterExpand);
-            this.DoubleClick += new System.EventHandler(this.TestTreeView_DoubleClick);
-            this.m_treeViewContextMenu.ResumeLayout(false);
-            this.ResumeLayout(false);
-
-        }
-
-        private void performTreeEdit(Guid sourceSystemId, TestTreeNode targetNode, ChangeType action)
-        {
-            var sourceNode = FindNode(sourceSystemId);
-
-            if (sourceNode != null)
-            {
-                performTreeEdit(sourceNode, targetNode, action);
-            }
-        }
-
-        private void performTreeEdit(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType action)
-        {
-            if (action == ChangeType.Move)
-            {
-                MoveNode(sourceNode, targetNode);
-            }
-            else if(action == ChangeType.Copy)
-            {
-                CopyNode(sourceNode, targetNode);
-            }
-        }
-
-        private TestTreeNode nodeFromSystemPoint(Point point)
-        {
-            return GetNodeAt(PointToClient(point));
-        }
-
-        private bool isValidDrop(TestTreeNode source, TestTreeNode target)
-        {
-            bool isValid = false;
-
-            if (source.IsTestSuite())
-            {
-                isValid = !target.IsTestStep() ? true : false;
-            }
-            else if (source.IsTestCase())
-            {
-            }
-            else if (source.IsTestStep())
-            {
-            }
-
-            return isValid;
-        }
-
-        /// <summary>
-        /// Marks the current node and nodes up tree chain as changed and updates UI.
-        /// </summary>
-        /// <param name="node"></param>
-        private void markAsChanged(TestTreeNode node)
-        {
-            if (!m_ignoreNodeChanges)
-            {
-                while (node != null)
-                {
-                    // Don't change order below.
-                    node.HasChanged = true;
-                    node.UpdateTitleAndToolTip();
-                    node = node.Parent;
-                }
-            }
-        }
-
-        private void startLabelEdit()
-        {
-            TestTreeNode node = SelectedNode;
-
-            if (node != null && node.TestScriptObject.Status != Status.Unavailable)
-            {
-                node.Text = node.TestScriptObject.Title;
-
-                NodeLabelEditEventArgs e = new NodeLabelEditEventArgs(node);
-
-                base.OnBeforeLabelEdit(e);
-                LabelEdit = true;
-                node.BeginEdit();
-            }
-        }
-
-        private bool isRootNode(TestTreeNode node)
-        {
-            return node == this.Nodes[0] ? true : false;
-        }
-
-        private void removeTestSuiteNode(TestTreeNode testSuiteNode)
-        {
-            var testSuite = testSuiteNode.Parent.TestScriptObjectAsTestSuite();
-
-            int index = testSuite.TestScriptObjects.FindIndex(x => x.SystemID == testSuiteNode.TestScriptObject.SystemID);
-
-            var currentLocation = new TestScriptObjectLocation(testSuiteNode.Parent.TestScriptObjectAsContainer(), index);
-
-            removeNode(testSuiteNode);
-
-            if (m_recordHistory)
-            {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testSuiteNode.TestScriptObject, ChangeType.Remove, currentLocation, testSuiteNode));
-            }
-        }
-
-        private void removeTestCaseNode(TestTreeNode testCaseNode)
-        {
-            var testSuite = testCaseNode.Parent.TestScriptObjectAsTestSuite();
-
-            int index = testSuite.TestScriptObjects.FindIndex(x => x.SystemID == testCaseNode.TestScriptObject.SystemID);
-
-            var currentLocation = new TestScriptObjectLocation(testCaseNode.Parent.TestScriptObjectAsContainer(), index);
-
-            removeNode(testCaseNode);
-
-            if (m_recordHistory)
-            {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testCaseNode.TestScriptObject, ChangeType.Remove, currentLocation, testCaseNode));
-            }
-        }
-
-        private void removeTestStepNode(TestTreeNode testStepNode)
-        {
-            // Get parent test case.
-            var testCase = testStepNode.Parent.TestScriptObjectAsTestCase();
-
-            int index = testCase.TestSteps.FindIndex(x => x.SystemID == testStepNode.TestScriptObject.SystemID);
-
-            // Get current location for change history
-            var currentLocation = new TestScriptObjectLocation(testStepNode.Parent.TestScriptObjectAsContainer(), index);
-
-            // Remove node from tree
-            removeNode(testStepNode);
-
-            if (m_recordHistory)
-            {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testStepNode.TestScriptObject, ChangeType.Remove, currentLocation, testStepNode));
-            }
-        }
-
-        private void removeNode(TestTreeNode nodeToRemove)
-        {
-            var parentNode = FindNode(nodeToRemove.TestScriptObject.ParentID);
-            var parent = parentNode.TestScriptObject as TestScriptObjectContainer;
-            parent.RemoveTestScriptObject(nodeToRemove.TestScriptObject);
-            parentNode.Nodes.Remove(nodeToRemove);
-            markAsChanged(parentNode);
-        }
-
-        private void resetChangeEventHistories()
-        {
-            m_changeHistory.Reset();
-        }
-
-        private void displayTestScriptObjectEditorDialog()
-        {
-            TestTreeNode node = SelectedNode;
-
-            if (null != node)
-            {
-                Point position = Cursor.Position;
-
-                if (node.TestScriptEditorDialog != null)
-                {
-                    node.TestScriptEditorDialog.Location = position;
-                    node.TestScriptEditorDialog.Activate();
-                }
-                else
-                {
-                    node.TestScriptEditorDialog = new TestScriptObjectEditorDialog(CachedTestAssemblies, node.TestScriptObject);
-                    node.TestScriptEditorDialog.Location = position;
-                    node.TestScriptEditorDialog.Show();
-                }
-            }
-        }
-
-        private TestTreeNode m_parentNode;
-
-        private TestTreeNode constructNodeTreeFragment(TestTreeNode parentNode, TestScriptObject startingTestScriptObject)
-        {
-            m_parentNode = parentNode;
-
-            TestSuite.TraverseTestTree(startingTestScriptObject, new TestSuite.TraverseTestTreeDelegate(constructNodeTreeFragmentDelegate));
-
-            return m_parentNode;
-        }
-
-        #region Undo/Redo methods
-
-        private void m_changeHistory_OnTestHistoryUndoEvent(TestChangeEvent e)
-        {
-            undoChangeEvent(e);
-        }
-
-        private void m_changeHistory_OnTestHistoryRedoEvent(TestChangeEvent e)
-        {
-            redoChangeEvent(e);
-        }
-
-        private void undoChangeEvent(TestChangeEvent changeEvent)
-        {
-            TestTreeNode changeEventNode = changeEvent.Tag as TestTreeNode;
-
-            m_recordHistory = false;
-
-            BeginUpdate();
-
-            switch (changeEvent.ChangeType)
-            {
-                case ChangeType.Update:
-                    {
-                        undoRedoNodePropertyChange(changeEvent);
-                    }
-                    break;
-                case ChangeType.Add:  // If node was added, need to remove it.
-                    {
-                        RemoveNode(changeEventNode, false);
-                    }
-
-                    break;
-                case ChangeType.Remove:
-                    {
-                        TestScriptObjectLocation location = changeEvent.FormerValue as TestScriptObjectLocation;
-                        location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
-                        Filter(m_currentFilter);
-
-                        TestTreeNode parentNode = FindNode(location.Parent);
-
-                        if (parentNode != null)
-                        {
-                            parentNode.Expand();
-                            markAsChanged(changeEventNode);
-                            SelectedNode = changeEventNode;
-                        }
-                    }
-                    break;
-                case ChangeType.Copy:
-                    {
-                        RemoveNode(changeEventNode, false);
-                    }
-
-                    break;
-                case ChangeType.Move:
-                    {
-                        TestScriptObjectLocation formerLocation = changeEvent.FormerValue as TestScriptObjectLocation;
-                        // MoveNode(changeEventNode, formerLocation.Parent, formerLocation.Index);
-                    }
-                    break;
-                default:
-                    { }
-                    break;
-            }
-
-            m_recordHistory = true;
-
-            EndUpdate();
-        }
-
-        private void redoChangeEvent(TestChangeEvent changeEvent)
-        {
-            TestTreeNode changeEventNode = getNodeMapping(changeEvent.TestScriptObject);
-
-            switch (changeEvent.ChangeType)
-            {
-                case ChangeType.Update:
-                    {
-                        undoRedoNodePropertyChange(changeEvent, false);
-                    }
-                    break;
-                case ChangeType.Add:  // If node was added, need to remove it.
-                    {
-                        TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        location.Parent.InsertTestScriptObject(changeEvent.TestScriptObject, location.Index);
-
-                        Filter(m_currentFilter);
-
-                        TestTreeNode parentNode = FindNode(location.Parent);
-
-                        if (parentNode != null)
-                        {
-                            parentNode.Expand();
-                            SelectedNode = changeEventNode;
-                        }
-                    }
-
-                    break;
-                case ChangeType.Remove:
-                    {
-                        removeNode(changeEventNode);
-                    }
-
-                    break;
-                case ChangeType.Copy:
-                    {
-                        TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        //location.Parent.Nodes.Insert(location.Index, changeEventNode);
-                        SelectedNode = changeEventNode;
-                    }
-
-                    break;
-                case ChangeType.Move:
-                    {
-                        TestScriptObjectLocation location = changeEvent.CurrentValue as TestScriptObjectLocation;
-                        //MoveNode(changeEventNode, location.Parent, location.Index);
-                    }
-                    break;
-                default:
-                    { }
-                    break;
-            }
-        }
-
-        private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool undo = true)
-        {
-            // Want to provide visual response to user.
-            SelectedNode = getNodeMapping(changeEvent.TestScriptObject);
-            TestScriptObject testScriptObject = null;
-
-            if (changeEvent.Tag is TestPreprocessor)
-            {
-                testScriptObject = changeEvent.Tag as TestScriptObject;
-
-            }
-            else if (changeEvent.Tag is TestPostprocessor)
-            {
-                testScriptObject = changeEvent.Tag as TestScriptObject;
-            }
-            else
-            {
-                testScriptObject = changeEvent.TestScriptObject;
-            }
-
-            // Get changed property through reflection.
-            Type type = testScriptObject.GetType();
-            PropertyInfo pinfo = type.GetProperty(changeEvent.Property);
-
-            // Set property to old value.
-            object value = undo ? changeEvent.FormerValue : changeEvent.CurrentValue;
-            pinfo.SetValue(testScriptObject, value, null);
-
-            // Give a moment a second for user to catch up.
-            Thread.Sleep(125);
-
-            // Bit of a hack, forces node to repaint so user can see change occur.
-            SelectedNode = RootNode;
-            SelectedNode = getNodeMapping(changeEvent.TestScriptObject);
-
-            // Update node UI if necessary.
-            SelectedNode.UpdateTitleAndToolTip();
-            SelectedNode.UpdateUI();
-        }
-        #endregion
-
-        private void TestScriptObject_OnTestPropertyChanged(TestScriptObject testScriptObject, TestPropertyChangedEventArgs args)
-        {
-            TestTreeNode node = null;
-
-            if (testScriptObject is TestProcessor)
-            {
-                node = FindNode(testScriptObject.ParentID);
-            }
-            else
-            {
-                node = FindNode(testScriptObject);
-            }
-
-            markAsChanged(node);
-
-            if (m_recordHistory)
-            {
-                m_changeHistory.RecordEvent(new TestChangeEvent(testScriptObject, ChangeType.Update,
-                    args.Property, args.CurrentValue, args.FormerValue, testScriptObject));
-            }
-        }
-
-        private void TestTreeView_OnTestTreeChanged(TestTreeView testTreeView, TestTreeChangedEventArgs args)
-        {
-            switch (args.NodeAction)
-            {
-                case ChangeType.Add:
-                    break;
-                case ChangeType.Remove:
-                    break;
-                case ChangeType.Move:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        #endregion
-
         #region Traverse test tree delegate methods
 
         private bool constructNodeTreeFragmentDelegate(TestScriptObject testScriptObject, object tag)
@@ -2356,7 +1677,6 @@ namespace Quintity.TestFramework.TestEngineer
                 TestTreeNode newNode = new TestTreeNode(testScriptObject);
                 TestTreeNode parentNode = FindNode(m_parentNode, testScriptObject.ParentID);
                 parentNode.Nodes.Add(newNode);
-                //m_nodeMapping.Add(testScriptObject.SystemID, newNode);
             }
 
             return true;
@@ -2522,7 +1842,6 @@ namespace Quintity.TestFramework.TestEngineer
             }
 
             m_miOpenEditor.Enabled = unavailable ? false : true;
-            m_miReloadTestSuite.Visible = selectedNode.IsTestSuite() ? true : false;
 
             if (selectedNode.IsTestSuite())
             {
@@ -2613,51 +1932,6 @@ namespace Quintity.TestFramework.TestEngineer
             m_miSaveResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
         }
 
-        private bool isValidPaste(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType changeType)
-        {
-            bool isValid = false;
-
-            // Make sure we are not trying to paste item into the cut fragment.
-            if (changeType == ChangeType.Move && !sourceNode.IsTestStep() ? isDescendantNode(sourceNode, targetNode) : false)
-            {
-                // Can't paste into its deleted self.
-                return isValid;
-            }
-
-            if (sourceNode.IsTestSuite())
-            {
-                isValid = targetNode.IsTestStep() ? false : true;
-            }
-            else if (sourceNode.IsTestCase())
-            {
-                isValid = targetNode.IsTestStep() ? false : true;
-            }
-            else if (sourceNode.IsTestStep())
-            {
-                isValid = targetNode.IsTestSuite() ? false : true;
-            }
-
-            return isValid;
-        }
-
-        private bool isDescendantNode(TestTreeNode startNode, TestTreeNode queryNode)
-        {
-            var nodes = GetAllNotes(startNode);
-
-            return nodes.FindAll(x => x.TestScriptObject.SystemID.Equals(queryNode.TestScriptObject.SystemID)).Count > 0 ? true : false;
-        }
-
-        private void configureDelete()
-        {
-            m_miDelete.Text = "Del";
-            m_miDelete.ShowShortcutKeys = true;
-        }
-        private void configureTestSuiteDelete()
-        {
-            m_miDelete.Text = "Remove";
-            m_miDelete.ShowShortcutKeys = false;
-        }
-
         private void m_miOpenEditor_Click(object sender, EventArgs e)
         {
             displayTestScriptObjectEditorDialog();
@@ -2733,135 +2007,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_miAddTestSuite_Click(object sender, EventArgs e)
         {
-            m_openFileDialog.Reset();
-            m_openFileDialog.Title = "Select test suite to add";
-            m_openFileDialog.InitialDirectory = TestProperties.TestSuites;
-            m_openFileDialog.Filter = "Test suites (*.ste)|*.ste";
-            m_openFileDialog.FilterIndex = 1;
-
-            try
-            {
-                if (DialogResult.OK == m_openFileDialog.ShowDialog())
-                {
-                    var testSuite = TestSuite.ReadFromFile(m_openFileDialog.FileName);
-
-                    Cursor = Cursors.WaitCursor;
-                    var existingNode = FindNode(testSuite);
-                    Cursor = Cursors.Default;
-
-                    if (existingNode == null)
-                    {
-                        insertTestSuite(testSuite, SelectedNode);
-                    }
-                    else
-                    {
-                        SelectedNode = existingNode;
-
-                        MessageBox.Show(
-                          string.Format("Test suite \"{0}\" is already a test suite member.", testSuite.Title),
-                          "Quintity TestFramework", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                }
-            }
-            catch (System.Runtime.Serialization.SerializationException)
-            {
-                MessageBox.Show(this,
-                    string.Format(" \"{0}\" does not appear to be a valid test suite file", m_openFileDialog.FileName),
-                    "Quintity TestFramework",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(this, exception.Message,
-                    "Quintity TestFramework",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void m_miReloadTestSuite_Click(object sender, EventArgs e)
-        {
-            var targetNode = SelectedNode;
-            var testSuite = targetNode.TestScriptObject as TestSuite;
-            testSuite = TestSuite.ReadFromFile(testSuite.FilePath);
-
-            //if (testSuite.Status != Status.Unavailable)
-            //{
-            BeginUpdate();
-            insertTestSuite(testSuite, targetNode, false);
-            removeTestSuiteNode(targetNode);
-            EndUpdate();
-            //}
-            //else
-            //{
-            // In case load is failing to another reason (update).
-            //targetNode.TestScriptObject = testSuite;
-            //targetNode.UpdateToolTip();
-            //}
-        }
-
-        /// <summary>
-        /// Insert a test into the treeview.  If the target node is test suite,
-        /// the user is prompted whether insert as child or sibling of target suite.
-        /// If the target is a test case, the suite is insert below the target case
-        /// as a sibling.
-        /// </summary>
-        /// <param name="testSuite">Test suite object to insert.</param>
-        /// <param name="targetNode">Target node to insert.</param>
-        private TestTreeNode insertTestSuite(TestSuite testSuite, TestTreeNode targetNode, bool relationshipPrompt = true)
-        {
-            TestTreeNode newNode = null;
-
-            // Turn painting off
-            BeginUpdate();
-
-            if (null == targetNode)  // Must be root node.
-            {
-                newNode = InsertNode(testSuite, null, -1, false);
-            }
-            else if (targetNode.IsTestSuite())
-            {
-                if (!isRootNode(targetNode))
-                {
-                    var sibling = true;
-
-                    if (relationshipPrompt)
-                    {
-                        var relationshipDlg = new TestsuiteRelationshipDialog();
-                        var result = relationshipDlg.ShowDialog(this);
-                        sibling = result == DialogResult.Yes ? true : false;
-                    }
-
-                    newNode = sibling ? newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true) : InsertNode(testSuite, targetNode, -1, true);
-
-                    //if (result == DialogResult.No)  // No adds as child
-                    //{
-                    //    newNode = InsertNode(testSuite, targetNode, -1, true);
-                    //}
-                    //else if (result == DialogResult.Yes)  // Yes adds as sibling
-                    //{
-                    //    newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true);
-                    //}
-                }
-                else  // If root, don't prompt, have to add as child.
-                {
-                    newNode = InsertNode(testSuite, targetNode, targetNode.Nodes.Count, true);
-                }
-            }
-            else if (targetNode.IsTestCase())
-            {
-                newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true);
-            }
-
-            if (newNode != null)
-            {
-                constructNodeTreeFragment(newNode, testSuite);
-                newNode.Expand();
-                SelectedNode = newNode;
-            }
-
-            EndUpdate();
-
-            return newNode;
+            AddExistingTestSuite(SelectedNode, true);
         }
 
         private void m_miNewTestSuite_Click(object sender, EventArgs e)
@@ -2911,8 +2057,6 @@ namespace Quintity.TestFramework.TestEngineer
             ClipboardCut();
         }
 
-        
-
         private void m_miCopy_Click(object sender, EventArgs e)
         {
             ClipboardCopy();
@@ -2923,39 +2067,6 @@ namespace Quintity.TestFramework.TestEngineer
             ClipboardPaste();
         }
 
-        internal void ClipboardCut()
-        {
-            if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
-            {
-                var systemId = SelectedNode.TestScriptObject.SystemID;
-                Clipboard.SetData("SystemID", systemId);
-                m_clipboardAction = ChangeType.Move;
-            }
-        }
-
-        internal void ClipboardCopy()
-        {
-            if (SelectedNode.TestScriptObject.Status != Status.Unavailable)
-            {
-                var systemId = SelectedNode.TestScriptObject.SystemID;
-                Clipboard.SetData("SystemID", systemId);
-                m_clipboardAction = ChangeType.Copy;
-            }
-        }
-
-        internal void ClipboardPaste()
-        {
-            TestTreeNode target = SelectedNode;
-
-            Guid systemID = (Guid)Clipboard.GetData("SystemID");
-
-            performTreeEdit(systemID, target, m_clipboardAction);
-
-            if (m_clipboardAction == ChangeType.Move)
-            {
-                m_clipboardAction = ChangeType.Unknown;
-            }
-        }
 
         private void m_miDelete_Click(object sender, EventArgs e)
         {
@@ -2970,6 +2081,29 @@ namespace Quintity.TestFramework.TestEngineer
         #endregion
 
         #region Other event handlers
+
+        private void m_changeHistory_OnTestHistoryUndoEvent(TestChangeEvent e)
+        {
+            undoChangeEvent(e);
+        }
+
+        private void m_changeHistory_OnTestHistoryRedoEvent(TestChangeEvent e)
+        {
+            redoChangeEvent(e);
+        }
+
+        private void TestScriptObject_OnTestPropertyChanged(TestScriptObject testScriptObject, TestPropertyChangedEventArgs args)
+        {
+            TestTreeNode testTreeNode = testScriptObject is TestProcessor ? FindNode(testScriptObject.ParentID) : FindNode(testScriptObject);
+
+            markAsChanged(testTreeNode);
+
+            if (m_recordHistory)
+            {
+                m_changeHistory.RecordChangeEvent(new TestChangeEvent(ChangeType.Update, testTreeNode,
+                    testScriptObject, args.Property, args.CurrentValue, args.FormerValue));
+            }
+        }
 
         void TestScriptObjectEditorDialog_OnTestScriptObjectEditorClosed(object sender, TestScriptObjectEditorDialog.TestScriptObjectEditorClosedArgs e)
         {
@@ -2993,8 +2127,6 @@ namespace Quintity.TestFramework.TestEngineer
             displayTestScriptObjectEditorDialog();
         }
 
-        #endregion
-
         private void TestTreeView_AfterExpand(object sender, TreeViewEventArgs e)
         {
             if (SelectedNode != null)
@@ -3008,5 +2140,596 @@ namespace Quintity.TestFramework.TestEngineer
             if (SelectedNode != null)
                 SelectedNode.UpdateUI();
         }
+
+        #endregion
+
+        #region Private methods
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTreeView));
+            this.m_treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.m_miOpenEditor = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miActivate = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miActivateAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miNewTestSuite = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miNewTestCase = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miNewTestStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miAddTestSuite = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miDeleteBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miChangeBreakpointState = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
+            this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.m_treeViewContextMenu.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // m_treeViewContextMenu
+            // 
+            this.m_treeViewContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_miOpenEditor,
+            this.m_toolStripSeparator1,
+            this.m_miExecute,
+            this.m_miResetResults,
+            this.m_miSaveResults,
+            this.m_mitoolStripSeparator2,
+            this.m_miActivate,
+            this.m_miActivateAll,
+            this.m_toolStripSeparator3,
+            this.m_miNewTestSuite,
+            this.m_miNewTestCase,
+            this.m_miNewTestStep,
+            this.m_toolStripSeparator4,
+            this.m_miAddTestSuite,
+            this.m_toolStripSeparator5,
+            this.m_miBreakpoint,
+            this.m_toolStripSeparator6,
+            this.m_miCut,
+            this.m_miCopy,
+            this.m_miPaste,
+            this.m_miDelete,
+            this.m_miRename});
+            this.m_treeViewContextMenu.Name = "m_treeViewContextMenu";
+            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 414);
+            this.m_treeViewContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.m_treeViewContextMenu_Opening);
+            // 
+            // m_miOpenEditor
+            // 
+            this.m_miOpenEditor.Name = "m_miOpenEditor";
+            this.m_miOpenEditor.Size = new System.Drawing.Size(201, 22);
+            this.m_miOpenEditor.Text = "Open Editor...";
+            // 
+            // m_toolStripSeparator1
+            // 
+            this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
+            this.m_toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miExecute
+            // 
+            this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
+            this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miExecute.Name = "m_miExecute";
+            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
+            this.m_miExecute.Text = "Execute";
+            // 
+            // m_miResetResults
+            // 
+            this.m_miResetResults.Image = ((System.Drawing.Image)(resources.GetObject("m_miResetResults.Image")));
+            this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miResetResults.Name = "m_miResetResults";
+            this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
+            this.m_miResetResults.Text = "Reset Results";
+            // 
+            // m_miSaveResults
+            // 
+            this.m_miSaveResults.Name = "m_miSaveResults";
+            this.m_miSaveResults.Size = new System.Drawing.Size(201, 22);
+            this.m_miSaveResults.Text = "Save Results...";
+            // 
+            // m_mitoolStripSeparator2
+            // 
+            this.m_mitoolStripSeparator2.Name = "m_mitoolStripSeparator2";
+            this.m_mitoolStripSeparator2.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miActivate
+            // 
+            this.m_miActivate.Name = "m_miActivate";
+            this.m_miActivate.Size = new System.Drawing.Size(201, 22);
+            this.m_miActivate.Text = "Activate";
+            // 
+            // m_miActivateAll
+            // 
+            this.m_miActivateAll.Name = "m_miActivateAll";
+            this.m_miActivateAll.Size = new System.Drawing.Size(201, 22);
+            this.m_miActivateAll.Text = "Activate All";
+            // 
+            // m_toolStripSeparator3
+            // 
+            this.m_toolStripSeparator3.Name = "m_toolStripSeparator3";
+            this.m_toolStripSeparator3.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miNewTestSuite
+            // 
+            this.m_miNewTestSuite.Name = "m_miNewTestSuite";
+            this.m_miNewTestSuite.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestSuite.Text = "New Test Suite...";
+            this.m_miNewTestSuite.ToolTipText = "Add a new test suite";
+            // 
+            // m_miNewTestCase
+            // 
+            this.m_miNewTestCase.Name = "m_miNewTestCase";
+            this.m_miNewTestCase.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestCase.Text = "New Test Case";
+            // 
+            // m_miNewTestStep
+            // 
+            this.m_miNewTestStep.Name = "m_miNewTestStep";
+            this.m_miNewTestStep.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestStep.Text = "New Test Step";
+            // 
+            // m_toolStripSeparator4
+            // 
+            this.m_toolStripSeparator4.Name = "m_toolStripSeparator4";
+            this.m_toolStripSeparator4.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miAddTestSuite
+            // 
+            this.m_miAddTestSuite.Name = "m_miAddTestSuite";
+            this.m_miAddTestSuite.Size = new System.Drawing.Size(201, 22);
+            this.m_miAddTestSuite.Text = "Add Existing Test Suite...";
+            this.m_miAddTestSuite.ToolTipText = "Add an existing test suite";
+            // 
+            // m_toolStripSeparator5
+            // 
+            this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
+            this.m_toolStripSeparator5.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miBreakpoint
+            // 
+            this.m_miBreakpoint.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_miInsertBreakpoint,
+            this.m_miDeleteBreakpoint,
+            this.m_miChangeBreakpointState});
+            this.m_miBreakpoint.Name = "m_miBreakpoint";
+            this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
+            this.m_miBreakpoint.Text = "Breakpoint";
+            // 
+            // m_miInsertBreakpoint
+            // 
+            this.m_miInsertBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.BreakpointEnable1;
+            this.m_miInsertBreakpoint.Name = "m_miInsertBreakpoint";
+            this.m_miInsertBreakpoint.Size = new System.Drawing.Size(172, 22);
+            this.m_miInsertBreakpoint.Text = "Insert Breakpoint";
+            this.m_miInsertBreakpoint.ToolTipText = "Inserts new breakpoint";
+            // 
+            // m_miDeleteBreakpoint
+            // 
+            this.m_miDeleteBreakpoint.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.DeleteBreakpoint;
+            this.m_miDeleteBreakpoint.Name = "m_miDeleteBreakpoint";
+            this.m_miDeleteBreakpoint.Size = new System.Drawing.Size(172, 22);
+            this.m_miDeleteBreakpoint.Text = "Delete Breakpoint";
+            // 
+            // m_miChangeBreakpointState
+            // 
+            this.m_miChangeBreakpointState.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.ToggleAllBreakpoints;
+            this.m_miChangeBreakpointState.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miChangeBreakpointState.Name = "m_miChangeBreakpointState";
+            this.m_miChangeBreakpointState.Size = new System.Drawing.Size(172, 22);
+            this.m_miChangeBreakpointState.Text = "Disable Breakpoint";
+            // 
+            // m_toolStripSeparator6
+            // 
+            this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
+            this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
+            // 
+            // m_miCut
+            // 
+            this.m_miCut.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Cut;
+            this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCut.Name = "m_miCut";
+            this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.m_miCut.Size = new System.Drawing.Size(201, 22);
+            this.m_miCut.Text = "Cut";
+            // 
+            // m_miCopy
+            // 
+            this.m_miCopy.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Copy;
+            this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miCopy.Name = "m_miCopy";
+            this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
+            this.m_miCopy.Text = "Copy";
+            // 
+            // m_miPaste
+            // 
+            this.m_miPaste.Enabled = false;
+            this.m_miPaste.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Paste;
+            this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miPaste.Name = "m_miPaste";
+            this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
+            this.m_miPaste.Text = "Paste";
+            // 
+            // m_miDelete
+            // 
+            this.m_miDelete.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Delete;
+            this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miDelete.Name = "m_miDelete";
+            this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
+            this.m_miDelete.Text = "Del";
+            // 
+            // m_miRename
+            // 
+            this.m_miRename.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.Rename;
+            this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.m_miRename.Name = "m_miRename";
+            this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.m_miRename.Size = new System.Drawing.Size(201, 22);
+            this.m_miRename.Text = "Rename";
+            this.m_miRename.ToolTipText = "Rename the selected item.";
+            // 
+            // m_treeViewImages
+            // 
+            this.m_treeViewImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("m_treeViewImages.ImageStream")));
+            this.m_treeViewImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.m_treeViewImages.Images.SetKeyName(0, "folder.closed");
+            this.m_treeViewImages.Images.SetKeyName(1, "folder.open");
+            this.m_treeViewImages.Images.SetKeyName(2, "teststep.active");
+            this.m_treeViewImages.Images.SetKeyName(3, "teststep.error");
+            this.m_treeViewImages.Images.SetKeyName(4, "teststep.inactive");
+            this.m_treeViewImages.Images.SetKeyName(5, "teststep.fail");
+            this.m_treeViewImages.Images.SetKeyName(6, "teststep.pass");
+            this.m_treeViewImages.Images.SetKeyName(7, "teststep.incomplete");
+            this.m_treeViewImages.Images.SetKeyName(8, "folder.closed");
+            this.m_treeViewImages.Images.SetKeyName(9, "folder.closed.deactivated");
+            this.m_treeViewImages.Images.SetKeyName(10, "folder.closed.fail");
+            this.m_treeViewImages.Images.SetKeyName(11, "folder.closed.pass");
+            this.m_treeViewImages.Images.SetKeyName(12, "folder.open");
+            this.m_treeViewImages.Images.SetKeyName(13, "folder.open.deactivated");
+            this.m_treeViewImages.Images.SetKeyName(14, "folder.open.fail");
+            this.m_treeViewImages.Images.SetKeyName(15, "folder.open.pass");
+            this.m_treeViewImages.Images.SetKeyName(16, "execution.arrow");
+            this.m_treeViewImages.Images.SetKeyName(17, "teststep.manual.active");
+            this.m_treeViewImages.Images.SetKeyName(18, "teststep.manual.error");
+            this.m_treeViewImages.Images.SetKeyName(19, "teststep.manual.fail");
+            this.m_treeViewImages.Images.SetKeyName(20, "teststep.manual.inactive");
+            this.m_treeViewImages.Images.SetKeyName(21, "teststep.manual.pass");
+            this.m_treeViewImages.Images.SetKeyName(22, "folder.closed.didnotexecute");
+            this.m_treeViewImages.Images.SetKeyName(23, "folder.open.didnotexecute");
+            this.m_treeViewImages.Images.SetKeyName(24, "breakpoint.enabled");
+            this.m_treeViewImages.Images.SetKeyName(25, "breakpoint.disabled");
+            this.m_treeViewImages.Images.SetKeyName(26, "BreakpointEnable.png");
+            // 
+            // TestTreeView
+            // 
+            this.ContextMenuStrip = this.m_treeViewContextMenu;
+            this.FullRowSelect = true;
+            this.ImageIndex = 0;
+            this.ImageList = this.m_treeViewImages;
+            this.LineColor = System.Drawing.Color.Black;
+            this.SelectedImageIndex = 0;
+            this.ShowNodeToolTips = true;
+            this.StateImageList = this.m_treeViewImages;
+            this.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.TestTreeView_AfterCollapse);
+            this.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.TestTreeView_AfterExpand);
+            this.DoubleClick += new System.EventHandler(this.TestTreeView_DoubleClick);
+            this.m_treeViewContextMenu.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private bool isValidPaste(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType changeType)
+        {
+            bool isValid = false;
+
+            // Make sure we are not trying to paste item into the cut fragment.
+            if (changeType == ChangeType.Move && !sourceNode.IsTestStep() ? isDescendantNode(sourceNode, targetNode) : false)
+            {
+                // Can't paste into its deleted self.
+                return isValid;
+            }
+
+            if (sourceNode.IsTestSuite())
+            {
+                isValid = targetNode.IsTestStep() ? false : true;
+            }
+            else if (sourceNode.IsTestCase())
+            {
+                isValid = targetNode.IsTestStep() ? false : true;
+            }
+            else if (sourceNode.IsTestStep())
+            {
+                isValid = targetNode.IsTestSuite() ? false : true;
+            }
+
+            return isValid;
+        }
+
+        private bool isDescendantNode(TestTreeNode startNode, TestTreeNode queryNode)
+        {
+            var nodes = GetAllNotes(startNode);
+
+            return nodes.FindAll(x => x.TestScriptObject.SystemID.Equals(queryNode.TestScriptObject.SystemID)).Count > 0 ? true : false;
+        }
+
+        private void configureDelete()
+        {
+            m_miDelete.Text = "Del";
+            m_miDelete.ShowShortcutKeys = true;
+        }
+
+        private void configureTestSuiteDelete()
+        {
+            m_miDelete.Text = "Remove";
+            m_miDelete.ShowShortcutKeys = false;
+        }
+
+        private void performTreeEdit(Guid sourceSystemId, TestTreeNode targetNode, ChangeType action)
+        {
+            var sourceNode = FindNode(sourceSystemId);
+
+            if (sourceNode != null)
+            {
+                performTreeEdit(sourceNode, targetNode, action);
+            }
+        }
+
+        private void performTreeEdit(TestTreeNode sourceNode, TestTreeNode targetNode, ChangeType action)
+        {
+            if (action == ChangeType.Move)
+            {
+                MoveNode(sourceNode, targetNode);
+            }
+            else if (action == ChangeType.Copy)
+            {
+                CopyNode(sourceNode, targetNode);
+            }
+        }
+
+        private TestTreeNode nodeFromSystemPoint(Point point)
+        {
+            return GetNodeAt(PointToClient(point));
+        }
+
+        private bool isValidDrop(TestTreeNode source, TestTreeNode target)
+        {
+            bool isValid = false;
+
+            if (source.IsTestSuite())
+            {
+                isValid = !target.IsTestStep() ? true : false;
+            }
+            else if (source.IsTestCase())
+            {
+            }
+            else if (source.IsTestStep())
+            {
+            }
+
+            return isValid;
+        }
+
+        /// <summary>
+        /// Marks the current node and nodes up tree chain as changed and updates UI.
+        /// </summary>
+        /// <param name="node"></param>
+        private void markAsChanged(TestTreeNode node)
+        {
+            if (!m_ignoreNodeChanges)
+            {
+                while (node != null)
+                {
+                    // Don't change order below.
+                    node.HasChanged = true;
+                    node.UpdateTitleAndToolTip();
+                    node = node.Parent;
+                }
+            }
+        }
+
+        private void startLabelEdit()
+        {
+            TestTreeNode node = SelectedNode;
+
+            if (node != null && node.TestScriptObject.Status != Status.Unavailable)
+            {
+                node.Text = node.TestScriptObject.Title;
+
+                NodeLabelEditEventArgs e = new NodeLabelEditEventArgs(node);
+
+                base.OnBeforeLabelEdit(e);
+                LabelEdit = true;
+                node.BeginEdit();
+            }
+        }
+
+        private bool isRootNode(TestTreeNode node)
+        {
+            return node == this.Nodes[0] ? true : false;
+        }
+
+        private void resetChangeEventHistories()
+        {
+            m_changeHistory.Reset();
+        }
+
+        private void displayTestScriptObjectEditorDialog()
+        {
+            TestTreeNode node = SelectedNode;
+
+            if (null != node)
+            {
+                Point position = Cursor.Position;
+
+                if (node.TestScriptEditorDialog != null)
+                {
+                    node.TestScriptEditorDialog.Location = position;
+                    node.TestScriptEditorDialog.Activate();
+                }
+                else
+                {
+                    node.TestScriptEditorDialog = new TestScriptObjectEditorDialog(CachedTestAssemblies, node.TestScriptObject);
+                    node.TestScriptEditorDialog.Location = position;
+                    node.TestScriptEditorDialog.Show();
+                }
+            }
+        }
+
+        private TestTreeNode m_parentNode;
+
+        private TestTreeNode constructNodeTreeFragment(TestTreeNode parentNode, TestScriptObject startingTestScriptObject)
+        {
+            m_parentNode = parentNode;
+
+            TestSuite.TraverseTestTree(startingTestScriptObject, new TestSuite.TraverseTestTreeDelegate(constructNodeTreeFragmentDelegate));
+
+            return m_parentNode;
+        }
+
+        #region Undo/Redo methods
+
+        private void undoChangeEvent(TestChangeEvent changeEvent)
+        {
+            BeginUpdate();
+
+            switch (changeEvent.ChangeType)
+            {
+                case ChangeType.Update:
+                    {
+                        // Change property back to original value.
+                        undoRedoNodePropertyChange(changeEvent);
+                    }
+                    break;
+                case ChangeType.Add:  // If node was added, need to remove it.
+                    {
+                        //Removed recently added node
+                        RemoveNode(changeEvent.ChangeObject, false);
+                    }
+                    break;
+                case ChangeType.Remove:
+                    {
+                        // Reinsert recently removed node.
+                        InsertNodeExt(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
+                    }
+                    break;
+                case ChangeType.Copy:
+                    {
+                        RemoveNode(changeEvent.ChangeObject, false);
+                    }
+
+                    break;
+                case ChangeType.Move:
+                    {
+                        // Reverse the move.
+                        MoveNode(changeEvent.ChangeObject, changeEvent.ChangeValues[1], false);
+                    }
+                    break;
+                default:
+                    { }
+                    break;
+            }
+
+            // If not more changes, reset change flags and UI
+            if (!m_changeHistory.CanUndo())
+            {
+                ResetHasChangedFlags();
+            }
+
+            m_recordHistory = true;
+
+            EndUpdate();
+        }
+
+        private void redoChangeEvent(TestChangeEvent changeEvent)
+        {
+            BeginUpdate();
+
+            switch (changeEvent.ChangeType)
+            {
+                case ChangeType.Update:
+                    {
+                        // Redo previously undone property change.
+                        undoRedoNodePropertyChange(changeEvent, false);
+                    }
+                    break;
+                case ChangeType.Add:  // If node was added, need to remove it.
+                    {
+                        InsertNodeExt(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
+                    }
+
+                    break;
+                case ChangeType.Remove:
+                    {
+                        RemoveNode(changeEvent.ChangeObject, false);
+                    }
+
+                    break;
+                case ChangeType.Copy:
+                    {
+                        SelectedNode = CopyNode(changeEvent.ChangeValues[0],
+                            changeEvent.ChangeValues[1], changeEvent.ChangeObject, false);
+                    }
+
+                    break;
+                case ChangeType.Move:
+                    {
+                        MoveNode(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
+                    }
+                    break;
+                default:
+                    { }
+                    break;
+            }
+
+            EndUpdate();
+        }
+
+        private void undoRedoNodePropertyChange(TestChangeEvent changeEvent, bool isUndo = true)
+        {
+            // Turn painting off
+            BeginUpdate();
+
+            SelectedNode = changeEvent.ChangeObject;
+
+            // Get changed property through reflection.
+            Type type = changeEvent.ChangeValues[0].GetType();
+            PropertyInfo pinfo = type.GetProperty(changeEvent.ChangeValues[1]);
+
+            // Set property to old value.
+            object value = isUndo ? changeEvent.ChangeValues[3] : changeEvent.ChangeValues[2];
+
+            m_recordHistory = false;
+            pinfo.SetValue(changeEvent.ChangeValues[0], value, null);
+            m_recordHistory = true;
+
+            // Update node UI if necessary.
+            changeEvent.ChangeObject.UpdateTitleAndToolTip();
+            changeEvent.ChangeObject.UpdateUI();
+
+            // Turn painting on.
+            EndUpdate();
+        }
+
+        #endregion
+
+        #endregion  Private methods
     }
 }

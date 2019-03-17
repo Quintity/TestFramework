@@ -800,6 +800,8 @@ namespace Quintity.TestFramework.TestEngineer
                     m_collapseAllToolStripButton.Enabled = true;
                     m_testCasesOnlyToolStripButton.Enabled = true;
                     m_expandAllToolStripButton.Enabled = true;
+
+                    m_testTreeView.ResetChangeEventHistory();
                 }
             }
         }
@@ -818,6 +820,7 @@ namespace Quintity.TestFramework.TestEngineer
                 if (null != m_testTreeView.OpenExistingTestSuite(null, false))
                 {
                     setLoadedSuiteUI(true);
+                    m_testTreeView.ResetChangeEventHistory();
                 }
             }
         }

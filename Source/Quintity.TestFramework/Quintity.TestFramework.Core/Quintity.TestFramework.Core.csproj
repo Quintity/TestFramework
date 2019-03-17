@@ -117,8 +117,6 @@
     <Compile Include="Exceptions\MaxFailedTestChecksException.cs" />
     <Compile Include="Exceptions\TestClassNotFoundException.cs" />
     <Compile Include="TestExpandableObjectConverter.cs" />
-    <Compile Include="TestChangeEvent.cs" />
-    <Compile Include="TestChangeEventHistories.cs" />
     <Compile Include="TestExecutionCompleteArgs.cs" />
     <Compile Include="Exceptions\TestCheckFailedException.cs" />
     <Compile Include="TestClassBase.cs" />

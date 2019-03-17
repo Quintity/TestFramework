@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quintity.TestFramework.Core
+namespace Quintity.TestFramework.TestEngineer
 {
     public class TestChangeEventHistories
     {
@@ -19,8 +19,8 @@ namespace Quintity.TestFramework.Core
 
         #region private members
 
-        private Stack<TestChangeEvent> m_undoStack;
-        private Stack<TestChangeEvent> m_redoStack;
+        private Stack<TestChangeEvent> _undoStack;
+        private Stack<TestChangeEvent> _redoStack;
 
         #endregion
 
@@ -28,8 +28,8 @@ namespace Quintity.TestFramework.Core
 
         public TestChangeEventHistories()
         {
-            m_undoStack = new Stack<TestChangeEvent>();
-            m_redoStack = new Stack<TestChangeEvent>();
+            _undoStack = new Stack<TestChangeEvent>();
+            _redoStack = new Stack<TestChangeEvent>();
         }
 
         #endregion
@@ -38,54 +38,64 @@ namespace Quintity.TestFramework.Core
 
         public bool CanUndo()
         {
-            return m_undoStack.Count > 0 ? true : false;
+            return _undoStack.Count > 0 ? true : false;
         }
 
         public bool CanRedo()
         {
-            return m_redoStack.Count > 0 ? true : false;
+            return _redoStack.Count > 0 ? true : false;
         }
 
-        public void RecordEvent(TestChangeEvent changeEvent)
+        public void RecordChangeEvent(TestChangeEvent changeEvent)
         {
             Debug.WriteLine("Event recorded:  " + changeEvent.ToString());
 
-            m_undoStack.Push(changeEvent);
+            _undoStack.Push(changeEvent);
         }
 
         public void Undo()
         {
             TestChangeEvent changeEvent = null;
 
-            if (m_undoStack.Count > 0)
+            if (_undoStack.Count > 0)
             {
-                changeEvent = m_undoStack.Pop();
+                changeEvent = _undoStack.Pop();
 
                 Debug.WriteLine("Undo event popped:  " + changeEvent.ToString());
 
-                createTestHistoryUndoEvent(changeEvent);
+                fireUndoEvent(changeEvent);
 
-                m_redoStack.Push(changeEvent);
+                _redoStack.Push(changeEvent);
             }
         }
 
         public void Redo()
         {
-             if (m_redoStack.Count > 0)
+             if (_redoStack.Count > 0)
              {
-                 TestChangeEvent changeEvent = m_redoStack.Pop();
+                 TestChangeEvent changeEvent = _redoStack.Pop();
 
-                 createTestHistoryRedoEvent(changeEvent);
+                 fireRedoEvent(changeEvent);
 
-                 m_undoStack.Push(changeEvent);
+                 _undoStack.Push(changeEvent);
              }
         }
 
         // Clears the undo/redo stack.
         public void Reset()
         {
-            m_redoStack.Clear();
-            m_undoStack.Clear();
+            _redoStack.Clear();
+            _undoStack.Clear();
+        }
+
+        internal TestChangeEvent PopFromUndoStack()
+        {
+            return _undoStack.Pop();
+        }
+
+        internal TestChangeEvent PopFromRedoStack()
+        {
+            return _redoStack.Pop();
         }
 
         #endregion
@@ -94,26 +104,20 @@ namespace Quintity.TestFramework.Core
         /// Creates a createTestHistoryUndoEvent for undo entity.
         /// </summary>
         /// <param name="testObject">Entity from undo stack.</param>
-        private void createTestHistoryUndoEvent(TestChangeEvent entity)
+        private void fireUndoEvent(TestChangeEvent entity)
         {
             // If client event handler defined...
-            if (OnTestHistoryUndoEvent != null)
-            {
-                OnTestHistoryUndoEvent(entity);
-            }
+            OnTestHistoryUndoEvent?.Invoke(entity);
         }
 
         /// <summary>
         /// Creates a createTestHistoryRedoEvent for undo entity.
         /// </summary>
         /// <param name="testObject">Entity from undo stack.</param>
-        private void createTestHistoryRedoEvent(TestChangeEvent entity)
+        private void fireRedoEvent(TestChangeEvent entity)
         {
             // If client event handler defined...
-            if (OnTestHistoryRedoEvent != null)
-            {
-                OnTestHistoryRedoEvent(entity);
-            }
+            OnTestHistoryRedoEvent?.Invoke(entity);
         }
     }
 }
