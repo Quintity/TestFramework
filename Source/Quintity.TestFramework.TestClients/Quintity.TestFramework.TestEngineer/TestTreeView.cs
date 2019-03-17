@@ -139,7 +139,6 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miAddTestSuite;
         private ToolStripSeparator m_toolStripSeparator5;
         private OpenFileDialog m_openFileDialog;
-        private ToolStripMenuItem m_miReloadTestSuite;
         private ToolStripMenuItem m_miRename;
         private ToolStripSeparator m_toolStripSeparator6;
         private ToolStripMenuItem m_miBreakpoint;
@@ -194,7 +193,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miActivate.Click += m_miActivate_Click;
             this.m_miActivateAll.Click += m_miActivateAll_Click;
             this.m_miAddTestSuite.Click += m_miAddTestSuite_Click;
-            this.m_miReloadTestSuite.Click += m_miReloadTestSuite_Click;
             this.m_miNewTestSuite.Click += m_miNewTestSuite_Click;
             this.m_miNewTestCase.Click += m_miNewTestCase_Click;
             this.m_miNewTestStep.Click += m_miNewTestStep_Click;
@@ -457,7 +455,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestCase(TestTreeNode currentNode, bool recordHistory = true)
         {
-            var newNode = InsertNodeExt(new TestCase("Untitle test case"), currentNode, false);
+            var newNode = InsertNodeExt(new TestCase("Untitled test case"), currentNode, false);
 
             // Initialize test case with a single test step.
             AddNewTestStep(newNode, false);
@@ -582,6 +580,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             return copyNode;
         }
+
         public void RemoveNode()
         {
             RemoveNode(SelectedNode);
@@ -658,11 +657,10 @@ namespace Quintity.TestFramework.TestEngineer
                     testScriptObjectCopy = new TestStep(sourceNode.TestScriptObject as TestStep, null);
                 }
 
-                // Change the singular item (not it's children if container) to indicate copy.
+                // Change title to reflect is copy (suppress undo event)
+                m_recordHistory = false;
                 testScriptObjectCopy.Title = "Copy of " + testScriptObjectCopy.Title;
-
-                // A little hacky, change title generates a undo change history (don't want).
-                m_changeHistory.PopFromUndoStack();
+                m_recordHistory = true;
 
                 // Create new node for test script object.
                 copyNode = new TestTreeNode(testScriptObjectCopy);
@@ -1775,7 +1773,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestStep = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miAddTestSuite = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miReloadTestSuite = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miInsertBreakpoint = new System.Windows.Forms.ToolStripMenuItem();
@@ -1810,7 +1807,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miNewTestStep,
             this.m_toolStripSeparator4,
             this.m_miAddTestSuite,
-            this.m_miReloadTestSuite,
             this.m_toolStripSeparator5,
             this.m_miBreakpoint,
             this.m_toolStripSeparator6,
@@ -1908,13 +1904,6 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miAddTestSuite.Size = new System.Drawing.Size(201, 22);
             this.m_miAddTestSuite.Text = "Add Existing Test Suite...";
             this.m_miAddTestSuite.ToolTipText = "Add an existing test suite";
-            // 
-            // m_miReloadTestSuite
-            // 
-            this.m_miReloadTestSuite.Name = "m_miReloadTestSuite";
-            this.m_miReloadTestSuite.Size = new System.Drawing.Size(201, 22);
-            this.m_miReloadTestSuite.Text = "Reload Test Suite...";
-            this.m_miReloadTestSuite.ToolTipText = "Reload an existing test suite.";
             // 
             // m_toolStripSeparator5
             // 
@@ -2590,7 +2579,6 @@ namespace Quintity.TestFramework.TestEngineer
             }
 
             m_miOpenEditor.Enabled = unavailable ? false : true;
-            m_miReloadTestSuite.Visible = selectedNode.IsTestSuite() ? true : false;
 
             if (selectedNode.IsTestSuite())
             {
@@ -2802,92 +2790,6 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_miAddTestSuite_Click(object sender, EventArgs e)
         {
             AddExistingTestSuite(SelectedNode, true);
-        }
-
-        private void m_miReloadTestSuite_Click(object sender, EventArgs e)
-        {
-            var targetNode = SelectedNode;
-            var testSuite = targetNode.TestScriptObject as TestSuite;
-            testSuite = TestSuite.ReadFromFile(testSuite.FilePath);
-
-            //if (testSuite.Status != Status.Unavailable)
-            //{
-            BeginUpdate();
-            insertTestSuite(testSuite, targetNode, false);
-            removeTestSuiteNode(targetNode);
-            EndUpdate();
-            //}
-            //else
-            //{
-            // In case load is failing to another reason (update).
-            //targetNode.TestScriptObject = testSuite;
-            //targetNode.UpdateToolTip();
-            //}
-        }
-
-        /// <summary>
-        /// Insert a test into the treeview.  If the target node is test suite,
-        /// the user is prompted whether insert as child or sibling of target suite.
-        /// If the target is a test case, the suite is insert below the target case
-        /// as a sibling.
-        /// </summary>
-        /// <param name="testSuite">Test suite object to insert.</param>
-        /// <param name="targetNode">Target node to insert.</param>
-        private TestTreeNode insertTestSuite(TestSuite testSuite, TestTreeNode targetNode, bool relationshipPrompt = true)
-        {
-            TestTreeNode newNode = null;
-
-            // Turn painting off
-            BeginUpdate();
-
-            if (null == targetNode)  // Must be root node.
-            {
-                newNode = InsertNode(testSuite, null, -1, false);
-            }
-            else if (targetNode.IsTestSuite())
-            {
-                if (!isRootNode(targetNode))
-                {
-                    var sibling = true;
-
-                    if (relationshipPrompt)
-                    {
-                        var relationshipDlg = new TestsuiteRelationshipDialog();
-                        var result = relationshipDlg.ShowDialog(this);
-                        sibling = result == DialogResult.Yes ? true : false;
-                    }
-
-                    newNode = sibling ? newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true) : InsertNode(testSuite, targetNode, -1, true);
-
-                    //if (result == DialogResult.No)  // No adds as child
-                    //{
-                    //    newNode = InsertNode(testSuite, targetNode, -1, true);
-                    //}
-                    //else if (result == DialogResult.Yes)  // Yes adds as sibling
-                    //{
-                    //    newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true);
-                    //}
-                }
-                else  // If root, don't prompt, have to add as child.
-                {
-                    newNode = InsertNode(testSuite, targetNode, targetNode.Nodes.Count, true);
-                }
-            }
-            else if (targetNode.IsTestCase())
-            {
-                newNode = InsertNode(testSuite, targetNode.Parent, targetNode.Index + 1, true);
-            }
-
-            if (newNode != null)
-            {
-                constructNodeTreeFragment(newNode, testSuite);
-                newNode.Expand();
-                SelectedNode = newNode;
-            }
-
-            EndUpdate();
-
-            return newNode;
         }
 
         private void m_miNewTestSuite_Click(object sender, EventArgs e)
