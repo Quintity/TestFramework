@@ -411,7 +411,6 @@ namespace Quintity.TestFramework.TestEngineer
         {
             bool activated = (m_testScriptObject.Status == Status.Active || m_testScriptObject.Status == Status.Incomplete) ? true : false;
 
-            // TODO - delete
             if (m_testScriptObject.Status == Status.Active)
             {
                 //m_activatecheckBox.Text = "Ac&tivated";
