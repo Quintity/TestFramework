@@ -482,105 +482,6 @@ namespace Quintity.TestFramework.TestEngineer
             return newNode;
         }
 
-        public TestTreeNode InsertNode(TestScriptObject testScriptObject, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
-        {
-            return InsertNode(new TestTreeNode(testScriptObject), parentNode, nodeIndex, recordHistory);
-        }
-
-        public TestTreeNode InsertNode(TestTreeNode nodeToInsert, TestTreeNode parentNode, int nodeIndex, bool recordHistory = true)
-        {
-            TestScriptObjectContainer parentContainer = null;
-            int newContainerIndex = 0;
-
-            if (null == parentNode)  // Must be root node.
-            {
-                Nodes.Clear();
-                this.Nodes.Insert(0, nodeToInsert);
-            }
-            else
-            {
-                // Get parent's container object.
-                parentContainer = parentNode.TestScriptObjectAsContainer();
-
-                // Get previous sibling node's container index
-                if (nodeIndex != -1)
-                {
-                    if (nodeIndex != 0)
-                    {
-                        TestTreeNode siblingNode = parentNode.Nodes[nodeIndex - 1] as TestTreeNode;  // Previous?
-
-                        TestScriptObject siblingObject = siblingNode.TestScriptObject;
-
-                        newContainerIndex = parentContainer.FindTestScriptObjectIndex(siblingObject) + 1;
-
-                        nodeIndex = siblingNode.Index + 1;
-                    }
-                }
-                else
-                {
-                    nodeIndex++;
-                }
-
-                // Add test script object to container to follow sibling in collection.
-                parentContainer.InsertTestScriptObject(nodeToInsert.TestScriptObject, newContainerIndex);
-
-                // Add to tree view parent node at node index.
-                parentNode.Nodes.Insert(nodeIndex, nodeToInsert);
-            }
-
-            // Update UI
-            markAsChanged(nodeToInsert);
-
-            this.SelectedNode = nodeToInsert;
-            //this.m_nodeMapping.Add(testScriptObject.SystemID, newNode);
-
-            // TODO - Cleanup
-            // Create change event with parents container object and index.
-            //if (recordHistory)
-            //{
-            //    TestScriptObjectLocation location = new TestScriptObjectLocation(parentContainer, newContainerIndex);
-            //    m_changeHistory.RecordChangeEvent(new TestChangeEvent(nodeToInsert.TestScriptObject, ChangeType.Add, location, null, tag: nodeToInsert));
-            //}
-
-            fireTestTreeNodeAddedEvent(nodeToInsert);
-
-            return nodeToInsert;
-        }
-
-        public TestTreeNode CopyNode(TestTreeNode nodeToCopy, TestTreeNode targetNode, int nodeIndex, bool recordHistory = true)
-        {
-            // Get parent's container object.
-            TestScriptObjectContainer parentContainer = nodeToCopy.Parent.TestScriptObjectAsContainer();
-            int index = parentContainer.FindTestScriptObjectIndex(nodeToCopy.TestScriptObject);
-
-            // Create copy of node's test script object
-            TestScriptObject objectCopy = null;
-
-            if (nodeToCopy.IsTestSuite())
-            {
-                objectCopy = new TestSuite(nodeToCopy.TestScriptObject as TestSuite, null, null);
-            }
-            else if (nodeToCopy.IsTestCase())
-            {
-                objectCopy = new TestCase(nodeToCopy.TestScriptObject as TestCase, null);
-            }
-            else if (nodeToCopy.IsTestStep())
-            {
-                objectCopy = new TestStep(nodeToCopy.TestScriptObject as TestStep, null);
-            }
-
-            // Change the singular item (not it's children if container) to indicate copy.
-            objectCopy.Title = "Copy of " + objectCopy.Title;
-
-            // Add node to tree
-            TestTreeNode copyNode = InsertNode(objectCopy, targetNode, nodeIndex, recordHistory);
-
-            // Add copied objects children to copyNode;
-            constructNodeTreeFragment(copyNode, objectCopy);
-
-            return copyNode;
-        }
-
         public void RemoveNode()
         {
             RemoveNode(SelectedNode);
@@ -2290,6 +2191,7 @@ namespace Quintity.TestFramework.TestEngineer
             // Turn painting on.
             EndUpdate();
         }
+        
         #endregion
 
         #endregion
