@@ -2129,68 +2129,6 @@ namespace Quintity.TestFramework.TestEngineer
             return node == this.Nodes[0] ? true : false;
         }
 
-        private void removeTestSuiteNode(TestTreeNode testSuiteNode)
-        {
-            var testSuite = testSuiteNode.Parent.TestScriptObjectAsTestSuite();
-
-            int index = testSuite.TestScriptObjects.FindIndex(x => x.SystemID == testSuiteNode.TestScriptObject.SystemID);
-            // TODO
-            //var currentLocation = new TestScriptObjectLocation(testSuiteNode.Parent.TestScriptObjectAsContainer(), index);
-
-            removeNode(testSuiteNode);
-
-            //if (m_recordHistory)
-            //{
-            //    m_changeHistory.RecordChangeEvent(new TestChangeEvent(testSuiteNode.TestScriptObject, ChangeType.Remove, currentLocation, tag: testSuiteNode));
-            //}
-        }
-
-        private void removeTestCaseNode(TestTreeNode testCaseNode)
-        {
-            var testSuite = testCaseNode.Parent.TestScriptObjectAsTestSuite();
-
-            int index = testSuite.TestScriptObjects.FindIndex(x => x.SystemID == testCaseNode.TestScriptObject.SystemID);
-            //TODO
-            //var currentLocation = new TestScriptObjectLocation(testCaseNode.Parent.TestScriptObjectAsContainer(), index);
-
-            removeNode(testCaseNode);
-
-            if (m_recordHistory)
-            {
-                //m_changeHistory.RecordChangeEvent(new TestChangeEvent(testCaseNode.TestScriptObject,
-                //    ChangeType.Remove, formerValue: currentLocation, tag: testCaseNode));
-            }
-        }
-        //TODO - remove?
-        private void removeTestStepNode(TestTreeNode testStepNode)
-        {
-            // Get parent test case.
-            var testCase = testStepNode.Parent.TestScriptObjectAsTestCase();
-
-            int index = testCase.TestSteps.FindIndex(x => x.SystemID == testStepNode.TestScriptObject.SystemID);
-
-            // Get current location for change history
-            //var currentLocation = new TestScriptObjectLocation(testStepNode.Parent.TestScriptObjectAsContainer(), index);
-
-            // Remove node from tree
-            removeNode(testStepNode);
-
-            //if (m_recordHistory)
-            //{
-            //    m_changeHistory.RecordChangeEvent(new TestChangeEvent(testStepNode.TestScriptObject,
-            //        ChangeType.Remove, formerValue: currentLocation, tag: testStepNode));
-            //}
-        }
-
-        private void removeNode(TestTreeNode nodeToRemove)
-        {
-            var parentNode = FindNode(nodeToRemove.TestScriptObject.ParentID);
-            var parent = parentNode.TestScriptObject as TestScriptObjectContainer;
-            parent.RemoveTestScriptObject(nodeToRemove.TestScriptObject);
-            parentNode.Nodes.Remove(nodeToRemove);
-            markAsChanged(parentNode);
-        }
-
         private void resetChangeEventHistories()
         {
             m_changeHistory.Reset();
