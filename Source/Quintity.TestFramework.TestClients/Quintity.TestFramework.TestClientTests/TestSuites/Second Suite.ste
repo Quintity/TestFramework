@@ -60,33 +60,9 @@
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>a2542ed8-e41b-4239-9ddc-016969dbf8f5</SystemID>
-          <UserID />
-          <Title>Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>False</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>Sleep</TestMethod>
-            <TestParameters>
-              <TestParameter>
-                <DisplayName>millisecondTimeout</DisplayName>
-                <Name>millisecondTimeout</Name>
-                <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>1000</ValueAsString>
-              </TestParameter>
-            </TestParameters>
-          </TestAutomationDefinition>
-        </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>7edbfa60-5516-40f5-9c3d-87a58889a93b</SystemID>
-          <UserID />
-          <Title>Copy of Sleep</Title>
+          <UserID>1</UserID>
+          <Title>First test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -109,8 +85,8 @@
         </TestScriptObject>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>2c54b57c-2238-48c0-9a9d-ee5526ba90ad</SystemID>
-          <UserID />
-          <Title>Copy of Sleep</Title>
+          <UserID>2</UserID>
+          <Title>Second test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -132,8 +108,32 @@
           </TestAutomationDefinition>
         </TestScriptObject>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>a2542ed8-e41b-4239-9ddc-016969dbf8f5</SystemID>
+          <UserID>3</UserID>
+          <Title>Third test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>1000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
-          <UserID />
+          <UserID>4</UserID>
           <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>

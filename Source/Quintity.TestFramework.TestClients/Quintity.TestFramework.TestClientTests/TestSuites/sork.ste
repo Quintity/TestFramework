@@ -2,7 +2,7 @@
 <TestSuite status="Active">
   <SystemID>773230a4-755e-4cfe-a1a7-74e4a46fe607</SystemID>
   <UserID />
-  <Title>sork</Title>
+  <Title>hello world</Title>
   <Author>jmoth</Author>
   <Created>2019-01-31T10:36:38-08:00</Created>
   <Project />
@@ -62,6 +62,23 @@
           <SystemID>738f169e-7b3b-44e2-9897-4a7335d67887</SystemID>
           <UserID />
           <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly />
+            <TestClass />
+            <TestMethod />
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
+          <SystemID>0bce8d66-526d-49ad-ae09-58607ce4c10f</SystemID>
+          <UserID />
+          <Title>Untitle test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
