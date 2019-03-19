@@ -10,8 +10,7 @@ using System.Xml.XPath;
 namespace Quintity.TestFramework.Core
 {
     [DataContract]
-    // TODO this could be a problem 05/01/2018
-    //[Editor(typeof(TestAutomationDefinitionEditor), typeof(System.Drawing.Design.UITypeEditor))]
+    [Editor(typeof(TestAutomationDefinitionEditor), typeof(System.Drawing.Design.UITypeEditor))]
     public class TestAutomationDefinition : TestObject
     {
         #region Class data members
