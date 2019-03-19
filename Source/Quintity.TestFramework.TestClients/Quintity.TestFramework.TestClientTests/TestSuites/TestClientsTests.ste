@@ -19,15 +19,15 @@
     <IgnoreResult>False</IgnoreResult>
     <TestType>Automated</TestType>
     <TestAutomationDefinition>
-      <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+      <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
       <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-      <TestMethod>SimpleTest</TestMethod>
+      <TestMethod>Sleep</TestMethod>
       <TestParameters>
         <TestParameter>
-          <DisplayName>throwException</DisplayName>
-          <Name>throwException</Name>
-          <TypeAsString>System.Boolean</TypeAsString>
-          <ValueAsString>False</ValueAsString>
+          <DisplayName>millisecondTimeout</DisplayName>
+          <Name>millisecondTimeout</Name>
+          <TypeAsString>System.Int32</TypeAsString>
+          <ValueAsString>3000</ValueAsString>
         </TestParameter>
       </TestParameters>
     </TestAutomationDefinition>

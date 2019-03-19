@@ -127,7 +127,6 @@
     <Compile Include="SplashDialog.Designer.cs">
       <DependentUpon>SplashDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestAutomationDefinitionEditor.cs" />
     <Compile Include="TestChangeEvent.cs" />
     <Compile Include="TestChangeEventHistories.cs" />
     <Compile Include="TestListenersEditorDialog.cs">
@@ -154,12 +153,6 @@
     </Compile>
     <Compile Include="TestPropertiesGlobalEditor.Designer.cs">
       <DependentUpon>TestPropertiesGlobalEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestScriptObjectEditorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestScriptObjectEditorDialog.Designer.cs">
-      <DependentUpon>TestScriptObjectEditorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="TestsuiteRelationshipDialog.cs">
       <SubType>Form</SubType>
@@ -208,9 +201,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestPropertiesGlobalEditor.resx">
       <DependentUpon>TestPropertiesGlobalEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestScriptObjectEditorDialog.resx">
-      <DependentUpon>TestScriptObjectEditorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestsuiteRelationshipDialog.resx">
       <DependentUpon>TestsuiteRelationshipDialog.cs</DependentUpon>

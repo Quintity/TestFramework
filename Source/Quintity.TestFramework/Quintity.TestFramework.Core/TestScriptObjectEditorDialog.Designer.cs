@@ -1,4 +1,4 @@
-namespace Quintity.TestFramework.TestEngineer
+namespace Quintity.TestFramework.Core
 {
     partial class TestScriptObjectEditorDialog
     {
@@ -382,6 +382,8 @@ namespace Quintity.TestFramework.TestEngineer
             // 
             // m_executeToolStripMenuItem
             // 
+            this.m_executeToolStripMenuItem.Enabled = false;
+            this.m_executeToolStripMenuItem.Visible = false; 
             this.m_executeToolStripMenuItem.Name = "m_executeToolStripMenuItem";
             this.m_executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.m_executeToolStripMenuItem.Text = "Execute";

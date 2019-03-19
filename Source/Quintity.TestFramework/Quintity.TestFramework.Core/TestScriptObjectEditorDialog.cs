@@ -10,10 +10,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Threading;
-using Quintity.TestFramework.Core;
-using Quintity.TestFramework.Runtime;
 
-namespace Quintity.TestFramework.TestEngineer
+namespace Quintity.TestFramework.Core
 {
     public partial class TestScriptObjectEditorDialog : Form
     {
@@ -68,6 +66,14 @@ namespace Quintity.TestFramework.TestEngineer
         public delegate void TestScriptObjectEditorClosed(object sender, TestScriptObjectEditorClosedArgs e);
         public static event TestScriptObjectEditorClosed OnTestScriptObjectEditorClosed;
 
+        public delegate void ExecuteTestStepHandler();
+        public static event ExecuteTestStepHandler OnExecuteTestStep;
+
+        internal static void fireExecuteTestStepEvent()
+        {
+            OnExecuteTestStep?.Invoke();
+        }
+
         #endregion
 
         #region Data fields
@@ -115,41 +121,41 @@ namespace Quintity.TestFramework.TestEngineer
 
         private void m_executeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (m_testScriptObject is TestStep)
-            {
-                _executionEvent = new ManualResetEvent(false);
+            //if (m_testScriptObject is TestStep)
+            //{
+            //    _executionEvent = new ManualResetEvent(false);
 
-                TestExecutor.OnExecutionComplete += _OnExecutionComplete;
+            //    TestExecutor.OnExecutionComplete += _OnExecutionComplete;
 
-                TestAutomationDefinition currentDefinition = null;
+            //    TestAutomationDefinition currentDefinition = null;
 
-                var testStep = m_testScriptObject as TestStep;
+            //    var testStep = m_testScriptObject as TestStep;
 
-                try
-                {
-                    currentDefinition = testStep.TestAutomationDefinition;
+            //    try
+            //    {
+            //        currentDefinition = testStep.TestAutomationDefinition;
 
-                    var newdefinition = getTestAutomationDefinition();
+            //        var newdefinition = getTestAutomationDefinition();
 
-                    testStep.TestAutomationDefinition = newdefinition;
+            //        testStep.TestAutomationDefinition = newdefinition;
 
-                    new TestExecutor().ExecuteTestStep(testStep, false);
+            //        new TestExecutor().ExecuteTestStep(testStep, false);
 
-                    Cursor = Cursors.WaitCursor;
-                    _executionEvent.WaitOne();
-                    Cursor = Cursors.Default;
+            //        Cursor = Cursors.WaitCursor;
+            //        _executionEvent.WaitOne();
+            //        Cursor = Cursors.Default;
 
-                }
-                catch
-                {
-                    throw;
-                }
-                finally  // Always want to reset.
-                {
-                    testStep.TestAutomationDefinition = currentDefinition;
-                    TestExecutor.OnExecutionComplete -= _OnExecutionComplete;
-                }
-            }
+            //    }
+            //    catch
+            //    {
+            //        throw;
+            //    }
+            //    finally  // Always want to reset.
+            //    {
+            //        testStep.TestAutomationDefinition = currentDefinition;
+            //        TestExecutor.OnExecutionComplete -= _OnExecutionComplete;
+            //    }
+            //}
         }
 
         private void m_testAssemblytreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -1052,47 +1058,47 @@ namespace Quintity.TestFramework.TestEngineer
         /// <param name="e"></param>
         private void m_executeBtn_Click(object sender, EventArgs e)
         {
-            if (m_testScriptObject is TestStep)
-            {
-                _executionEvent = new ManualResetEvent(false);
+            //if (m_testScriptObject is TestStep)
+            //{
+            //    _executionEvent = new ManualResetEvent(false);
 
-                TestExecutor.OnExecutionComplete += _OnExecutionComplete;
+            //    TestExecutor.OnExecutionComplete += _OnExecutionComplete;
 
-                TestAutomationDefinition currentDefinition = null;
+            //    TestAutomationDefinition currentDefinition = null;
 
-                var testStep = m_testScriptObject as TestStep;
+            //    var testStep = m_testScriptObject as TestStep;
 
-                try
-                {
-                    currentDefinition = testStep.TestAutomationDefinition;
+            //    try
+            //    {
+            //        currentDefinition = testStep.TestAutomationDefinition;
 
-                    var newdefinition = getTestAutomationDefinition();
+            //        var newdefinition = getTestAutomationDefinition();
 
-                    testStep.TestAutomationDefinition = newdefinition;
+            //        testStep.TestAutomationDefinition = newdefinition;
 
-                    new TestExecutor().ExecuteTestStep(testStep, false);
+            //        new TestExecutor().ExecuteTestStep(testStep, false);
 
-                    Cursor = Cursors.WaitCursor;
-                    _executionEvent.WaitOne();
-                    Cursor = Cursors.Default;
+            //        Cursor = Cursors.WaitCursor;
+            //        _executionEvent.WaitOne();
+            //        Cursor = Cursors.Default;
 
-                }
-                catch
-                {
-                    throw;
-                }
-                finally  // Always want to reset.
-                {
-                    testStep.TestAutomationDefinition = currentDefinition;
-                    TestExecutor.OnExecutionComplete -= _OnExecutionComplete;
-                }
-            }
+            //    }
+            //    catch
+            //    {
+            //        throw;
+            //    }
+            //    finally  // Always want to reset.
+            //    {
+            //        testStep.TestAutomationDefinition = currentDefinition;
+            //        TestExecutor.OnExecutionComplete -= _OnExecutionComplete;
+            //    }
+            //}
         }
 
-        private void _OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
-        {
-            _executionEvent.Set();
-        }
+        //private void _OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
+        //{
+        //    _executionEvent.Set();
+        //}
 
         /// <summary>
         /// Event handler for title text box content change.
