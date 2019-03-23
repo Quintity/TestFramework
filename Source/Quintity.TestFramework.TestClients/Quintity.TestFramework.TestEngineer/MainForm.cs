@@ -147,25 +147,12 @@ namespace Quintity.TestFramework.TestEngineer
         {
             // Get/set debug file.
             var executablePath = new Uri(Assembly.GetExecutingAssembly().CodeBase);
-            TestBreakpoints.SerializationFile = executablePath.AbsolutePath.Replace(".exe", ".sts");
+            TestBreakpoints.SerializationFile = executablePath.LocalPath.Replace(".exe", ".sts");
 
             if (File.Exists(TestBreakpoints.SerializationFile))
             {
                 var breakpoints = TestBreakpoints.ReadFromFile();
             }
-            /*
-             *          In case current implementation of listener update monitors is not adequate.
-             *          
-                        FileSystemWatcher watcher = new FileSystemWatcher();
-                        watcher.Path = @"C:\TestProjects\Quintity\Quintity.TestFramework\Quintity.TestFramework - Trunk\Quintity.TestFramework.Scratch\TestListeners";
-                        watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-                            | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.CreationTime;
-                        watcher.Filter = "bub.config";
-                        watcher.EnableRaisingEvents = true;
-                        watcher.Changed += watcher_Changed;
-                        watcher.Created += watcher_Created;
-                        watcher.Deleted += watcher_Deleted;
-             */
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

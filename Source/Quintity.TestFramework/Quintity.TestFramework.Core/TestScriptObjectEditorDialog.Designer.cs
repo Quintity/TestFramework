@@ -377,6 +377,7 @@ namespace Quintity.TestFramework.Core
             // 
             // toolStripSeparator1
             // 
+            this.toolStripSeparator1.Visible = false;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
