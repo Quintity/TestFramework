@@ -378,7 +378,7 @@ namespace Quintity.TestFramework.TestEngineer
                 testcase.AddTestStep(new TestStep("Untitled test step"));
                 newNode = new TestTreeNode(testSuite);
                 constructNodeTreeFragment(newNode, testSuite);
-                InsertNodeExt(newNode, currentNode, false);
+                InsertNode(newNode, currentNode, false);
 
                 if (recordHistory)
                 {
@@ -414,7 +414,7 @@ namespace Quintity.TestFramework.TestEngineer
                         newNode = new TestTreeNode(testSuite);
                         constructNodeTreeFragment(newNode, testSuite);
                         newNode.Expand();
-                        InsertNodeExt(newNode, currentNode, false);
+                        InsertNode(newNode, currentNode, false);
 
                         if (recordHistory)
                         {
@@ -450,7 +450,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestCase(TestTreeNode currentNode, bool recordHistory = true)
         {
-            var newNode = InsertNodeExt(new TestCase("Untitled test case"), currentNode, false);
+            var newNode = InsertNode(new TestCase("Untitled test case"), currentNode, false);
 
             // Initialize test case with a single test step.
             AddNewTestStep(newNode, false);
@@ -467,7 +467,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestStep(TestTreeNode currentNode, bool recordHistory = true)
         {
-            var newNode = InsertNodeExt(new TestStep("Untitle test step"), currentNode, false);
+            var newNode = InsertNode(new TestStep("Untitle test step"), currentNode, false);
 
             if (recordHistory)
             {
@@ -679,9 +679,9 @@ namespace Quintity.TestFramework.TestEngineer
 
         internal void ResetChangeEventHistory() => m_changeHistory.Reset();
 
-        public TestTreeNode InsertNodeExt(TestScriptObject testScriptObject, TestTreeNode targetNode, bool recordHistory = true)
+        public TestTreeNode InsertNode(TestScriptObject testScriptObject, TestTreeNode targetNode, bool recordHistory = true)
         {
-            return InsertNodeExt(new TestTreeNode(testScriptObject), targetNode, recordHistory);
+            return InsertNode(new TestTreeNode(testScriptObject), targetNode, recordHistory);
         }
 
         /// <summary>
@@ -689,24 +689,32 @@ namespace Quintity.TestFramework.TestEngineer
         /// </summary>
         /// <param name="sourceNode"></param>
         /// <param name="targetNode"></param>
-        public TestTreeNode InsertNodeExt(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
+        public TestTreeNode InsertNode(TestTreeNode sourceNode, TestTreeNode targetNode, bool recordHistory = true)
         {
             BeginUpdate();
 
             var sourceNodeParent = sourceNode.Parent;
             var sourceScriptObject = sourceNode.TestScriptObject;
 
-            // Get new insertion info (based on rules).
-            var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
+            if (targetNode != null)
+            {
+                // Get new insertion info (based on rules).
+                var targetInsertInfo = GetTargetInsertInfo(sourceNode, targetNode);
 
-            // Insert into parent containertree node accordingly
-            targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
+                // Insert into parent containertree node accordingly
+                targetInsertInfo.TargetContainerNode.Nodes.Insert(targetInsertInfo.InsertIndex, sourceNode);
 
-            // Insert into new test script object target container
-            targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
+                // Insert into new test script object target container
+                targetInsertInfo.TargetContainerNode.TestScriptObjectAsContainer().InsertTestScriptObject(sourceScriptObject, targetInsertInfo.InsertIndex);
 
-            // Node and parents as changed.
-            markAsChanged(sourceNode);
+                // Node and parents as changed.
+                markAsChanged(sourceNode);
+            }
+            else // Must be root node if not target node
+            {
+                this.Nodes.Clear();
+                this.Nodes.Add(sourceNode);
+            }
 
             this.SelectedNode = sourceNode;
 
@@ -2627,7 +2635,7 @@ namespace Quintity.TestFramework.TestEngineer
                 case ChangeType.Remove:
                     {
                         // Reinsert recently removed node.
-                        InsertNodeExt(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
+                        InsertNode(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
                     }
                     break;
                 case ChangeType.Copy:
@@ -2672,7 +2680,7 @@ namespace Quintity.TestFramework.TestEngineer
                     break;
                 case ChangeType.Add:  // If node was added, need to remove it.
                     {
-                        InsertNodeExt(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
+                        InsertNode(changeEvent.ChangeObject, changeEvent.ChangeValues[0], false);
                     }
 
                     break;

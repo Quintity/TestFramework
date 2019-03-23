@@ -1130,7 +1130,7 @@ namespace Quintity.TestFramework.Core
             //}
 
 
-            updateChangedUI(true);
+            updateChangedUI(!m_isInitializingDialog);
         }
 
         /// <summary>
@@ -1140,7 +1140,7 @@ namespace Quintity.TestFramework.Core
         /// <param name="e"></param>
         private void m_descText_TextChanged(object sender, EventArgs e)
         {
-            updateChangedUI(true);
+            updateChangedUI(!m_isInitializingDialog);
         }
 
         /// <summary>
@@ -1164,7 +1164,7 @@ namespace Quintity.TestFramework.Core
                 m_editorTabs.Controls.Remove(m_automationDefinitionTab); ;
             }
 
-            updateChangedUI(true);
+            updateChangedUI(!m_isInitializingDialog);
         }
 
         private void m_tsAddAssemblyButton_Click(object sender, EventArgs e)
