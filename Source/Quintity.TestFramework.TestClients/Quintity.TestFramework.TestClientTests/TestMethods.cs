@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using Quintity.TestFramework.Core;
 
 
@@ -11,6 +12,59 @@ namespace Quintity.TestFramework.TestClientTests
     public class TestMethods : TestClassBase
     {
         #region TestMethods
+
+        [TestMethod]
+        public TestVerdict ParalellTest(string filePath)
+        {
+            try
+            {
+                Setup();
+
+                var testSuite = TestSuite.ReadFromFile(filePath);
+
+                var parallelTestScriptObjects = testSuite.TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                    .Where(t => t != null && t.Parallelizable == true);
+
+
+
+                var nonParallelTestScriptOjects = testSuite.TestScriptObjects.Except(parallelTestScriptObjects);
+
+                foreach (var testScriptObject in nonParallelTestScriptOjects)
+                {
+                    if (testScriptObject is TestCase)
+                    {
+                        // execute test case.
+                    }
+                    else if (testScriptObject is TestSuite)
+                    {
+                        // execute test suite.
+                    }
+                }
+
+                int i = 1;
+            }
+            catch (Exception e)
+            {
+                TestMessage += e.ToString();
+                TestVerdict = TestVerdict.Error;
+            }
+            finally
+            {
+                Teardown();
+            }
+
+            return TestVerdict;
+        }
+
+        private TestCase convert(TestScriptObject input)
+        {
+            if (input is TestCase)
+            {
+                return input as TestCase;
+            }
+
+            return null;
+        }
 
         [TestMethod("This is a simple test", "This is the description")]
         public TestVerdict SimpleTest(bool throwException)

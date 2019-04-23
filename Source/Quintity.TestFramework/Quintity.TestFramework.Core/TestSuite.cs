@@ -197,6 +197,28 @@ namespace Quintity.TestFramework.Core
             }
         }
 
+        [DataMember(Order = 29)]
+        private bool _parallelExecution;
+
+        [CategoryAttribute("Runtime Settings"),
+        DisplayName("Parallel Execution"),
+        DefaultValue(false),
+        DescriptionAttribute("If true, the test are run in parallel with sibling tests, false otherwise."),
+        PropertyOrder(39)]
+        public bool ParallelExecution
+        {
+            get { return _parallelExecution; }
+            set
+            {
+                if (_parallelExecution != value)
+                {
+                    object oldValue = _parallelExecution;
+                    _parallelExecution = value;
+                    notifyTestPropertyChangedEvent(new TestPropertyChangedEventArgs(oldValue, value));
+                }
+            }
+        }
+
         [DataMember(Order = 26)]
         private string _project;
 
@@ -1046,8 +1068,37 @@ namespace Quintity.TestFramework.Core
                 if ((processorResult.TestVerdict != TestVerdict.Fail && processorResult.TestVerdict != TestVerdict.Error) ||
                     TestPreprocessor.OnFailure != OnFailure.Stop)
                 {
+                    // Setup for default non-parallel processing
+                    IEnumerable<TestCase> parallelTestCases = new List<TestCase>();
+                    IEnumerable<TestScriptObject> nonParallelTestScriptOjects = new List<TestScriptObject>(TestScriptObjects);
+
+                    // If suite is set for parallel execution
+                    if (ParallelExecution)
+                    {
+                        parallelTestCases = TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                            .Where(t => t != null && t.Parallelizable == true);
+
+                        nonParallelTestScriptOjects = TestScriptObjects.Except(parallelTestCases);
+
+                        var threads = new List<Thread>();
+
+                        foreach(var testCase in parallelTestCases)
+                        {
+                            var workerThread =  new Thread(new ParameterizedThreadStart(dowork));
+                            workerThread.Name = Thread.CurrentThread.Name;
+                            threads.Add(workerThread);
+
+                            workerThread.Start(testCase);
+                        }
+
+                        foreach (Thread thread in threads)
+                        {
+                            thread.Join();
+                        }
+                    }
+
                     // Iterate through suites test script objects
-                    foreach (TestScriptObject testScriptObject in TestScriptObjects)
+                    foreach(var testScriptObject in nonParallelTestScriptOjects)
                     {
                         // Only execute Active objects.
                         if (testScriptObject.Status == Core.Status.Active)
@@ -1104,7 +1155,7 @@ namespace Quintity.TestFramework.Core
             }
             else
             {
-               // testSuiteResult.SetTestVerdict(TestVerdict.DidNotExecute);
+                // testSuiteResult.SetTestVerdict(TestVerdict.DidNotExecute);
                 testSuiteResult.SetTestMessage("The test suite is set to \"Active\", however it does not contain any active test cases or suites.");
             }
 
@@ -1118,6 +1169,14 @@ namespace Quintity.TestFramework.Core
             FireExecutionCompleteEvent(this, testSuiteResult);
 
             return testSuiteResult;
+        }
+
+        private void dowork(object obj)
+        {
+            var testCase = obj as TestCase;
+
+            var testScriptResult = testCase.Execute();
+     
         }
 
         #endregion

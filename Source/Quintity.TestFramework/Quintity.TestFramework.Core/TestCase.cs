@@ -109,12 +109,35 @@ namespace Quintity.TestFramework.Core
         }
 
         [DataMember(Order = 20)]
+        private bool _parallelizable;
+
+        [CategoryAttribute("Runtime Settings"),
+       DisplayName("Parallelizable"),
+       DescriptionAttribute("True if the test case can be run in parallel with sibling test cases."),
+       DefaultValue(false),
+            PropertyOrder(45)]
+        public bool Parallelizable
+        {
+            get { return _parallelizable; }
+            set
+            {
+                if (_parallelizable != value)
+                {
+                    object oldValue = _parallelizable;
+                    _parallelizable = value;
+                    notifyTestPropertyChangedEvent(new TestPropertyChangedEventArgs(oldValue, value));
+                }
+            }
+        }
+
+        [DataMember(Order = 21)]
         private OnFailure _onTestStepFailure;
 
         [CategoryAttribute("Runtime Settings"),
         DisplayName("On Step Failure"),
         DescriptionAttribute("True to continue execution of subsequent test steps following a step failure, false otherwise."),
-        DefaultValue(OnFailure.Stop)]
+        DefaultValue(OnFailure.Stop),
+            PropertyOrder(46)]
         public OnFailure OnTestStepFailure
         {
             get { return _onTestStepFailure; }
@@ -128,7 +151,6 @@ namespace Quintity.TestFramework.Core
                 }
             }
         }
-
 
         #endregion
 
@@ -401,6 +423,7 @@ namespace Quintity.TestFramework.Core
             xmlWriter.WriteElementString("KnownDefects", _knownDefects.ToString());
             xmlWriter.WriteElementString("Reference", _reference);
             xmlWriter.WriteElementString("OnFailure", _onTestStepFailure.ToString());
+            xmlWriter.WriteElementString("Parallelizable", _parallelizable.ToString());
 
             // Write description
             xmlWriter.WriteStartElement("Description");
@@ -443,6 +466,7 @@ namespace Quintity.TestFramework.Core
             bool.TryParse(TestUtils.GetXPathValue(nav, "KnownDefects"), out _knownDefects);
             _reference = TestUtils.GetXPathValue(nav, "Reference");
             Enum.TryParse(TestUtils.GetXPathValue(nav, "OnFailure"), out _onTestStepFailure);
+            bool.TryParse(TestUtils.GetXPathValue(nav, "Parallelizable"), out _parallelizable);
             _description = TestUtils.GetXPathValue(nav, "Description");
 
 

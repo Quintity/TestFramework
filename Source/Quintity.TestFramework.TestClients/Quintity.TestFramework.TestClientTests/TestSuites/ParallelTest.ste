@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>89452490-5b4c-46f6-87ac-df2aa0cdde6f</SystemID>
+  <UserID />
+  <Title>Parallel test</Title>
+  <Author>jmoth</Author>
+  <Created>2019-04-17T09:39:57-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <TestPreprocessor>
+    <SystemID>12761bf1-10d5-4d07-9287-80780688976f</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>7f570536-d598-408b-bc31-028f2917d836</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>44755267-c4b5-4073-891a-ca44a813b19c</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-04-17T09:39:57-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>9d4050de-54df-4899-b01a-e1db9f25362c</SystemID>
+          <UserID />
+          <Title>Untitle test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>ParalellTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestSuites]\Parallel.ste</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\ParallelTest.ste</FilePath>
+</TestSuite>
