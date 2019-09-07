@@ -442,6 +442,9 @@ namespace Quintity.TestFramework.Core
                 // Write test propertes
                 Core.TestProperties.Write(xmlWriter, testSuite.TestProperties);
 
+                // Write runtime parallel execution flag
+                xmlWriter.WriteElementString("ParallelExecution", testSuite.ParallelExecution.ToString());
+
                 // Write pre and post processors to writer.
                 testSuite.TestPreprocessor.Write(xmlWriter);
                 testSuite.TestPostprocessor.Write(xmlWriter);
@@ -551,6 +554,8 @@ namespace Quintity.TestFramework.Core
                 //iterator = nav.Select("Properties");
                 //iterator.MoveNext();
                 //testSuite.ReadProperties(iterator.Current);
+
+                testSuite._parallelExecution = bool.TryParse(TestUtils.GetXPathValue(nav, "ParallelExecution"), out testSuite._parallelExecution);
 
                 // Extract pre-processor
                 iterator = nav.Select("TestPreprocessor");
@@ -1069,22 +1074,22 @@ namespace Quintity.TestFramework.Core
                     TestPreprocessor.OnFailure != OnFailure.Stop)
                 {
                     // Setup for default non-parallel processing
-                    IEnumerable<TestCase> parallelTestCases = new List<TestCase>();
-                    IEnumerable<TestScriptObject> nonParallelTestScriptOjects = new List<TestScriptObject>(TestScriptObjects);
+                    var nonParallelTestScriptObjects = TestScriptObjects;
 
                     // If suite is set for parallel execution
                     if (ParallelExecution)
                     {
-                        parallelTestCases = TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
-                            .Where(t => t != null && t.Parallelizable == true);
+                        // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
+                        var parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                            .Where(t => t != null && t.Parallelizable == true));
 
-                        nonParallelTestScriptOjects = TestScriptObjects.Except(parallelTestCases);
+                        nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(parallelTestCases));
 
                         var threads = new List<Thread>();
 
-                        foreach(var testCase in parallelTestCases)
+                        foreach (var testCase in parallelTestCases)
                         {
-                            var workerThread =  new Thread(new ParameterizedThreadStart(dowork));
+                            var workerThread = new Thread(new ParameterizedThreadStart(dowork));
                             workerThread.Name = Thread.CurrentThread.Name;
                             threads.Add(workerThread);
 
@@ -1098,7 +1103,7 @@ namespace Quintity.TestFramework.Core
                     }
 
                     // Iterate through suites test script objects
-                    foreach(var testScriptObject in nonParallelTestScriptOjects)
+                    foreach (var testScriptObject in nonParallelTestScriptObjects)
                     {
                         // Only execute Active objects.
                         if (testScriptObject.Status == Core.Status.Active)
@@ -1176,7 +1181,7 @@ namespace Quintity.TestFramework.Core
             var testCase = obj as TestCase;
 
             var testScriptResult = testCase.Execute();
-     
+
         }
 
         #endregion

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>b6ba085b-4047-44b4-ad15-8ab045c727fc</SystemID>
+  <UserID />
+  <Title>Untitled test suite</Title>
+  <Author>jmoth</Author>
+  <Created>2019-09-07T09:51:29-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <ParallelExecution>True</ParallelExecution>
+  <TestPreprocessor>
+    <SystemID>0374db19-280c-46aa-9093-5afe51c2e168</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>ecd5c5d2-8441-43e3-a3e7-904a4a345c10</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>21378987-c6ff-4c0d-a651-0ba761b63d14</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-09-07T09:51:29-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>16fd979d-0db6-46e9-8d36-a79a3c590626</SystemID>
+          <UserID />
+          <Title>ParameterPassing</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>ParameterPassing</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>stringParam</DisplayName>
+                <Name>stringParam</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestHome]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>boolParam</DisplayName>
+                <Name>boolParam</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>0</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\ParamPassing.ste</FilePath>
+</TestSuite>

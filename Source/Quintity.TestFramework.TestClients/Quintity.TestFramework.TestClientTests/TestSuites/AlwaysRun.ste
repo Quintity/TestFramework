@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>15b37665-9092-476f-9871-6c62ce127285</SystemID>
-  <UserID>1</UserID>
-  <Title>Root test suite</Title>
+  <SystemID>e2c4e6e1-85f8-43ae-9263-0bdd8ec7c657</SystemID>
+  <UserID />
+  <Title>Untitled test suite</Title>
   <Author>jmoth</Author>
-  <Created>2019-04-13T12:42:08-07:00</Created>
+  <Created>2019-09-03T10:15:05-07:00</Created>
   <Project />
   <Reference />
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
-  <ParallelExecution>True</ParallelExecution>
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
-    <SystemID>1704a645-0112-4748-8471-f386767fdd90</SystemID>
+    <SystemID>c5fb6c78-e083-4127-91f6-996b15e25fcd</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -28,7 +28,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>e455ab31-2942-410f-a0fc-d59009165bc0</SystemID>
+    <SystemID>a07c3e9b-36c8-479f-b178-d4f1b6faaa0c</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -45,11 +45,11 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>d8d3f6a1-0064-4e91-a031-8ea66583a277</SystemID>
-      <UserID>1</UserID>
-      <Title>Parallelizable test case</Title>
+      <SystemID>0a6c5e6f-e345-4961-9ed4-5b56e813173c</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
       <Author>jmoth</Author>
-      <Created>2019-04-13T12:42:08-07:00</Created>
+      <Created>2019-09-03T10:15:05-07:00</Created>
       <FunctionalArea />
       <Tags />
       <Defects />
@@ -61,26 +61,9 @@
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>1c0a0616-4977-4020-8a54-7510beec82f5</SystemID>
-          <UserID />
+          <SystemID>9b708571-c4f9-4f9d-967a-60d2eb00e939</SystemID>
+          <UserID>1</UserID>
           <Title>Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>True</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>ScratchTest1</TestMethod>
-            <TestParameters />
-          </TestAutomationDefinition>
-        </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>4eb7f437-d76a-48cb-aac8-2edc8e0b1bad</SystemID>
-          <UserID />
-          <Title>Untitle test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -89,24 +72,48 @@
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
             <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.ExtentReportsTests</TestClass>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
             <TestMethod>Sleep</TestMethod>
             <TestParameters>
               <TestParameter>
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>0</ValueAsString>
+                <ValueAsString>2000</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>2850fb78-b784-4059-b41e-48e56ee24db3</SystemID>
-          <UserID />
+          <SystemID>69e2e509-0a66-4efc-b479-87f5dc6f7655</SystemID>
+          <UserID>2</UserID>
+          <Title>Step #6 depends on me</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>2000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>9ca00fe7-c3b1-4fed-ae09-e4c7e2197b89</SystemID>
+          <UserID>3</UserID>
           <Title>Copy of Sleep</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>True</AlwaysExecute>
+          <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
           <Description><![CDATA[]]></Description>
@@ -114,32 +121,45 @@
           <TestAutomationDefinition>
             <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>ScratchTest1</TestMethod>
-            <TestParameters />
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>2000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
-      </TestScriptObjects>
-    </TestScriptObject>
-    <TestScriptObject type="TestCase" status="Active">
-      <SystemID>5a2d4e91-ddea-446b-8c00-17d8e63044a1</SystemID>
-      <UserID>2</UserID>
-      <Title>Copy of Parallelizable test case</Title>
-      <Author>jmoth</Author>
-      <Created>2019-04-13T12:42:08-07:00</Created>
-      <FunctionalArea />
-      <Tags />
-      <Defects />
-      <KnownDefects>False</KnownDefects>
-      <Reference />
-      <OnFailure>Stop</OnFailure>
-      <Parallelizable>True</Parallelizable>
-      <Description><![CDATA[]]></Description>
-      <TestProperties />
-      <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>6d200e87-c585-4436-971b-d1967c9e2d6e</SystemID>
-          <UserID />
-          <Title>Sleep</Title>
+          <SystemID>3efa95b3-a945-46ce-a35e-cdc5d5420d07</SystemID>
+          <UserID>4</UserID>
+          <Title>Copy of Sleep</Title>
+          <ExpectedTestVerdict>Fail</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>Sleep</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>millisecondTimeout</DisplayName>
+                <Name>millisecondTimeout</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>2000</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>b76b6b0f-48f6-4dd8-87d2-3d61ed2d7e97</SystemID>
+          <UserID>5</UserID>
+          <Title>Copy of Sleep</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -155,36 +175,18 @@
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>5000</ValueAsString>
+                <ValueAsString>2000</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
-      </TestScriptObjects>
-    </TestScriptObject>
-    <TestScriptObject type="TestCase" status="Active">
-      <SystemID>f5c4c1b2-efea-4e12-9532-37ed5b2242e7</SystemID>
-      <UserID>3</UserID>
-      <Title>Copy of Parallelizable test case</Title>
-      <Author>jmoth</Author>
-      <Created>2019-04-13T12:42:08-07:00</Created>
-      <FunctionalArea />
-      <Tags />
-      <Defects />
-      <KnownDefects>False</KnownDefects>
-      <Reference />
-      <OnFailure>Stop</OnFailure>
-      <Parallelizable>True</Parallelizable>
-      <Description><![CDATA[]]></Description>
-      <TestProperties />
-      <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>beddabfa-392f-4832-b918-c9ab75209431</SystemID>
-          <UserID />
-          <Title>Sleep</Title>
+          <SystemID>4b9f4fa0-15c0-4c64-8ff5-e03748383cd8</SystemID>
+          <UserID>6</UserID>
+          <Title>I depend on step #2</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
-          <DependsOn />
+          <DependsOn>69e2e509-0a66-4efc-b479-87f5dc6f7655</DependsOn>
           <Iterations>1</Iterations>
           <Description><![CDATA[]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
@@ -197,98 +199,13 @@
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>5000</ValueAsString>
+                <ValueAsString>2000</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
-    <TestScriptObject type="TestCase" status="Active">
-      <SystemID>fc097960-453a-49d0-af14-54d7da0f244c</SystemID>
-      <UserID>4</UserID>
-      <Title>Parallelizable test case</Title>
-      <Author>jmoth</Author>
-      <Created>2019-04-13T12:42:08-07:00</Created>
-      <FunctionalArea />
-      <Tags />
-      <Defects />
-      <KnownDefects>False</KnownDefects>
-      <Reference />
-      <OnFailure>Stop</OnFailure>
-      <Parallelizable>True</Parallelizable>
-      <Description><![CDATA[]]></Description>
-      <TestProperties />
-      <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>1154d8a8-98d5-4970-9399-8ada4d7f3efe</SystemID>
-          <UserID />
-          <Title>Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>False</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>Sleep</TestMethod>
-            <TestParameters>
-              <TestParameter>
-                <DisplayName>millisecondTimeout</DisplayName>
-                <Name>millisecondTimeout</Name>
-                <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>5000</ValueAsString>
-              </TestParameter>
-            </TestParameters>
-          </TestAutomationDefinition>
-        </TestScriptObject>
-      </TestScriptObjects>
-    </TestScriptObject>
-    <TestScriptObject type="TestCase" status="Active">
-      <SystemID>e289c6d3-80b0-4531-9c63-bc78242cf36a</SystemID>
-      <UserID>5</UserID>
-      <Title>Copy of Parallelizable test case</Title>
-      <Author>jmoth</Author>
-      <Created>2019-04-13T12:42:08-07:00</Created>
-      <FunctionalArea />
-      <Tags />
-      <Defects />
-      <KnownDefects>False</KnownDefects>
-      <Reference />
-      <OnFailure>Stop</OnFailure>
-      <Parallelizable>True</Parallelizable>
-      <Description><![CDATA[]]></Description>
-      <TestProperties />
-      <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>13fd58c6-2b13-4ef8-879e-2b43d3d772cc</SystemID>
-          <UserID />
-          <Title>Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>False</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>Sleep</TestMethod>
-            <TestParameters>
-              <TestParameter>
-                <DisplayName>millisecondTimeout</DisplayName>
-                <Name>millisecondTimeout</Name>
-                <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>12000</ValueAsString>
-              </TestParameter>
-            </TestParameters>
-          </TestAutomationDefinition>
-        </TestScriptObject>
-      </TestScriptObjects>
-    </TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\Second Parallel suite.ste</TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\Parallel.ste</FilePath>
+  <FilePath>[TestSuites]\AlwaysRun.ste</FilePath>
 </TestSuite>

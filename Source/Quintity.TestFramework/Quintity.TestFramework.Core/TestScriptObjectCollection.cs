@@ -21,6 +21,13 @@ namespace Quintity.TestFramework.Core
 
         #region Class constructors
 
+        public TestScriptObjectCollection(IEnumerable<TestScriptObject> collection) : base(collection)
+        { }
+
+        public TestScriptObjectCollection() : base()
+        { }
+            
+
         #endregion
 
         #region Class public methods

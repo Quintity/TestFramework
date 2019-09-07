@@ -14,6 +14,13 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod]
+        public TestVerdict ParameterPassing(string stringParam, bool boolParam, int intParam)
+        {
+            TestMessage += $"String parameter: {stringParam}, boolean parameter:{boolParam}, int parameter:  {intParam}";
+            return TestVerdict;
+        }
+
+        [TestMethod]
         public TestVerdict ParalellTest(string filePath)
         {
             try
@@ -91,9 +98,12 @@ namespace Quintity.TestFramework.TestClientTests
             return TestVerdict;
         }
 
+        private string bob = null;
+
         [TestMethod]
         public TestVerdict ScratchTest1()
         {
+            bob = "I am set";
             return TestVerdict;
         }
 

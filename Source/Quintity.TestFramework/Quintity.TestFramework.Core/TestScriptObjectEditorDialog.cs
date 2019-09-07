@@ -439,6 +439,8 @@ namespace Quintity.TestFramework.Core
             }
         }
 
+        private TreeNode _initialNode = null;
+
         private void initializeForAutomationDefinition(TestAutomationDefinition automationDefinition)
         {
             try
@@ -460,6 +462,7 @@ namespace Quintity.TestFramework.Core
                     if (classNode != null)
                     {
                         TreeNode methodNode = selectTestMethod(classNode, automationDefinition.TestMethod);
+                        _initialNode = methodNode;
 
                         if (methodNode != null)
                         {
@@ -509,6 +512,8 @@ namespace Quintity.TestFramework.Core
 
             // Enable OK button.
             m_okBtn.Enabled = changed;
+
+            m_okBtn.Enabled = true;
         }
 
         private TreeNode selectTestClass(TreeNode assemblyNode, TestAutomationDefinition automationDefinition)
@@ -613,11 +618,12 @@ namespace Quintity.TestFramework.Core
 
                 if (setTestParameterValue(parameter, out matchingValue))
                 {
-                    row.Cells[ValueColumn].Value = matchingValue;
+                    row.Cells[ValueColumn].Value = row.Cells[ValueColumn].Tag = matchingValue;
+                     
                 }
                 else
                 {
-                    row.Cells[ValueColumn].Value = defaultValue;
+                    row.Cells[ValueColumn].Value = row.Cells[ValueColumn].Tag = defaultValue;
                 }
 
                 row.Cells[ValueColumn].ToolTipText =
@@ -1174,33 +1180,32 @@ namespace Quintity.TestFramework.Core
 
         private void m_testParameterGrid_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
         {
+            object temp;
+
             if (e.ColumnIndex == 2)
             {
+                // Get tagged ParameterIfno
                 ParameterInfo parameter = m_testParameterGrid.Rows[e.RowIndex].Tag as ParameterInfo;
 
-                var value = m_testParameterGrid.Rows[e.RowIndex].Cells[ValueColumn].Value;
-
-                string valueAsString = value != null ? value.ToString() : null;
-
-                if (null != valueAsString)
-                {
-                    string macro = TestProperties.StripMacro(valueAsString);
-
-                    if (macro != null)
-                    {
-                        value = TestProperties.GetProperty(macro);
-                        valueAsString = value != null ? value.ToString() : null;
-                    }
-                }
-
-
-                object temp;
+                // Get cell value, if not null, get string value.
+                var valueCell = m_testParameterGrid.Rows[e.RowIndex].Cells[ValueColumn];
+                string valueAsString = valueCell.Value != null ? valueCell.Value.ToString() : null;
 
                 if (!TestUtils.FromString(valueAsString, parameter, out temp))
                 {
-                    MessageBox.Show(this, "The new value is not compatible with this parameter's datatype.",
-                        "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
+                    var dlgResult = MessageBox.Show(this, "The new value is not compatible with this parameter's datatype.",
+                        "Quintity TestEngineer", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                    if (dlgResult == DialogResult.Cancel)
+                    {
+                        valueCell.Value = valueCell.Tag;
+                        m_testParameterGrid.UpdateCellValue(ValueColumn, e.RowIndex);
+                    }
+                }
+                else
+                {
+                    valueCell.Tag = valueCell.Value;
+                    m_okBtn.Enabled = true;
                 }
             }
         }
@@ -1255,6 +1260,10 @@ namespace Quintity.TestFramework.Core
             if (e.Node.Tag != null && e.Node.Tag is MethodInfo)
             {
                 populateTestParametersGrid((MethodInfo)e.Node.Tag);
+
+                // If selected node has changed, enable OK button.
+                m_okBtn.Enabled = _initialNode != null && !_initialNode.Equals(e.Node);
+                m_okBtn.Enabled = true;
             }
             else
             {

@@ -1037,7 +1037,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Quintity TestFramework",
+                MessageBox.Show(e.ToString(), "Quintity TestFramework",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

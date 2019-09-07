@@ -54,4 +54,22 @@
     <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">[TESTHOME]\TestConfigs</Value>
     <Active>true</Active>
   </TestProperty>
+  <TestProperty>
+    <Name>fff</Name>
+    <Description>fff</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">ffff</Value>
+    <Active>true</Active>
+  </TestProperty>
+  <TestProperty>
+    <Name>NewProperty</Name>
+    <Description>This is the text</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">100</Value>
+    <Active>true</Active>
+  </TestProperty>
+  <TestProperty>
+    <Name>BooleanParameter</Name>
+    <Description>This is the boolean parameter</Description>
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">False</Value>
+    <Active>true</Active>
+  </TestProperty>
 </TestPropertyCollection>
