@@ -188,6 +188,8 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_saveButton_Click(object sender, EventArgs e)
         {
             saveToFile();
+
+            m_cancelButton.Text = "Close";
         }
 
         private TestPropertyCollection collectTestPropertiesFromGrid(bool includeOverrides)
@@ -258,12 +260,15 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 m_testPropertiesDataGridView.Rows[index].Selected = true;
             }
+
+            m_saveButton.Enabled = true;
         }
 
         private void m_moveUpStripButton_Click(object sender, EventArgs e)
         {
             var row = m_testPropertiesDataGridView.SelectedRows[0];
             moveTestPropertyRow(row, row.Index - 1);
+            m_saveButton.Enabled = true;
 
         }
 
@@ -271,6 +276,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             var row = m_testPropertiesDataGridView.SelectedRows[0];
             moveTestPropertyRow(row, row.Index + 1);
+            m_saveButton.Enabled = true;
         }
 
         private void m_addToolStripButton1_Click(object sender, EventArgs e)
@@ -288,6 +294,7 @@ namespace Quintity.TestFramework.TestEngineer
             m_testPropertiesDataGridView.CurrentCell = row.Cells[NameColumn];
 
             _hasChanged = true;
+            m_saveButton.Enabled = true;
 
             _addingRow = false;
         }
