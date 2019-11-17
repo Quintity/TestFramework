@@ -45,9 +45,9 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>d8d3f6a1-0064-4e91-a031-8ea66583a277</SystemID>
-      <UserID>1</UserID>
-      <Title>Parallelizable test case</Title>
+      <SystemID>b7cbe7ea-7db7-4fcb-a03a-a432a6674599</SystemID>
+      <UserID>2</UserID>
+      <Title>Copy of Copy of Parallelizable test case</Title>
       <Author>jmoth</Author>
       <Created>2019-04-13T12:42:08-07:00</Created>
       <FunctionalArea />
@@ -56,31 +56,14 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
-      <Parallelizable>False</Parallelizable>
+      <Parallelizable>True</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>1c0a0616-4977-4020-8a54-7510beec82f5</SystemID>
+          <SystemID>bd9de064-ffdb-4fd6-b3ab-dcb420db4a2b</SystemID>
           <UserID />
           <Title>Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>True</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>ScratchTest1</TestMethod>
-            <TestParameters />
-          </TestAutomationDefinition>
-        </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>4eb7f437-d76a-48cb-aac8-2edc8e0b1bad</SystemID>
-          <UserID />
-          <Title>Untitle test step</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
@@ -89,33 +72,16 @@
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
             <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.ExtentReportsTests</TestClass>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
             <TestMethod>Sleep</TestMethod>
             <TestParameters>
               <TestParameter>
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>0</ValueAsString>
+                <ValueAsString>15000</ValueAsString>
               </TestParameter>
             </TestParameters>
-          </TestAutomationDefinition>
-        </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>2850fb78-b784-4059-b41e-48e56ee24db3</SystemID>
-          <UserID />
-          <Title>Copy of Sleep</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>True</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>ScratchTest1</TestMethod>
-            <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
@@ -197,7 +163,7 @@
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>5000</ValueAsString>
+                <ValueAsString>10000</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
@@ -239,7 +205,7 @@
                 <DisplayName>millisecondTimeout</DisplayName>
                 <Name>millisecondTimeout</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>5000</ValueAsString>
+                <ValueAsString>7000</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>

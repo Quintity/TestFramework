@@ -555,7 +555,8 @@ namespace Quintity.TestFramework.Core
                 //iterator.MoveNext();
                 //testSuite.ReadProperties(iterator.Current);
 
-                testSuite._parallelExecution = bool.TryParse(TestUtils.GetXPathValue(nav, "ParallelExecution"), out testSuite._parallelExecution);
+                // Determine parallelization flag
+                bool.TryParse(TestUtils.GetXPathValue(nav, "ParallelExecution"), out testSuite._parallelExecution);
 
                 // Extract pre-processor
                 iterator = nav.Select("TestPreprocessor");
@@ -1030,8 +1031,14 @@ namespace Quintity.TestFramework.Core
 
         #region Class internal methods
 
+        Queue<TestCase> _parallelTestCases = new Queue<TestCase>();
+        ManualResetEvent _manualReset = null;
+
         public TestSuiteResult Execute(List<TestCase> discreteTestCases)
         {
+            _manualReset = new ManualResetEvent(false);
+            TestCase.OnExecutionComplete += TestCase_OnExecutionComplete;
+
             string virtualUser = Thread.CurrentThread.Name;
 
             FireExecutionBeginEvent(this, new TestSuiteBeginExecutionArgs(virtualUser));
@@ -1080,26 +1087,31 @@ namespace Quintity.TestFramework.Core
                     if (ParallelExecution)
                     {
                         // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
-                        var parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                        _parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
                             .Where(t => t != null && t.Parallelizable == true));
 
-                        nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(parallelTestCases));
+                        // Capture remaining non-parallel execution test cases.
+                        nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(_parallelTestCases));
 
                         var threads = new List<Thread>();
 
-                        foreach (var testCase in parallelTestCases)
+                        //foreach (var testCase in _parallelTestCases)
+                        for(int i = 1; i <= 2; i++)
                         {
-                            var workerThread = new Thread(new ParameterizedThreadStart(dowork));
-                            workerThread.Name = Thread.CurrentThread.Name;
-                            threads.Add(workerThread);
-
-                            workerThread.Start(testCase);
+                            var testCase = _parallelTestCases.Dequeue();
+                            executeTestCaseOnThread(testCase);
+                            //var workerThread = new Thread(new ParameterizedThreadStart(executeTestCase));
+                            //workerThread.Name = Thread.CurrentThread.Name;
+                            //threads.Add(workerThread);
+                            //workerThread.Start(testCase);
                         }
 
-                        foreach (Thread thread in threads)
-                        {
-                            thread.Join();
-                        }
+                        _manualReset.WaitOne();
+
+                        //foreach (Thread thread in threads)
+                        //{
+                        //    thread.Join();
+                        //}
                     }
 
                     // Iterate through suites test script objects
@@ -1176,12 +1188,28 @@ namespace Quintity.TestFramework.Core
             return testSuiteResult;
         }
 
-        private void dowork(object obj)
+        private void TestCase_OnExecutionComplete(TestCase testCase, TestCaseResult testCaseResult)
         {
-            var testCase = obj as TestCase;
+            if (_parallelTestCases.Count > 0)
+            {
+                executeTestCaseOnThread(_parallelTestCases.Dequeue());
+            }
+            else
+            {
+                _manualReset.Set();
+            }
+        }
 
-            var testScriptResult = testCase.Execute();
+        private void executeTestCaseOnThread(TestCase testCase)
+        {
+            var workerThread = new Thread(new ParameterizedThreadStart(executeTestCase));
+            workerThread.Name = Thread.CurrentThread.Name;
+            workerThread.Start(testCase);
+        }
 
+        private void executeTestCase(object obj)
+        {
+            var testScriptResult = ((TestCase)obj).Execute();
         }
 
         #endregion

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TestSuite status="Inactive">
+<TestSuite status="Active">
   <SystemID>1408ffb9-0157-4a76-a092-f566f5a55d72</SystemID>
   <UserID>2</UserID>
   <Title>Second Parallel suite</Title>
