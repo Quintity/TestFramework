@@ -30,7 +30,7 @@ namespace Quintity.TestFramework.Core
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestScriptObjectEditorDialog));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("TestAssemblies");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Test Libraries");
             this.m_cancelBtn = new System.Windows.Forms.Button();
             this.m_okBtn = new System.Windows.Forms.Button();
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -102,12 +102,12 @@ namespace Quintity.TestFramework.Core
             this.m_addTestAssemblyContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_miAddTestAssembly});
             this.m_addTestAssemblyContextMenuStrip.Name = "m_addTestAssemblyContextMenuStrip";
-            this.m_addTestAssemblyContextMenuStrip.Size = new System.Drawing.Size(175, 26);
+            this.m_addTestAssemblyContextMenuStrip.Size = new System.Drawing.Size(174, 26);
             // 
             // m_miAddTestAssembly
             // 
             this.m_miAddTestAssembly.Name = "m_miAddTestAssembly";
-            this.m_miAddTestAssembly.Size = new System.Drawing.Size(174, 22);
+            this.m_miAddTestAssembly.Size = new System.Drawing.Size(173, 22);
             this.m_miAddTestAssembly.Text = "Add Test Assembly";
             this.m_miAddTestAssembly.Click += new System.EventHandler(this.m_miAddTestAssembly_Click);
             this.m_miAddTestAssembly.MouseUp += new System.Windows.Forms.MouseEventHandler(this.m_miAddTestAssembly_MouseUp);
@@ -182,7 +182,7 @@ namespace Quintity.TestFramework.Core
             this.m_testAssemblytreeView.Location = new System.Drawing.Point(0, 25);
             this.m_testAssemblytreeView.Name = "m_testAssemblytreeView";
             treeNode1.Name = "RootNode";
-            treeNode1.Text = "TestAssemblies";
+            treeNode1.Text = "Test Libraries";
             this.m_testAssemblytreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
             this.m_testAssemblytreeView.ShowNodeToolTips = true;
@@ -365,13 +365,13 @@ namespace Quintity.TestFramework.Core
             this.toolStripSeparator1,
             this.m_resetToolStripMenuItem});
             this.m_treeViewPopupMenu.Name = "m_treeViewPopupMenu";
-            this.m_treeViewPopupMenu.Size = new System.Drawing.Size(115, 54);
+            this.m_treeViewPopupMenu.Size = new System.Drawing.Size(116, 54);
             // 
             // m_executeToolStripMenuItem
             // 
             this.m_executeToolStripMenuItem.Enabled = false;
             this.m_executeToolStripMenuItem.Name = "m_executeToolStripMenuItem";
-            this.m_executeToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.m_executeToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.m_executeToolStripMenuItem.Text = "Execute";
             this.m_executeToolStripMenuItem.ToolTipText = "Executes the selected test method with seleceted test parameters.";
             this.m_executeToolStripMenuItem.Visible = false;
@@ -379,13 +379,13 @@ namespace Quintity.TestFramework.Core
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(111, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(112, 6);
             this.toolStripSeparator1.Visible = false;
             // 
             // m_resetToolStripMenuItem
             // 
             this.m_resetToolStripMenuItem.Name = "m_resetToolStripMenuItem";
-            this.m_resetToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.m_resetToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.m_resetToolStripMenuItem.Text = "Reset";
             this.m_resetToolStripMenuItem.ToolTipText = "Resets test parameters to original values.";
             // 

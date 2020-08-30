@@ -45,6 +45,41 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
+      <SystemID>b7e5cb6e-3b4c-439f-a79c-798178ad6960</SystemID>
+      <UserID />
+      <Title>Sample test.</Title>
+      <Author>jmoth</Author>
+      <Created>2020-08-30T07:56:48-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
+          <SystemID>b4f152f4-e101-49c9-8c3a-b281e565b247</SystemID>
+          <UserID />
+          <Title>Untitled test step</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly />
+            <TestClass />
+            <TestMethod />
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Active">
       <SystemID>6d1694b5-3149-445a-b035-f58fd4d056dd</SystemID>
       <UserID />
       <Title>Untitled test case</Title>

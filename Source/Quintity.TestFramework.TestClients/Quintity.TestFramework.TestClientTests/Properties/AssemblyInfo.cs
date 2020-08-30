@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Quintity.TestFramework.TestClientTests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("P365 Automation library")]
+[assembly: AssemblyDescription("Quintity scratch tests")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
+[assembly: AssemblyCompany("Quintity LLC")]
 [assembly: AssemblyProduct("Quintity.TestFramework.TestClientTests")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2018")]
+[assembly: AssemblyCopyright("Copyright © Quintity LLC 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

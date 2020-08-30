@@ -1033,11 +1033,14 @@ namespace Quintity.TestFramework.Core
 
         Queue<TestCase> _parallelTestCases = new Queue<TestCase>();
         ManualResetEvent _manualReset = null;
+        private int _parallelTestCasesExecuting = 0;
 
         public TestSuiteResult Execute(List<TestCase> discreteTestCases)
         {
             _manualReset = new ManualResetEvent(false);
+            _parallelTestCasesExecuting = 0;
             TestCase.OnExecutionComplete += TestCase_OnExecutionComplete;
+            TestSuiteResult testSuiteResult = new TestSuiteResult();
 
             string virtualUser = Thread.CurrentThread.Name;
 
@@ -1047,7 +1050,6 @@ namespace Quintity.TestFramework.Core
 
             _qualifiedTestCases = discreteTestCases;
 
-            TestSuiteResult testSuiteResult = new TestSuiteResult();
             testSuiteResult.SetReferenceID(SystemID);
             testSuiteResult.SetVirtualUser(virtualUser);
 
@@ -1083,35 +1085,26 @@ namespace Quintity.TestFramework.Core
                     // Setup for default non-parallel processing
                     var nonParallelTestScriptObjects = TestScriptObjects;
 
-                    // If suite is set for parallel execution
-                    if (ParallelExecution)
-                    {
-                        // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
-                        _parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
-                            .Where(t => t != null && t.Parallelizable == true));
+                    // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
+                    _parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                        .Where(t => t != null && t.Parallelizable == true));
 
+                    // If suite is set for parallel execution
+                    if (ParallelExecution && _parallelTestCases.Count != 0)
+                    {
                         // Capture remaining non-parallel execution test cases.
                         nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(_parallelTestCases));
 
-                        var threads = new List<Thread>();
+                        _parallelTestCasesExecuting = _parallelTestCases.Count;
 
                         //foreach (var testCase in _parallelTestCases)
-                        for(int i = 1; i <= 2; i++)
+                        while (_parallelTestCases.Count > 0)
                         {
-                            var testCase = _parallelTestCases.Dequeue();
-                            executeTestCaseOnThread(testCase);
-                            //var workerThread = new Thread(new ParameterizedThreadStart(executeTestCase));
-                            //workerThread.Name = Thread.CurrentThread.Name;
-                            //threads.Add(workerThread);
-                            //workerThread.Start(testCase);
+                            var currentTestCase = _parallelTestCases.Dequeue();
+                            executeTestCaseOnThread(currentTestCase);
                         }
 
                         _manualReset.WaitOne();
-
-                        //foreach (Thread thread in threads)
-                        //{
-                        //    thread.Join();
-                        //}
                     }
 
                     // Iterate through suites test script objects
@@ -1185,16 +1178,19 @@ namespace Quintity.TestFramework.Core
 
             FireExecutionCompleteEvent(this, testSuiteResult);
 
+            TestCase.OnExecutionComplete -= TestCase_OnExecutionComplete;
+
             return testSuiteResult;
         }
 
         private void TestCase_OnExecutionComplete(TestCase testCase, TestCaseResult testCaseResult)
         {
-            if (_parallelTestCases.Count > 0)
+            if (testCase.Parallelizable)
             {
-                executeTestCaseOnThread(_parallelTestCases.Dequeue());
+                _parallelTestCasesExecuting--;
             }
-            else
+
+            if (_parallelTestCasesExecuting <= 0)
             {
                 _manualReset.Set();
             }

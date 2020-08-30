@@ -1374,7 +1374,14 @@ namespace Quintity.TestFramework.Core
         private TreeNode addTestAssembly(string fileName)
         {
             Assembly assembly = TestReflection.LoadTestAssembly(fileName);
-            TreeNode assemblyNode = m_testAssemblytreeView.Nodes[0].Nodes.Add(assembly.ManifestModule.Name);
+
+            // If friendly name specified (i.e., assembly Title), use it.
+            object[] customAttributes = assembly.GetCustomAttributes
+                            (typeof(AssemblyTitleAttribute), false);
+
+            var title = customAttributes != null && customAttributes.Length > 0 ? ((AssemblyTitleAttribute)customAttributes[0]).Title : assembly.ManifestModule.Name;
+
+            TreeNode assemblyNode = m_testAssemblytreeView.Nodes[0].Nodes.Add(title);
             assemblyNode.Tag = assembly.Location;
             assemblyNode.ToolTipText = assembly.Location;
 

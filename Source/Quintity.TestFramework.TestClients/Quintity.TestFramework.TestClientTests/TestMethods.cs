@@ -8,13 +8,19 @@ using Quintity.TestFramework.Core;
 
 namespace Quintity.TestFramework.TestClientTests
 {
-    [TestClass]
+    [TestClass("P365 Navigation methods", "Sample navigation methods")]
     public class TestMethods : TestClassBase
     {
         #region TestMethods
 
-        [TestMethod]
-        public TestVerdict ParameterPassing(string stringParam, bool boolParam, int intParam)
+        [TestMethod("Parameter passing method", "This is an example of multiple parameter passing")]
+        public TestVerdict ParameterPassing(
+            [TestParameter("Enter string parameter", "This is an example of a string parameter", "Carpe diem")]
+            string stringParam, 
+            [TestParameter("Enter a boolean parameter", "This is an example of a boolean parameter", "False")]
+            bool boolParam,
+            [TestParameter("Enter an integer parameter", "This is an example of an integer parameter", 999)]
+            int intParam)
         {
             TestMessage += $"String parameter: {stringParam}, boolean parameter:{boolParam}, int parameter:  {intParam}";
             return TestVerdict;
