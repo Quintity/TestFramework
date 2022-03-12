@@ -31,6 +31,7 @@ namespace Quintity.TestFramework.TestClientTests
         {
             try
             {
+                // Prepare to setup
                 Setup();
 
                 var testSuite = TestSuite.ReadFromFile(filePath);
