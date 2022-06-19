@@ -69,7 +69,7 @@
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
           <UserID />
-          <Title>This is a simple test</Title>
+          <Title>This is a simple test.</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
