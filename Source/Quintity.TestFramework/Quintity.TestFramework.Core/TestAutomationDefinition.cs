@@ -215,9 +215,13 @@ namespace Quintity.TestFramework.Core
                 {
                     var typeLoadException = e as ReflectionTypeLoadException;
                     var loaderExceptions = typeLoadException.LoaderExceptions;
+                    resultStruct.TestVerdict = TestVerdict.Error;
+                }
+                else if (e is TestAssertFailedException)
+                {
+                    resultStruct.TestVerdict = TestVerdict.Fail;
                 }
 
-                resultStruct.TestVerdict = TestVerdict.Error;
                 resultStruct.TestMessage += e.ToString();
             }
 
@@ -370,7 +374,7 @@ namespace Quintity.TestFramework.Core
         {
             if (resultStruct.TestVerdict == TestVerdict.Pass)
             {
-                if (resultStruct.TestChecks.FindAll(x => x.TestVerdict == TestVerdict.Fail || x.TestVerdict == TestVerdict.Error).Count > 0)
+                if (resultStruct.TestChecks.Exists(x => x.TestVerdict == TestVerdict.Fail || x.TestVerdict == TestVerdict.Error))
                 {
                     resultStruct.TestVerdict = TestVerdict.Fail;
                 }
