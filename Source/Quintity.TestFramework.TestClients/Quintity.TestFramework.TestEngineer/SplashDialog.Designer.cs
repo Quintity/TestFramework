@@ -38,7 +38,7 @@
             // 
             // m_timerSplash
             // 
-            this.m_timerSplash.Interval = 3000;
+            this.m_timerSplash.Interval = 1000;
             this.m_timerSplash.Tick += new System.EventHandler(this.m_timerSplash_Tick);
             // 
             // m_copyright

@@ -2,15 +2,83 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using Quintity.TestFramework.Core;
 
 
 namespace Quintity.TestFramework.TestClientTests
 {
-    [TestClass]
+    [TestClass("P365 Navigation methods", "Sample navigation methods")]
     public class TestMethods : TestClassBase
     {
         #region TestMethods
+
+        [TestMethod("Parameter passing method", "This is an example of multiple parameter passing")]
+        public TestVerdict ParameterPassing(
+            [TestParameter("Enter string parameter", "This is an example of a string parameter", "Carpe diem")]
+            string stringParam, 
+            [TestParameter("Enter a boolean parameter", "This is an example of a boolean parameter", "False")]
+            bool boolParam,
+            [TestParameter("Enter an integer parameter", "This is an example of an integer parameter", 999)]
+            int intParam)
+        {
+            TestMessage += $"String parameter: {stringParam}, boolean parameter:{boolParam}, int parameter:  {intParam}";
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ParalellTest(string filePath)
+        {
+            try
+            {
+                // Prepare to setup
+                Setup();
+
+                var testSuite = TestSuite.ReadFromFile(filePath);
+
+                var parallelTestScriptObjects = testSuite.TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                    .Where(t => t != null && t.Parallelizable == true);
+
+
+
+                var nonParallelTestScriptOjects = testSuite.TestScriptObjects.Except(parallelTestScriptObjects);
+
+                foreach (var testScriptObject in nonParallelTestScriptOjects)
+                {
+                    if (testScriptObject is TestCase)
+                    {
+                        // execute test case.
+                    }
+                    else if (testScriptObject is TestSuite)
+                    {
+                        // execute test suite.
+                    }
+                }
+
+                int i = 1;
+            }
+            catch (Exception e)
+            {
+                TestMessage += e.ToString();
+                TestVerdict = TestVerdict.Error;
+            }
+            finally
+            {
+                Teardown();
+            }
+
+            return TestVerdict;
+        }
+
+        private TestCase convert(TestScriptObject input)
+        {
+            if (input is TestCase)
+            {
+                return input as TestCase;
+            }
+
+            return null;
+        }
 
         [TestMethod("This is a simple test", "This is the description")]
         public TestVerdict SimpleTest(bool throwException)
@@ -37,9 +105,12 @@ namespace Quintity.TestFramework.TestClientTests
             return TestVerdict;
         }
 
+        private string bob = null;
+
         [TestMethod]
         public TestVerdict ScratchTest1()
         {
+            bob = "I am set";
             return TestVerdict;
         }
 

@@ -88,7 +88,8 @@ namespace Quintity.TestFramework.Core
         { get { return GetPropertyValue("CurrentTestStep") as TestStep; } }
 
         public static string TestRunId
-        { get { return ExpandString(GetPropertyValueAsString("TestRunId")); } }
+        { get { return GetPropertyValueAsString("TestRunId", false, "spud"); } }
+        //{ get { return ExpandString(GetPropertyValueAsString("TestRunId")); } }
 
         //public static int VirtualUsers
         //{ get { return GetPropertyValueAsInt("VirtualUsers"); } }
@@ -659,6 +660,11 @@ namespace Quintity.TestFramework.Core
         new public static string ToString()
         {
             return _testPropertyCollection.ToString();
+        }
+
+        public static bool IsMacro(string source)
+        {
+            return !StripMacro(source).Equals(source);
         }
 
         public static string StripMacro(string source, bool ignoreEscape = false)

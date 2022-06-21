@@ -1,40 +1,34 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>6a84ee6a-7190-4750-83c1-9eee9ac1d3b7</SystemID>
+  <SystemID>b6ba085b-4047-44b4-ad15-8ab045c727fc</SystemID>
   <UserID />
-  <Title>TestClientsTests</Title>
+  <Title>Untitled test suite</Title>
   <Author>jmoth</Author>
-  <Created>2018-06-09T08:12:29-07:00</Created>
+  <Created>2019-09-07T09:51:29-07:00</Created>
   <Project />
   <Reference />
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>True</ParallelExecution>
   <TestPreprocessor>
-    <SystemID>a3a1bd9a-ed25-4bfb-b044-aecad7719a40</SystemID>
+    <SystemID>0374db19-280c-46aa-9093-5afe51c2e168</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
-    <Status>Active</Status>
+    <Status>Incomplete</Status>
     <IgnoreResult>False</IgnoreResult>
     <TestType>Automated</TestType>
     <TestAutomationDefinition>
-      <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
-      <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-      <TestMethod>Sleep</TestMethod>
-      <TestParameters>
-        <TestParameter>
-          <DisplayName>millisecondTimeout</DisplayName>
-          <Name>millisecondTimeout</Name>
-          <TypeAsString>System.Int32</TypeAsString>
-          <ValueAsString>3000</ValueAsString>
-        </TestParameter>
-      </TestParameters>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
     </TestAutomationDefinition>
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>70531128-16f2-4ba5-8b3d-a09ae41763a7</SystemID>
+    <SystemID>ecd5c5d2-8441-43e3-a3e7-904a4a345c10</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -50,50 +44,60 @@
   </TestPostprocessor>
   <PostProcess />
   <TestScriptObjects>
-    <TestScriptObject type="TestSuite">[TestSuites]\this is a test.ste</TestScriptObject>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>7b947ce4-c115-4970-a09a-f8628d0b4ed0</SystemID>
+      <SystemID>21378987-c6ff-4c0d-a651-0ba761b63d14</SystemID>
       <UserID />
-      <Title>Source node</Title>
+      <Title>Untitled test case</Title>
       <Author>jmoth</Author>
-      <Created>2018-06-09T08:12:29-07:00</Created>
+      <Created>2019-09-07T09:51:29-07:00</Created>
       <FunctionalArea />
       <Tags />
       <Defects />
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
+          <SystemID>16fd979d-0db6-46e9-8d36-a79a3c590626</SystemID>
           <UserID />
-          <Title>This is a simple test.</Title>
+          <Title>ParameterPassing</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[This is the description]]></Description>
+          <Description><![CDATA[]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>SimpleTest</TestMethod>
+            <TestMethod>ParameterPassing</TestMethod>
             <TestParameters>
               <TestParameter>
-                <DisplayName>throwException</DisplayName>
-                <Name>throwException</Name>
+                <DisplayName>stringParam</DisplayName>
+                <Name>stringParam</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestHome]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>boolParam</DisplayName>
+                <Name>boolParam</Name>
                 <TypeAsString>System.Boolean</TypeAsString>
                 <ValueAsString>False</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>0</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\Sample test suite.ste</TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
+  <FilePath>[TestSuites]\ParamPassing.ste</FilePath>
 </TestSuite>

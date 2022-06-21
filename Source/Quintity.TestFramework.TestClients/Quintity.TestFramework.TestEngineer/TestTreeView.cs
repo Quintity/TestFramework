@@ -467,7 +467,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         public TestTreeNode AddNewTestStep(TestTreeNode currentNode, bool recordHistory = true)
         {
-            var newNode = InsertNode(new TestStep("Untitle test step"), currentNode, false);
+            var newNode = InsertNode(new TestStep("Untitled test step"), currentNode, false);
 
             if (recordHistory)
             {
@@ -1037,7 +1037,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Quintity TestFramework",
+                MessageBox.Show(e.ToString(), "Quintity TestFramework",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
