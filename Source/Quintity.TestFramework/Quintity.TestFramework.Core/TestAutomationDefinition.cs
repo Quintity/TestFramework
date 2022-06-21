@@ -155,7 +155,6 @@ namespace Quintity.TestFramework.Core
                 TestAssert.IsNotNull(testMethod, "The test method specified \"{0}\" cannot be located or it is not a valid test method.  " +
                     "Check the test method signature is correct and the TestMethodAttribute had been set.", TestMethod);
 
-                //TestClassBase testClassInstance;
                 var virtualUser = Thread.CurrentThread.Name;
                 int hashcode = testClassType.GetHashCode() + virtualUser.GetHashCode();
 
@@ -193,8 +192,6 @@ namespace Quintity.TestFramework.Core
                     resultStruct.TestVerdict = TestVerdict.Pass;
                     resultStruct.TestMessage = "Test runtime execution has been suppressed.";
                 }
-
-                resultStruct = determineTestVerdict(resultStruct);
             }
             catch (Exception e)
             {
@@ -389,24 +386,6 @@ namespace Quintity.TestFramework.Core
         #endregion
 
         #region Class private methods
-
-        /// <summary>
-        /// Determines if test passes based on setting and whether a failed TestCheck exists.
-        /// </summary>
-        /// <param name="resultStruct"></param>
-        /// <returns></returns>
-        ResultStruct determineTestVerdict(ResultStruct resultStruct)
-        {
-            if (resultStruct.TestVerdict == TestVerdict.Pass)
-            {
-                if (resultStruct.TestChecks.Exists(x => x.TestVerdict == TestVerdict.Fail))
-                {
-                    resultStruct.TestVerdict = TestVerdict.Fail;
-                }
-            }
-
-            return resultStruct;
-        }
 
         private List<object> getRuntimeParameters()
         {

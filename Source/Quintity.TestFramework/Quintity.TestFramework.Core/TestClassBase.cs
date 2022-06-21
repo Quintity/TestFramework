@@ -79,7 +79,17 @@ namespace Quintity.TestFramework.Core
         private TestVerdict _testVerdict;
         public TestVerdict TestVerdict
         {
-            get { return _testVerdict; }
+            get
+            {
+                TestVerdict verdict = _testVerdict;
+
+                if (_testVerdict == TestVerdict.Pass)
+                {
+                    verdict = _testCheckCollection.Exists(x => x.TestVerdict == TestVerdict.Fail) ? TestVerdict.Fail : TestVerdict.Pass;
+                }
+
+                return verdict;
+            }
             set
             {
                 _testVerdict = value;

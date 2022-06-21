@@ -14,12 +14,26 @@ namespace Quintity.TestFramework.TestProject
         [TestMethod]
         public TestVerdict ScratchTest1()
         {
-            var testRunId = TestRunId;
+            try
+            {
+                var testRunId = TestRunId;
 
-            TestMessage = "This is the message.";
+                TestCheck.IsTrue("Is true", true);
+                var testCheck = TestCheck.IsFalse("Is false", true);
 
-            TestAssert.IsTrue(false, "TestAssert message here");
-            //throw new Exception("This is the exception.");
+                TestVerdict = TestVerdict.Fail;
+
+                TestMessage = "This is the message.";
+
+                //TestAssert.IsTrue(false, "TestAssert message here");
+                //throw new Exception("This is the exception.");
+            }
+            finally
+            {
+                //var verdict = GetCurrentTestVerdict();
+
+                int i = 1;
+            }
 
             return TestVerdict;
         }

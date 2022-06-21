@@ -347,6 +347,12 @@ namespace Quintity.TestFramework.Core
             return DependsOn.HasValue && DependsOn != Guid.Empty ? true : false;
         }
 
+        /// <summary>
+        /// Determines whether test step passes, based on actual return vs. expected return
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <param name="actual"></param>
+        /// <returns></returns>
         private TestVerdict determineVerdict(TestVerdict expected, TestVerdict actual)
         {
             var testVerdict = actual;
