@@ -87,16 +87,23 @@ namespace Quintity.TestFramework.TestClientTests
             {
                 Setup();
 
-                if (throwException)
-                {
-                    throw new Exception("This is a big deal.");
-                }
+                TestMessage += "Really important stuff.";
+
+                TestCheck.IsTrue("This is a lame test", false);
+                TestData.Add("bob", "smith");
+
+                TestAssert.IsTrue(false, "Assert failed at a lame test.");
+
+                //if (throwException)
+                //{
+                //    throw new Exception("This is a big deal.");
+                //}
             }
-            catch (Exception e)
-            {
-                TestMessage += e.ToString();
-                TestVerdict = TestVerdict.Error;
-            }
+            //catch (Exception e)
+            //{
+            //    TestMessage += e.ToString();
+            //    TestVerdict = TestVerdict.Error;
+            //}
             finally
             {
                 Teardown();

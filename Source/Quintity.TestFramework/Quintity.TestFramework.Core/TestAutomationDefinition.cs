@@ -134,12 +134,16 @@ namespace Quintity.TestFramework.Core
 
         internal ResultStruct Invoke(Dictionary<int, TestClassBase> testClassDictionary)
         {
+            Type testClassType = null;
+            TestClassBase testClassInstance = null;
+            string exceptionText = null;
+
             ResultStruct resultStruct = new ResultStruct();
 
             try
             {
                 Assembly assembly = TestReflection.LoadTestAssembly(TestProperties.ExpandString(TestAssembly));
-                Type testClassType = TestReflection.GetTestClass(assembly, TestClass);
+                testClassType = TestReflection.GetTestClass(assembly, TestClass);
 
                 TestAssert.IsNotNull(testClassType, "The test class specified \"{0}\" cannot be located or is not a valid test class.  " +
                     "Check the test class's TestClassAttribute has been set.", TestClass);
@@ -151,7 +155,7 @@ namespace Quintity.TestFramework.Core
                 TestAssert.IsNotNull(testMethod, "The test method specified \"{0}\" cannot be located or it is not a valid test method.  " +
                     "Check the test method signature is correct and the TestMethodAttribute had been set.", TestMethod);
 
-                TestClassBase testClassInstance;
+                //TestClassBase testClassInstance;
                 var virtualUser = Thread.CurrentThread.Name;
                 int hashcode = testClassType.GetHashCode() + virtualUser.GetHashCode();
 
@@ -176,8 +180,6 @@ namespace Quintity.TestFramework.Core
 
                 object[] values = TestParameters.GetParameterValues();
 
-                PropertyInfo property = null;
-
                 //TODO - this needs to be abstractedfrom TestExecutor class.
                 //if (!TestExecutor.SuppressExecution)
                 if (true)
@@ -185,11 +187,6 @@ namespace Quintity.TestFramework.Core
                     resultStruct.StartTime = DateTime.Now;
 
                     resultStruct.TestVerdict = (TestVerdict)testMethod.Invoke(testClassInstance, values);
-
-                    resultStruct.EndTime = DateTime.Now;
-
-                    property = testClassType.GetProperty("TestMessage");
-                    resultStruct.TestMessage = (string)property.GetValue(testClassInstance, null);
                 }
                 else
                 {
@@ -197,21 +194,11 @@ namespace Quintity.TestFramework.Core
                     resultStruct.TestMessage = "Test runtime execution has been suppressed.";
                 }
 
-                // Get properties
-                property = testClassType.GetProperty("TestChecks");
-                resultStruct.TestChecks = (TestCheckCollection)property.GetValue(testClassInstance, null);
-
-                property = testClassType.GetProperty("TestWarnings");
-                resultStruct.TestWarnings = (TestWarningCollection)property.GetValue(testClassInstance, null);
-
-                property = testClassType.GetProperty("TestData");
-                resultStruct.TestData = (TestDataCollection)property.GetValue(testClassInstance, null);
-
                 resultStruct = determineTestVerdict(resultStruct);
             }
             catch (Exception e)
             {
-                if (e is System.Reflection.ReflectionTypeLoadException)
+                if (e is ReflectionTypeLoadException)
                 {
                     var typeLoadException = e as ReflectionTypeLoadException;
                     var loaderExceptions = typeLoadException.LoaderExceptions;
@@ -221,8 +208,41 @@ namespace Quintity.TestFramework.Core
                 {
                     resultStruct.TestVerdict = TestVerdict.Fail;
                 }
+                else
+                {
+                    resultStruct.TestVerdict = TestVerdict.Error;
+                }
 
-                resultStruct.TestMessage += e.ToString();
+                exceptionText = e.ToString();
+            }
+            finally
+            {
+                PropertyInfo property = null;
+
+                resultStruct.EndTime = DateTime.Now;
+
+                if (testClassType != null)
+                {
+                    // Get properties
+                    property = testClassType.GetProperty("TestChecks");
+                    resultStruct.TestChecks = (TestCheckCollection)property.GetValue(testClassInstance, null);
+
+                    property = testClassType.GetProperty("TestWarnings");
+                    resultStruct.TestWarnings = (TestWarningCollection)property.GetValue(testClassInstance, null);
+
+                    property = testClassType.GetProperty("TestData");
+                    resultStruct.TestData = (TestDataCollection)property.GetValue(testClassInstance, null);
+
+                    property = testClassType.GetProperty("TestMessage");
+                    resultStruct.TestMessage = $"{(string)property.GetValue(testClassInstance, null)}";
+
+                    // If exception is thrown, tack on exception test.
+                    if (!string.IsNullOrEmpty(exceptionText))
+                    {
+                        resultStruct.TestMessage += 
+                            $"{Environment.NewLine + Environment.NewLine}Exception thrown:{Environment.NewLine}{exceptionText}";
+                    }
+                }
             }
 
             return resultStruct;
@@ -370,11 +390,16 @@ namespace Quintity.TestFramework.Core
 
         #region Class private methods
 
+        /// <summary>
+        /// Determines if test passes based on setting and whether a failed TestCheck exists.
+        /// </summary>
+        /// <param name="resultStruct"></param>
+        /// <returns></returns>
         ResultStruct determineTestVerdict(ResultStruct resultStruct)
         {
             if (resultStruct.TestVerdict == TestVerdict.Pass)
             {
-                if (resultStruct.TestChecks.Exists(x => x.TestVerdict == TestVerdict.Fail || x.TestVerdict == TestVerdict.Error))
+                if (resultStruct.TestChecks.Exists(x => x.TestVerdict == TestVerdict.Fail))
                 {
                     resultStruct.TestVerdict = TestVerdict.Fail;
                 }

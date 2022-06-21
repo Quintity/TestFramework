@@ -16,6 +16,11 @@ namespace Quintity.TestFramework.TestProject
         {
             var testRunId = TestRunId;
 
+            TestMessage = "This is the message.";
+
+            TestAssert.IsTrue(false, "TestAssert message here");
+            //throw new Exception("This is the exception.");
+
             return TestVerdict;
         }
 
@@ -37,6 +42,5 @@ namespace Quintity.TestFramework.TestProject
         {
             return TestVerdict;
         }
-
     }
 }

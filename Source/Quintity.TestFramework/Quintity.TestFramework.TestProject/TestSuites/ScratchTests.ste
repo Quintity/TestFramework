@@ -75,7 +75,7 @@
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
           <SystemID>81d8be98-3a66-412f-b4ac-d926e3583716</SystemID>
           <UserID />
           <Title>Set break point</Title>
@@ -92,7 +92,7 @@
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
           <SystemID>a9c54f2f-b399-4b0d-9797-0fdac2c09876</SystemID>
           <UserID />
           <Title>ScratchTest2</Title>
@@ -109,7 +109,7 @@
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
           <SystemID>57be67aa-94f2-48a4-9f80-9907c0c425a9</SystemID>
           <UserID />
           <Title>ScratchTest3</Title>

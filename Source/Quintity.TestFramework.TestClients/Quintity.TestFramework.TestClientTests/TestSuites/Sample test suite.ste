@@ -10,6 +10,7 @@
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
     <SystemID>501c6ca9-4a55-4b6e-abce-2bf7a056ff03</SystemID>
     <Title />
@@ -55,24 +56,32 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>5770b495-b824-46c3-8901-6880e0597b0f</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
+          <Description><![CDATA[This is the description]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
-            <TestParameters />
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>True</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>

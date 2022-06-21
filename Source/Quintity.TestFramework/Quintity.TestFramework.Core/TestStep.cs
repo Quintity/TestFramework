@@ -349,7 +349,14 @@ namespace Quintity.TestFramework.Core
 
         private TestVerdict determineVerdict(TestVerdict expected, TestVerdict actual)
         {
-            return expected.Equals(actual) ? TestVerdict.Pass : TestVerdict.Fail;
+            var testVerdict = actual;
+
+            if (actual == TestVerdict.Pass || actual == TestVerdict.Fail)
+            {
+                testVerdict = expected.Equals(actual) ? TestVerdict.Pass : TestVerdict.Fail;
+            }
+
+            return testVerdict;
         }
 
         #endregion
