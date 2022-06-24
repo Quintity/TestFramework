@@ -22,7 +22,6 @@ namespace Quintity.TestFramework.TestListeners
 
         public ScratchListener1(Dictionary<string, string> args)
         {
-
             //LogEvent.Debug($"{MethodInfo.GetCurrentMethod().Name}");
 
             //parameters = args;

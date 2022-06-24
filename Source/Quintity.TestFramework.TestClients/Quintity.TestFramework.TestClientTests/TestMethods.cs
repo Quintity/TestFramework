@@ -13,6 +13,45 @@ namespace Quintity.TestFramework.TestClientTests
     {
         #region TestMethods
 
+        [TestMethod]
+        public TestVerdict ChangeType()
+        {
+            try
+            {
+                var dork = TestProperties.GetPropertyValue<bool>("BooleanParameter");
+                var spud = TestProperties.GetPropertyValue<int>("IntegerParameter");
+                changeType<string>("This is a test");
+                changeType<string>(null);
+                changeType<int>("99");
+                changeType<bool>(true);
+                changeType<bool>(false);
+                changeType<DateTime>(DateTime.Now);
+                //changeType<DateTime?>(DateTime.Now);
+                changeType<TimeSpan>(TimeSpan.FromSeconds(5000));
+                changeType<long>(999999);
+                changeType<long>(999999);
+
+
+
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        private T changeType<T>(object @value)
+        {
+            var typeofT = typeof(T).Name;
+            var spud = (T)Convert.ChangeType(value, typeof(T));
+            TestTrace.Trace($"ConvertTo:  '{typeofT}', Value: '{spud}' ({spud?.GetType()})");
+            return spud;
+        }
+
         [TestMethod("Parameter passing method", "This is an example of multiple parameter passing")]
         public TestVerdict ParameterPassing(
             [TestParameter("Enter string parameter", "This is an example of a string parameter", "Carpe diem")]

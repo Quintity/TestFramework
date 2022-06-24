@@ -72,4 +72,10 @@
     <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">False</Value>
     <Active>true</Active>
   </TestProperty>
+  <TestProperty>
+    <Name>IntegerParameter</Name>
+    <Description i:nil="true" />
+    <Value xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string">99</Value>
+    <Active>true</Active>
+  </TestProperty>
 </TestPropertyCollection>

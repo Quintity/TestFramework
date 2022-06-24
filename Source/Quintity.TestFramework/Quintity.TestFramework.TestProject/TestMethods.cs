@@ -28,6 +28,10 @@ namespace Quintity.TestFramework.TestProject
                 //TestAssert.IsTrue(false, "TestAssert message here");
                 //throw new Exception("This is the exception.");
             }
+            catch (Exception exp)
+            {
+                int i = 1;
+            }
             finally
             {
                 //var verdict = GetCurrentTestVerdict();

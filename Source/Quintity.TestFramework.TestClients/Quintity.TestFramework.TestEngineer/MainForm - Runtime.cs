@@ -85,6 +85,8 @@ namespace Quintity.TestFramework.TestEngineer
         {
             this.m_executeToolStripButton.Enabled = true;
             this.m_stepOverButton.Enabled = true;
+            // Bring app to forefront upon completiong
+            Activate();
         }
 
         private void onTestBreakPointExit(TestBreakpoint testBreakpoint, TestBreakPointArgs args)
@@ -364,6 +366,9 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 m_resultsViewer.Text = node.TestScriptResult.ToString();
             }
+
+            // Bring app to forefront
+            Activate();
         }
 
         private void onTestExecutionFinalized()

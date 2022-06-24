@@ -215,7 +215,7 @@
     <CustomAction Id="Set_ARPINSTALLLOCATION" Property="ARPINSTALLLOCATION" Value="[INSTALLDIR]" Return="check" Execute="immediate" />
     <CustomAction Id="Set_INSTALLDIR_AbsolutePath" Property="INSTALLDIR" Value="C:\Quintity TestEngineer 3.5" />
 
-    <UIRef Id="WixUI_Mondo" />
+    <UIRef Id="WixUI_Minimal" />
 
     <Property Id="INSTALLDIR_ABSOLUTEPATH" Value="C:\Quintity TestEngineer 3.5" />
 

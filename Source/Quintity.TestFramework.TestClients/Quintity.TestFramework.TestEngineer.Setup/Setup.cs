@@ -94,7 +94,7 @@ namespace Quintity.TestFramework.TestEngineer.Setup
             project.ControlPanelInfo.Manufacturer = "Quintity LLC";
             project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";
             project.GUID = new Guid("0C4A79D1-AD9B-4FB1-906F-BB3B65DDCF18");
-            project.UI = WUI.WixUI_Mondo;
+            project.UI = WUI.WixUI_Minimal;
             project.BuildMsi();
         }
     }

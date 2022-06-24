@@ -250,7 +250,7 @@ namespace Quintity.TestFramework.Core
 
             if (!(overridden is null))
             {
-                foreach(var testProperty in overridden)
+                foreach (var testProperty in overridden)
                 {
                     testProperty.Overridden = false;
                     testProperty.Value = testProperty.OverriddenValue;
@@ -441,6 +441,12 @@ namespace Quintity.TestFramework.Core
         public static object GetPropertyValue(string name)
         {
             return GetPropertyValue(name, "86529bef-0704-4f55-9df4-45e299e57f9e");
+        }
+
+        public static T GetPropertyValue<T>(string name)
+        {
+            var @value = GetPropertyValue(name);
+            return (T)Convert.ChangeType(value, typeof(T));
         }
 
         public static object GetPropertyValue(string name, object @default)
