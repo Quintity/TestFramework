@@ -21,16 +21,15 @@ namespace Quintity.TestFramework.TestEngineer.Setup
             var samples = new Feature("Sample Test Application");
             // var registry = new Feature("TestFramework Registry");
 
-            Project project = new Project("Quintity.TestFramework.TestEngineer",
-            //new PropertyRef(new Id("VS2015_ITEMTEMPLATES_DIR")),
+            Project project = new Project("Quintity.TestFramework",
             // Create program files folder
             //new Dir(@"%ProgramFiles%\Quintity\Quintity TestEngineer 3.0",
-            new Dir(@"C:\Quintity TestEngineer 3.5",
-
+            new Dir(@"C:\Quintity Testframework",
+                    //new FileShortcut("Quintity TestEngineer - Shortcut", "C:\\temp"),
                     // Add the TestEngineer to folder
                     new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.TestEngineer.exe",
                         // Add shortcut to program files folder
-                        new FileShortcut("Quintity TestEngineer", @"%ProgramMenu%\Quintity\Quintity TestEngineer 3.5"),
+                        new FileShortcut("Quintity TestEngineer", @"%ProgramMenu%\Quintity\Quintity TestEngineer"),
                         // Add shortcut to desktop
                         new FileShortcut("Quintity TestEngineer", @"%Desktop%")),
 
@@ -51,7 +50,9 @@ namespace Quintity.TestFramework.TestEngineer.Setup
                     // new File(@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.Core.dll"),
 
                     // Add Desktop TestEngineer shortcut
-                    new ExeFileShortcut("Uninstall TestEngineer", "[System64Folder]msiexec.exe", "/x [ProductCode]"),
+                    new ExeFileShortcut("Quintity.TestFramework.Uninstall", "[System64Folder]msiexec.exe", "/x [ProductCode]"),
+                    //new ExeFileShortcut("Quintity.TestFramework.TestEngineer.Shortcut",
+                    //    @"[INSTALLDIR]Quintity.TestFramework.TestEngineer.exe", "/s="),
 
                     // Add TestEngineer to StartUp menu
                     new Dir("%Startup%",

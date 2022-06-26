@@ -6,16 +6,16 @@
 </auto-generated>
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="0c4a79d1-ad9b-4fb1-906f-bb3b75ddcf19" Name="Quintity.TestFramework.TestEngineer" Language="1033" Codepage="Windows-1252" Version="1.0.0.0" UpgradeCode="0c4a79d1-ad9b-4fb1-906f-bb3b65ddcf18" Manufacturer="Quintity LLC">
+  <Product Id="0c4a79d1-ad9b-4fb1-906f-bb3b75ddcf19" Name="Quintity.TestFramework" Language="1033" Codepage="Windows-1252" Version="1.0.0.0" UpgradeCode="0c4a79d1-ad9b-4fb1-906f-bb3b65ddcf18" Manufacturer="Quintity LLC">
     <Package InstallerVersion="200" Compressed="yes" SummaryCodepage="Windows-1252" Languages="1033" />
-    <Media Id="1" Cabinet="Quintity.TestFramework.TestEngineer.cab" EmbedCab="yes" />
+    <Media Id="1" Cabinet="Quintity.TestFramework.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="INSTALLDIR" Name="ABSOLUTEPATH">
 
         <Component Id="Component.Quintity.TestFramework.TestEngineer.exe" Guid="0c4a79d1-ad9b-4fb1-906f-bb3bdd9a2b8c">
           <File Id="Quintity.TestFramework.TestEngineer.exe" Source="..\Quintity.TestFramework.TestEngineer\bin\Debug\Quintity.TestFramework.TestEngineer.exe">
-            <Shortcut Id="Shortcut.Quintity.TestFramework.TestEngineer.exe.Quintity_TestEngineer" WorkingDirectory="INSTALLDIR" Directory="ProgramMenuFolder.Quintity.Quintity_TestEngineer_3.5" Name="Quintity TestEngineer.lnk" />
+            <Shortcut Id="Shortcut.Quintity.TestFramework.TestEngineer.exe.Quintity_TestEngineer" WorkingDirectory="INSTALLDIR" Directory="ProgramMenuFolder.Quintity.Quintity_TestEngineer" Name="Quintity TestEngineer.lnk" />
             <Shortcut Id="Shortcut.Quintity.TestFramework.TestEngineer.exe.Quintity_TestEngineer.1" WorkingDirectory="INSTALLDIR" Directory="DesktopFolder" Name="Quintity TestEngineer.lnk" />
           </File>
 
@@ -52,9 +52,17 @@
           <File Id="log4net.xml" Source="..\Quintity.TestFramework.TestRunner\bin\Debug\log4net.xml" />
         </Component>
 
-        <Component Id="Uninstall_TestEngineer" Guid="0c4a79d1-ad9b-4fb1-906f-bb3befaaaaf5">
-          <Shortcut Id="INSTALLDIR.Uninstall_TestEngineer" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall TestEngineer.lnk" />
+        <Component Id="Quintity.TestFramework.Uninstaller" Guid="0c4a79d1-ad9b-4fb1-906f-bb3b97fe1d83">
+          <Shortcut Id="INSTALLDIR.Quintity.TestFramework.Uninstaller" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Quintity.TestFramework.Uninstaller.lnk" />
           <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+
+          <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+            <RegistryValue Value="0" Type="string" KeyPath="yes" />
+          </RegistryKey>
+        </Component>
+
+        <Component Id="Quintity.TestFramework.TestEngineer.Shortcut" Guid="0c4a79d1-ad9b-4fb1-906f-bb3bac58b52e">
+          <Shortcut Id="INSTALLDIR.Quintity.TestFramework.TestEngineer.Shortcut" WorkingDirectory="INSTALLDIR" Target="[INSTALLDIR]Quintity.TestFramework.TestEngineer.exe" Arguments="/s=" Name="Quintity.TestFramework.TestEngineer.Shortcut.lnk" />
 
           <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
             <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -176,10 +184,10 @@
 
       <Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder">
         <Directory Id="ProgramMenuFolder.Quintity" Name="Quintity">
-          <Directory Id="ProgramMenuFolder.Quintity.Quintity_TestEngineer_3.5" Name="Quintity TestEngineer 3.5">
+          <Directory Id="ProgramMenuFolder.Quintity.Quintity_TestEngineer" Name="Quintity TestEngineer">
 
-            <Component Id="Quintity_TestEngineer_3.5.EmptyDirectory" Guid="0c4a79d1-ad9b-4fb1-906f-bb3b5878021c">
-              <RemoveFolder Id="ProgramMenuFolder.Quintity.Quintity_TestEngineer_3.5" On="uninstall" />
+            <Component Id="Quintity_TestEngineer.EmptyDirectory" Guid="0c4a79d1-ad9b-4fb1-906f-bb3b594dc46d">
+              <RemoveFolder Id="ProgramMenuFolder.Quintity.Quintity_TestEngineer" On="uninstall" />
 
               <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
                 <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -213,11 +221,11 @@
     <WixVariable Id="WixUILicenseRtf" Value="..\License.rtf" />
 
     <CustomAction Id="Set_ARPINSTALLLOCATION" Property="ARPINSTALLLOCATION" Value="[INSTALLDIR]" Return="check" Execute="immediate" />
-    <CustomAction Id="Set_INSTALLDIR_AbsolutePath" Property="INSTALLDIR" Value="C:\Quintity TestEngineer 3.5" />
+    <CustomAction Id="Set_INSTALLDIR_AbsolutePath" Property="INSTALLDIR" Value="C:\Quintity Testframework" />
 
     <UIRef Id="WixUI_Minimal" />
 
-    <Property Id="INSTALLDIR_ABSOLUTEPATH" Value="C:\Quintity TestEngineer 3.5" />
+    <Property Id="INSTALLDIR_ABSOLUTEPATH" Value="C:\Quintity Testframework" />
 
     <Feature Id="Working_Folders" Title="Working Folders" Absent="allow" Level="1">
       <ComponentRef Id="TestSuites.EmptyDirectory" />
@@ -240,11 +248,12 @@
       <ComponentRef Id="Component.Quintity.TestFramework.TestRunner.exe.Config" />
       <ComponentRef Id="Component.log4net.dll" />
       <ComponentRef Id="Component.log4net.xml" />
-      <ComponentRef Id="Uninstall_TestEngineer" />
+      <ComponentRef Id="Quintity.TestFramework.Uninstaller" />
+      <ComponentRef Id="Quintity.TestFramework.TestEngineer.Shortcut" />
       <ComponentRef Id="Quintity_TestEngineer" />
       <ComponentRef Id="Component.CoreReference" />
       <ComponentRef Id="Component.RuntimeReference" />
-      <ComponentRef Id="Quintity_TestEngineer_3.5.EmptyDirectory" />
+      <ComponentRef Id="Quintity_TestEngineer.EmptyDirectory" />
       <ComponentRef Id="DesktopFolder.EmptyDirectory" />
       <ComponentRef Id="Registry1" />
       <ComponentRef Id="Registry2" />
