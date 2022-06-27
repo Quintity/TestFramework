@@ -52,17 +52,9 @@
           <File Id="log4net.xml" Source="..\Quintity.TestFramework.TestRunner\bin\Debug\log4net.xml" />
         </Component>
 
-        <Component Id="Quintity.TestFramework.Uninstaller" Guid="0c4a79d1-ad9b-4fb1-906f-bb3b97fe1d83">
-          <Shortcut Id="INSTALLDIR.Quintity.TestFramework.Uninstaller" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Quintity.TestFramework.Uninstaller.lnk" />
+        <Component Id="Quintity.TestFramework.Uninstall" Guid="0c4a79d1-ad9b-4fb1-906f-bb3b0ef9d14a">
+          <Shortcut Id="INSTALLDIR.Quintity.TestFramework.Uninstall" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Quintity.TestFramework.Uninstall.lnk" />
           <RemoveFolder Id="INSTALLDIR" On="uninstall" />
-
-          <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-            <RegistryValue Value="0" Type="string" KeyPath="yes" />
-          </RegistryKey>
-        </Component>
-
-        <Component Id="Quintity.TestFramework.TestEngineer.Shortcut" Guid="0c4a79d1-ad9b-4fb1-906f-bb3bac58b52e">
-          <Shortcut Id="INSTALLDIR.Quintity.TestFramework.TestEngineer.Shortcut" WorkingDirectory="INSTALLDIR" Target="[INSTALLDIR]Quintity.TestFramework.TestEngineer.exe" Arguments="/s=" Name="Quintity.TestFramework.TestEngineer.Shortcut.lnk" />
 
           <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
             <RegistryValue Value="0" Type="string" KeyPath="yes" />
@@ -248,8 +240,7 @@
       <ComponentRef Id="Component.Quintity.TestFramework.TestRunner.exe.Config" />
       <ComponentRef Id="Component.log4net.dll" />
       <ComponentRef Id="Component.log4net.xml" />
-      <ComponentRef Id="Quintity.TestFramework.Uninstaller" />
-      <ComponentRef Id="Quintity.TestFramework.TestEngineer.Shortcut" />
+      <ComponentRef Id="Quintity.TestFramework.Uninstall" />
       <ComponentRef Id="Quintity_TestEngineer" />
       <ComponentRef Id="Component.CoreReference" />
       <ComponentRef Id="Component.RuntimeReference" />
