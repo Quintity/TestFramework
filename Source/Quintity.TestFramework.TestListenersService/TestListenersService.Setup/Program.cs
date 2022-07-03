@@ -1,10 +1,6 @@
 ﻿using System;
 using WixSharp;
 
-// DON'T FORGET to update NuGet package "WixSharp".
-// NuGet console: Update-Package WixSharp
-// NuGet Manager UI: updates tab
-
 namespace TestListenersService.Setup
 {
     class Program
@@ -21,8 +17,8 @@ namespace TestListenersService.Setup
         {
             File service = null;
 
-            Project project = new Project("Quintity.TestFramework.TestListenersService",
-                new Dir(@"C:\Quintity.TestFramework.TestListenersService",
+            Project project = new Project("Quintity.TestListeners.Service",
+                new Dir(@"%ProgramFiles%\Quintity\TestListeners Service",
                     service = new File(string.Format(binSource, "Quintity.TestFramework.TestListenersService.Host.exe")),
 
                     new Files($@"..\Quintity.TestFramework.TestListenersService.Host\bin\{build}\*.dll"),
@@ -31,12 +27,12 @@ namespace TestListenersService.Setup
                     new Dir("%Desktop%",
                         new ExeFileShortcut("Quintity TestLIsteners Service", "[INSTALLDIR]Quintity.TestFramework.TestListenersService.Host.exe", "")),
 
-                    new ExeFileShortcut("Uninstall TestListenersService", "[System64Folder]msiexec.exe", "/x [ProductCode]"))
+                    new ExeFileShortcut("Quintity TestLIsteners Service Uninstall", "[System64Folder]msiexec.exe", "/x [ProductCode]"))
             );
 
             service.ServiceInstaller = new ServiceInstaller
             {
-                Name = "Quintity TestListenersService",
+                Name = "Quintity TestListeners Service",
                 Description = "Quintity runtime listener test management service.",
 
                 DelayedAutoStart = false,
