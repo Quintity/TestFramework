@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestRunner", "Quintity.TestFramework.TestRunner\Quintity.TestFramework.TestRunner.csproj", "{9A642079-DBD1-44C6-8A8D-A4F5239AD3AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestClients.Setup", "Quintity.TestFramework.TestEngineer.Setup\Quintity.TestFramework.TestClients.Setup.csproj", "{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A71AC47E-1A75-4663-91FD-4B98861A6391}"
 	ProjectSection(SolutionItems) = preProject
 		AssemblyVersionInfo.cs = AssemblyVersionInfo.cs
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestClientTests", "Quintity.TestFramework.TestClientTests\Quintity.TestFramework.TestClientTests.csproj", "{BABFD193-31A0-4408-9375-F9CB178381A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Quintity.Repository", "Quintity.Repository", "{594E818A-E6B6-4848-ABCE-F4F349BBECA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestClients.Setup", "Quintity.TestFramework.TestClients.Setup\Quintity.TestFramework.TestClients.Setup.csproj", "{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +33,14 @@ Global
 		{9A642079-DBD1-44C6-8A8D-A4F5239AD3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A642079-DBD1-44C6-8A8D-A4F5239AD3AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A642079-DBD1-44C6-8A8D-A4F5239AD3AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
