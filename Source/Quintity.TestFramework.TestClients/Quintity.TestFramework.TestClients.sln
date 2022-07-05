@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestEngineer", "Quintity.TestFramework.TestEngineer\Quintity.TestFramework.TestEngineer.csproj", "{064BB86D-0B85-44C3-9DDD-CB246F53C7AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestRunner", "Quintity.TestFramework.TestRunner\Quintity.TestFramework.TestRunner.csproj", "{9A642079-DBD1-44C6-8A8D-A4F5239AD3AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestEngineer.Setup", "Quintity.TestFramework.TestEngineer.Setup\Quintity.TestFramework.TestEngineer.Setup.csproj", "{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestClients.Setup", "Quintity.TestFramework.TestEngineer.Setup\Quintity.TestFramework.TestClients.Setup.csproj", "{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A71AC47E-1A75-4663-91FD-4B98861A6391}"
 	ProjectSection(SolutionItems) = preProject
