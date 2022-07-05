@@ -268,7 +268,7 @@ namespace Quintity.TestFramework.Core
             if (testPropertyOverride.Value is string)
             {
                 // Cast to string and parse on description delimiter.
-                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 valueElements[0].Trim();
 
 
@@ -294,7 +294,7 @@ namespace Quintity.TestFramework.Core
             if (testPropertyOverride.Value is string)
             {
                 // Cast to string and parse on description delimiter.
-                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' });
+                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 // First element is always the string value.
                 testProperty.Value = valueElements[0];
 
