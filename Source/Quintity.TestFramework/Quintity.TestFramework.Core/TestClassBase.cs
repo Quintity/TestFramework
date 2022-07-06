@@ -72,9 +72,9 @@ namespace Quintity.TestFramework.Core
         public TestWarningCollection TestWarnings
         { get { return _testWarningCollection; } }
 
-        internal TestDataCollection _testDataCollection;
-        public TestDataCollection TestData
-        { get { return _testDataCollection; } }
+        internal TestAttachmentCollection _testAttachmentCollection;
+        public TestAttachmentCollection TestAttachments
+        { get { return _testAttachmentCollection; } }
 
         private TestVerdict _testVerdict;
         public TestVerdict TestVerdict
@@ -122,7 +122,7 @@ namespace Quintity.TestFramework.Core
             _testWarningCollection = new TestWarningCollection();
             TestWarning.OnTestWarning += TestWarning_OnTestWarning;
 
-            _testDataCollection = new TestDataCollection();
+            _testAttachmentCollection = new TestAttachmentCollection();
 
             TestCheckFailuresOnly = true;
             MaxFailedTestChecks = _defaultMaxTestCheckFailures;
@@ -221,15 +221,15 @@ namespace Quintity.TestFramework.Core
             }
         }
 
-        internal void ResetTestDataCollection()
+        internal void ResetTestAttachmentCollection()
         {
-            if (_testDataCollection == null)
+            if (_testAttachmentCollection == null)
             {
-                _testDataCollection = new TestDataCollection();
+                _testAttachmentCollection = new TestAttachmentCollection();
             }
             else
             {
-                _testDataCollection.Clear();
+                _testAttachmentCollection.Clear();
             }
         }
 

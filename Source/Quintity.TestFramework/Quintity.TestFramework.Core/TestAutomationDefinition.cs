@@ -121,14 +121,14 @@ namespace Quintity.TestFramework.Core
             public TestWarningCollection TestWarnings
             { get; set; }
 
-            public TestDataCollection TestData
+            public TestAttachmentCollection TestAttachments
             { get; set; }
 
             public ResultStruct()
             {
                 TestChecks = new TestCheckCollection();
                 TestWarnings = new TestWarningCollection();
-                TestData = new TestDataCollection();
+                TestAttachments = new TestAttachmentCollection();
             }
         }
 
@@ -163,7 +163,7 @@ namespace Quintity.TestFramework.Core
                     testClassInstance.TestMessage = null;
                     testClassInstance.ResetTestCheckCollection();
                     testClassInstance.ResetTestWarningCollection();
-                    testClassInstance.ResetTestDataCollection();
+                    testClassInstance.ResetTestAttachmentCollection();
                     testClassInstance.TestVerdict = TestVerdict.Pass;
                 }
                 else
@@ -227,8 +227,8 @@ namespace Quintity.TestFramework.Core
                     property = testClassType.GetProperty("TestWarnings");
                     resultStruct.TestWarnings = (TestWarningCollection)property.GetValue(testClassInstance, null);
 
-                    property = testClassType.GetProperty("TestData");
-                    resultStruct.TestData = (TestDataCollection)property.GetValue(testClassInstance, null);
+                    property = testClassType.GetProperty("TestAttachments");
+                    resultStruct.TestAttachments = (TestAttachmentCollection)property.GetValue(testClassInstance, null);
 
                     property = testClassType.GetProperty("TestMessage");
                     resultStruct.TestMessage = $"{(string)property.GetValue(testClassInstance, null)}";

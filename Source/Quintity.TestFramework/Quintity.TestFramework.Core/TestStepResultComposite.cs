@@ -17,7 +17,7 @@ namespace Quintity.TestFramework.Core
         public TestAutomationDefinition TestAutomationDefinition { get; }
         public TestType TestType { get; }
         public TestCheckCollection TestChecks { get; }
-        public TestDataCollection TestData { get; }
+        public TestAttachmentCollection TestAttachments { get; }
         public TestWarningCollection TestWarnings { get; }
 
         #endregion
@@ -35,7 +35,7 @@ namespace Quintity.TestFramework.Core
             TestType = testStep.TestType;
 
             TestChecks = testStepResult.TestChecks;
-            TestData = testStepResult.TestData;
+            TestAttachments = testStepResult.TestAttachments;
             TestWarnings = testStepResult.TestWarnings;
         }
 

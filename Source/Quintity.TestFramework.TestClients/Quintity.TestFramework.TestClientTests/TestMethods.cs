@@ -14,6 +14,24 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod]
+        public TestVerdict DoSomething()
+        {
+            try
+            {
+                TestCheck.IsTrue("Checking something important", false, false);
+
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        [TestMethod]
         public TestVerdict ChangeType()
         {
             try
@@ -126,7 +144,7 @@ namespace Quintity.TestFramework.TestClientTests
                 TestMessage += "Really important stuff.";
 
                 TestCheck.IsTrue("This is a lame test", false);
-                TestData.Add("bob", "smith");
+                TestAttachments.Add("bob", "smith");
 
                 TestAssert.IsTrue(false, "Assert failed at a lame test.");
 

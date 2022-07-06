@@ -270,7 +270,7 @@ namespace Quintity.TestFramework.Core
             result.SetTestMessage(resultStruct.TestMessage);
             result.SetTestChecks(resultStruct.TestChecks);
             result.SetTestWarnings(resultStruct.TestWarnings);
-            result.SetTestData(resultStruct.TestData);
+            result.SetTestAttachments(resultStruct.TestAttachments);
 
             FireExecutionCompleteEvent(this, result);
 

@@ -20,7 +20,7 @@ namespace Quintity.TestFramework.Core
         protected TestWarningCollection _testWarnings;
 
         [DataMember(Order = 12)]
-        protected TestDataCollection _testData;
+        protected TestAttachmentCollection _testAttachments;
 
         #endregion
 
@@ -35,8 +35,8 @@ namespace Quintity.TestFramework.Core
         { get { return _testWarnings; } }
 
         [IgnoreDataMember]
-        public TestDataCollection TestData
-        { get { return _testData; } }
+        public TestAttachmentCollection TestAttachments
+        { get { return _testAttachments; } }
 
         #endregion
 
@@ -76,7 +76,7 @@ namespace Quintity.TestFramework.Core
                 base.ToString(),
                 _testWarnings != null ? _testWarnings.ToString() : null,
                 _testChecks != null ? _testChecks.ToString() : null,
-                _testData != null ? _testData.ToString() : null);
+                _testAttachments != null ? _testAttachments.ToString() : null);
         }
 
         #endregion
@@ -93,9 +93,9 @@ namespace Quintity.TestFramework.Core
             _testWarnings = new TestWarningCollection(testWarnings);
         }
 
-        internal void SetTestData(TestDataCollection testData)
+        internal void SetTestAttachments(TestAttachmentCollection testAttachments)
         {
-            _testData = new TestDataCollection(testData);
+            _testAttachments = new TestAttachmentCollection(testAttachments);
         }
 
         #endregion

@@ -102,7 +102,7 @@
     <Compile Include="TestScriptResultContainerComposite.cs" />
     <Compile Include="TestStepResultComposite.cs" />
     <Compile Include="TestSuiteBeginExecutionArgs.cs" />
-    <Compile Include="TestDataCollection.cs" />
+    <Compile Include="TestAttachmentCollection.cs" />
     <Compile Include="TestExecutionBeginArgs.cs" />
     <Compile Include="TestMetric.cs" />
     <Compile Include="TestMetricEventArgs.cs" />

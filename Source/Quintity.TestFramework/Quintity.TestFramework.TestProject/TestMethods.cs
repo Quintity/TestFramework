@@ -25,8 +25,13 @@ namespace Quintity.TestFramework.TestProject
 
                 TestMessage = "This is the message.";
 
+
+                TestAttachments.Add("", "");
+
+                TestAttachments.Attach("bob", "value");
+
                 //TestAssert.IsTrue(false, "TestAssert message here");
-                //throw new Exception("This is the exception.");
+                //throw new Exception("This is the exception.");f
             }
             catch (Exception exp)
             {

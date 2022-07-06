@@ -10,27 +10,32 @@ namespace Quintity.TestFramework.Core
 {
 
     [CollectionDataContract
-     (Name = "TestData", ItemName = "TestName", KeyName = "DataKey", ValueName = "DataValue")]
-    public class TestDataCollection : Dictionary<string, object>
+     (Name = "TestAttachments", ItemName = "TestName", KeyName = "DataKey", ValueName = "DataValue")]
+    public class TestAttachmentCollection : Dictionary<string, object>
     {
         #region Constructors
 
-        internal TestDataCollection()
+        internal TestAttachmentCollection()
             : base()
         { }
 
-        internal TestDataCollection(TestDataCollection original)
+        internal TestAttachmentCollection(TestAttachmentCollection original)
             : base(original)
         { }
 
         #endregion
 
-        new public void Add(string key, object value)
+        public void Attach(string key, object value)
         {
             TestWarning.IsTrue(IsSerializable(value), 
                 string.Format("The test data object associated with key \"{0}\", is not serializable.", key));
 
             base.Add(key, value);
+        }
+
+        public bool Detach(string key)
+        {
+            return base.Remove(key);
         }
 
         public bool IsSerializable(object obj)
