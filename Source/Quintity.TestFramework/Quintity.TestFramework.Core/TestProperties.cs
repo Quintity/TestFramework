@@ -162,7 +162,6 @@ namespace Quintity.TestFramework.Core
 
                 if (null != newTestPropertyOverrides)
                 {
-                    //testPropertyOverrides = AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
                     AddToTestPropertyOverrides(environment, newTestPropertyOverrides, testPropertyOverrides);
                 }
             }
@@ -175,7 +174,7 @@ namespace Quintity.TestFramework.Core
         {
             foreach (DictionaryEntry newTestPropertyOverride in newTestPropertyOverrides)
             {
-                var valueElements = parseOverrideValue2(newTestPropertyOverride);
+                var valueElements = parseOverrideValue(newTestPropertyOverride);
 
                 var testPropertyOverride = new TestPropertyOverride()
                 {
@@ -186,7 +185,7 @@ namespace Quintity.TestFramework.Core
                 if (valueElements is Array)
                 {
                     testPropertyOverride.Value = valueElements[0];
-                    testPropertyOverride.Description = valueElements.Length > 1 ? valueElements[1] : null;
+                    testPropertyOverride.Description = valueElements.Length > 1 ? valueElements[1].Trim() : null;
                 }
 
                 testPropertyOverrides.Add(testPropertyOverride);
@@ -259,7 +258,13 @@ namespace Quintity.TestFramework.Core
             }
         }
 
-        private static dynamic parseOverrideValue2(DictionaryEntry testPropertyOverride)
+        /// <summary>
+        /// Parses out and updates passed test property with new value object and possible description from test override entry.
+        /// An override value, if a string, can contain a new test override description (delimited by '|').
+        /// </summary>
+        /// <param name="testProperty"></param>
+        /// <param name="testPropertyOverride"></param>
+        private static dynamic parseOverrideValue(DictionaryEntry testPropertyOverride)
         {
             // In case value is not string, some other object.
             dynamic valueElements = testPropertyOverride.Value;
@@ -270,38 +275,9 @@ namespace Quintity.TestFramework.Core
                 // Cast to string and parse on description delimiter.
                 valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 valueElements[0].Trim();
-
-
-                // If second string element, new override description
-                var newDescription = valueElements.Length > 1 ? valueElements[1].Trim() : string.Empty;
             }
 
             return valueElements;
-        }
-
-        /// <summary>
-        /// Parses out and updates passed test property with new value object and possible description from test override entry.
-        /// An override value, if a string, can contain a new test override description (delimited by '|').
-        /// </summary>
-        /// <param name="testProperty"></param>
-        /// <param name="testPropertyOverride"></param>
-        private static void parseOverrideValue(TestProperty testProperty, DictionaryEntry testPropertyOverride)
-        {
-            // In case value is not string, some other object.
-            dynamic valueElements = testPropertyOverride.Value;
-
-            // If it is a string, parse out elements.
-            if (testPropertyOverride.Value is string)
-            {
-                // Cast to string and parse on description delimiter.
-                valueElements = ((string)testPropertyOverride.Value).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                // First element is always the string value.
-                testProperty.Value = valueElements[0];
-
-                // If second string element, new override description
-                var newDescription = valueElements.Length > 1 ? valueElements[1] : string.Empty;
-                testProperty.Description = $"{newDescription}";
-            }
         }
 
         public static void AddProperty(TestProperty testProperty)
@@ -803,16 +779,16 @@ namespace Quintity.TestFramework.Core
 
             Uri uri = new Uri(path);
 
-            addPropertyIfDoesNotExist("TestHome", "Default test home location", uri.LocalPath);
-            addPropertyIfDoesNotExist("TestProperties", "Default test properties location", "[TESTHOME]\\TestProperties");
-            addPropertyIfDoesNotExist("TestSuites", "Default test suites location", "[TESTHOME]\\TestSuites");
-            addPropertyIfDoesNotExist("TestAssemblies", "Default test assemblies location", "[TESTHOME]\\TestAssemblies");
-            addPropertyIfDoesNotExist("TestData", "Default test data location", "[TESTHOME]\\TestData");
-            addPropertyIfDoesNotExist("TestOutput", "Default test output location.", "[TESTHOME]\\TestOutput");
-            addPropertyIfDoesNotExist("TestResults", "Default test results location.", "[TESTHOME]\\TestResults");
-            addPropertyIfDoesNotExist("TestGolds", "Default test golds location.", "[TESTHOME]\\TestGolds");
+            addPropertyIfDoesNotExist("TestHome", "Default environment test home location", uri.LocalPath);
+            addPropertyIfDoesNotExist("TestProperties", "Default environment test properties location", "[TESTHOME]\\TestProperties");
+            addPropertyIfDoesNotExist("TestSuites", "Default environment test suites location", "[TESTHOME]\\TestSuites");
+            addPropertyIfDoesNotExist("TestAssemblies", "Default environment test assemblies location", "[TESTHOME]\\TestAssemblies");
+            addPropertyIfDoesNotExist("TestData", "Default environment test data location", "[TESTHOME]\\TestData");
+            addPropertyIfDoesNotExist("TestOutput", "Default environment test output location.", "[TESTHOME]\\TestOutput");
+            addPropertyIfDoesNotExist("TestResults", "Default environment test results location.", "[TESTHOME]\\TestResults");
+            addPropertyIfDoesNotExist("TestGolds", "Default environment test golds location.", "[TESTHOME]\\TestGolds");
             addPropertyIfDoesNotExist(
-                "TestConfigs", "Default test configuration files (e.g., test listener configs, test profile configs, etc.)", "[TESTHOME]\\TestConfigs");
+                "TestConfigs", "Default environment test configuration files location.(e.g., test listener configs, test profile configs, etc.)", "[TESTHOME]\\TestConfigs");
             //addPropertyIfDoesNotExist(
             //   "VirtualUsers", "The number of performance virtual user instances.", 1);
             //addPropertyIfDoesNotExist(

@@ -30,9 +30,6 @@ namespace Quintity.TestFramework.TestClientTests
                 changeType<TimeSpan>(TimeSpan.FromSeconds(5000));
                 changeType<long>(999999);
                 changeType<long>(999999);
-
-
-
                 TestVerdict = TestVerdict.Pass;
             }
             catch (Exception exp)
