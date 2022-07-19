@@ -4,6 +4,7 @@ using System.Threading;
 using System.Runtime.Serialization;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
+using System.Collections.Generic;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -41,16 +42,9 @@ namespace Quintity.TestFramework.TestRunner
             currentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             // Runtime event registration
-            TestTrace.OnTestTrace += TestTrace_OnTestTrace;
             TestExecutor.OnExecutionBegin += TestExecutor_OnExecutionBegin;
-            TestExecutor.OnExecutionComplete += TestExecutor_OnExecutionComplete;
             TestExecutor.OnTestExecutionFinalizedEvent += TestExecutor_OnTestExecutionFinalizedEvent;
-            TestSuite.OnExecutionBegin += TestSuite_OnExecutionBegin;
             TestSuite.OnExecutionComplete += TestSuite_OnExecutionComplete;
-            TestCase.OnExecutionBegin += TestCase_OnExecutionBegin;
-            TestCase.OnExecutionComplete += TestCase_OnExecutionComplete;
-            TestStep.OnExecutionBegin += TestStep_OnExecutionBegin;
-            TestStep.OnExecutionComplete += TestStep_OnExecutionComplete;
 
             string testPropertiesFile = string.Empty;
             string testSuiteFile = string.Empty;
@@ -108,35 +102,8 @@ namespace Quintity.TestFramework.TestRunner
 
         #region Runtime event handlers
 
-        private static void TestStep_OnExecutionComplete(TestStep testStep, TestStepResult testStepResult)
-        {
-            LogEvent.Info(message: $"Test step execution \"{testStep.Title}\" completed ({testStepResult.TestVerdict}).");
-        }
-
-        private static void TestStep_OnExecutionBegin(TestStep testStep, TestStepBeginExecutionArgs args)
-        {
-            LogEvent.Info(message: $"Beginning test step execution \"{testStep.Title}\"");
-        }
-
-        private static void TestCase_OnExecutionComplete(TestCase testCase, TestCaseResult testCaseResult)
-        {
-            LogEvent.Info(message: $"Test case execution \"{testCase.Title}\" completed ({testCaseResult.TestVerdict}).");
-        }
-
-        private static void TestCase_OnExecutionBegin(TestCase testCase, TestCaseBeginExecutionArgs args)
-        {
-            LogEvent.Info(message: $"Beginning test case execution \"{testCase.Title}\"");
-        }
-
-        private static void TestSuite_OnExecutionBegin(TestSuite testSuite, TestSuiteBeginExecutionArgs args)
-        {
-            LogEvent.Info(message: $"Beginning test suite execution \"{testSuite.Title}\"");
-        }
-
         private static void TestSuite_OnExecutionComplete(TestSuite testSuite, TestSuiteResult testSuiteResult)
         {
-            LogEvent.Info(message: $"Test suite execution \"{testSuite.Title}\" completed ({testSuiteResult.TestVerdict}).");
-
             // If this is the initial test suite, set exitcode based on overall test verdict.
             if (initialTestSuite.SystemID == testSuite.SystemID)
             {
@@ -152,25 +119,11 @@ namespace Quintity.TestFramework.TestRunner
         private static void TestExecutor_OnExecutionBegin(TestExecutor testExecutor, TestExecutionBeginArgs args)
         {
             initialTestSuite = args.TestScriptObject as TestSuite;
-
-            LogEvent.Info(message: $"Beginning test execution.");
-        }
-
-        private static void TestExecutor_OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
-        {
-            LogEvent.Info(message: $"Test execution complete ({args.VirtualUser}/{args.ElapsedTime})");
         }
 
         private static void TestExecutor_OnTestExecutionFinalizedEvent()
         {
-            LogEvent.Info(message: "Test execution finalized.");
-
             manualReset.Set();
-        }
-
-        private static void TestTrace_OnTestTrace(string virtualUser, string traceMessage)
-        {
-            LogEvent.Info(message: $"{traceMessage} ({virtualUser})");
         }
 
         #endregion
@@ -222,7 +175,7 @@ namespace Quintity.TestFramework.TestRunner
 
             var testProfile = initializeTestProfile(testPerformanceFile);
 
-            var executor = new Quintity.TestFramework.Runtime.TestExecutor();
+            var executor = new TestExecutor();
             executor.ExecuteTestSuite(testSuite, null, testProfile, TestListeners.TestListenerCollection, suppressExecution);
 
             LogEvent.Info(message: "Waiting for test listeners to complete");

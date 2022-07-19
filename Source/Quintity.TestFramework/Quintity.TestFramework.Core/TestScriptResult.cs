@@ -86,7 +86,7 @@ namespace Quintity.TestFramework.Core
 
         #region Class public methods
 
-        public override string ToString()
+        public override string ToString(bool verbose = false)
         {
             return string.Format("Test verdict:  {0}\r\nTest message:  {1}\r\n\r\nStart time:  {2}\r\nEnd time: {3}\r\nElapsed time:  {4}",
                 _testVerdict,

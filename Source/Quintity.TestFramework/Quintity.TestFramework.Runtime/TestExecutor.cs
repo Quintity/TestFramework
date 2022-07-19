@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading;
 using System.Collections.Generic;
 using Quintity.TestFramework.Core;
-using Quintity.TestFramework.Runtime.ListenersService;
+using Quintity.TestFramework.Runtime.TestListenersService;
 using System.ServiceModel;
 
 namespace Quintity.TestFramework.Runtime
@@ -49,8 +49,9 @@ namespace Quintity.TestFramework.Runtime
             public TestProfile _testProfile;
             public bool _suppressExecution;
         }
+        private bool _verbose = false;
+        private static readonly log4net.ILog _logEvent = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private static readonly log4net.ILog LogEvent = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         //TODO - remove? static bool m_continue;  
         static internal bool SuppressExecution = false;
         private ListenerEventsClient _listenerEventsClient = null;
@@ -96,7 +97,7 @@ namespace Quintity.TestFramework.Runtime
         public void ExecuteTestSuite(TestSuite testSuite, List<TestCase> discreteTestCases, TestProfile testProfile, TestListenerCollection testListeners,
             bool suppressExecution)
         {
-            LogEvent.Debug("Beginning execution");
+            _logEvent.Debug("Beginning execution");
 
             try
             {
@@ -104,14 +105,28 @@ namespace Quintity.TestFramework.Runtime
 
                 if (testListeners != null)
                 {
-                    LogEvent.Debug("Fixing up listeners");
+                    _logEvent.Debug("Fixing up listeners");
 
                     _testListeners = fixupTestListeners(testListeners);
 
                     if (_testListeners.Count > 0)
                     {
-                        _listenerEventsClient = getListenerEventsClient();
-                        _listenerEventsClient.InitializeService(convertToListenerServiceCollection(testListeners), _testProfile);
+                        InstanceContext context = new InstanceContext(this);
+
+                        NetTcpBinding netTcpBinding = new NetTcpBinding()
+                        {
+                            ReceiveTimeout = TimeSpan.FromDays(7),
+                            SendTimeout = TimeSpan.FromDays(7),
+                            MaxReceivedMessageSize = int.MaxValue,
+                            MaxBufferPoolSize = int.MaxValue,
+                            MaxBufferSize = int.MaxValue
+                        };
+
+                        var address = "net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/";
+                        EndpointAddress endPoint = new EndpointAddress(address);
+
+                        _listenerEventsClient = new ListenerEventsClient(netTcpBinding, endPoint);
+                        _listenerEventsClient.InitializeService(convertToListenerServiceCollection(_testListeners), _testProfile);
                     }
                 }
 
@@ -123,13 +138,13 @@ namespace Quintity.TestFramework.Runtime
                     _suppressExecution = suppressExecution
                 };
 
-                LogEvent.Debug("Beginning executeTestScriptObject");
+                _logEvent.Debug("Beginning executeTestScriptObject");
 
                 executeTestScriptObject(executionParameters);
             }
             catch (Exception e)
             {
-                LogEvent.Error(e.Message, e);
+                _logEvent.Error(e.Message, e);
 
                 throw;
             }
@@ -190,6 +205,11 @@ namespace Quintity.TestFramework.Runtime
 
         #region Class private methods
 
+        //private ListenersService.TestListenerDescriptor[] convertToListenerServiceCollection(TestListenerCollection testListeners)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         /// <summary>
         /// This is a bit of a hack.  Translates the core TestListenerCollection into a list
         /// of ListenerService TestListenerDescriptors.  There is probably a better, more elegant
@@ -197,14 +217,15 @@ namespace Quintity.TestFramework.Runtime
         /// </summary>
         /// <param name="testListeners">TestlistenerCollection</param>
         /// <returns>List of ListenerService test listener d</returns>
-        private List<ListenersService.TestListenerDescriptor> convertToListenerServiceCollection(TestListenerCollection testListeners)
+        //private List<ListenersService.TestListenerDescriptor> convertToListenerServiceCollection(TestListenerCollection testListeners)
+        private TestListenersService.TestListenerDescriptor[] convertToListenerServiceCollection(TestListenerCollection testListeners)
         {
-            var serviceCollection = new List<ListenersService.TestListenerDescriptor>();
+            var serviceCollection = new List<TestListenersService.TestListenerDescriptor>();
 
             foreach (TestListenerDescriptor descriptor in testListeners)
             {
                 serviceCollection.Add(
-                new ListenersService.TestListenerDescriptor()
+                new TestListenersService.TestListenerDescriptor()
                 {
                     Name = descriptor.Name,
                     Description = descriptor.Description,
@@ -217,7 +238,7 @@ namespace Quintity.TestFramework.Runtime
                 );
             }
 
-            return serviceCollection;
+            return serviceCollection.ToArray();
         }
 
         /// <summary>
@@ -255,11 +276,11 @@ namespace Quintity.TestFramework.Runtime
         {
             NetTcpBinding binding = new NetTcpBinding();
             //binding.Security.Mode = SecurityMode.None;
-            binding.ReceiveTimeout = TimeSpan.FromDays(7);
-            binding.SendTimeout = TimeSpan.FromDays(7);
-            binding.MaxReceivedMessageSize = int.MaxValue;
-            binding.MaxBufferPoolSize = int.MaxValue;
-            binding.MaxBufferSize = int.MaxValue;
+            //binding.ReceiveTimeout = TimeSpan.FromDays(7);
+            //binding.SendTimeout = TimeSpan.FromDays(7);
+            //binding.MaxReceivedMessageSize = int.MaxValue;
+            //binding.MaxBufferPoolSize = int.MaxValue;
+            //binding.MaxBufferSize = int.MaxValue;
 
             InstanceContext context = new InstanceContext(this);
 
@@ -339,7 +360,7 @@ namespace Quintity.TestFramework.Runtime
         {
             try
             {
-                LogEvent.Debug("Starting virtualUserExecutionCallBack");
+                _logEvent.Debug("Starting virtualUserExecutionCallBack");
 
                 var executionParameters = stateInfo as ExecutionParameters;
 
@@ -365,11 +386,11 @@ namespace Quintity.TestFramework.Runtime
             }
             catch (Exception e)
             {
-                LogEvent.Debug(e.ToString());
+                _logEvent.Debug(e.ToString());
             }
             finally
             {
-                LogEvent.Debug("Ending virtualUserExecutionCallBack");
+                _logEvent.Debug("Ending virtualUserExecutionCallBack");
             }
         }
 
@@ -398,7 +419,7 @@ namespace Quintity.TestFramework.Runtime
 
         private void executeOnVirtualUserThread(object executionParametersAsObject)
         {
-            LogEvent.Debug("Starting executeOnVirtualUserThread");
+            _logEvent.Debug("Starting executeOnVirtualUserThread");
 
             ExecutionParameters executionParameters = executionParametersAsObject as ExecutionParameters;
 
@@ -429,20 +450,20 @@ namespace Quintity.TestFramework.Runtime
                 _stopWatch.Stop();
 
                 // Fire execution complete event...
-                fireExecutionCompleteEvent(this, new TestExecutionCompleteArgs(Thread.CurrentThread.Name, executionParameters._testScriptObject, 
+                fireExecutionCompleteEvent(this, new TestExecutionCompleteArgs(Thread.CurrentThread.Name, executionParameters._testScriptObject,
                     TerminationReason.Normal, _stopWatch.Elapsed));
             }
             catch (ThreadAbortException e)
             {
-                LogEvent.Error(e.ToString());
+                _logEvent.Error(e.ToString());
                 // Eat this exception as is handled by StopExecution method.
             }
             catch (Exception e)
             {
                 _stopWatch.Stop();
-            
+
                 fireExecutionCompleteEvent(this,
-                    new TestExecutionCompleteArgs(Thread.CurrentThread.Name, _initialTestScriptObject, 
+                    new TestExecutionCompleteArgs(Thread.CurrentThread.Name, _initialTestScriptObject,
                     TerminationReason.RuntimeException, _stopWatch.Elapsed, e.ToString()));
             }
             finally

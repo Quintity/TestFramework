@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32510.428
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestEngineer", "Quintity.TestFramework.TestEngineer\Quintity.TestFramework.TestEngineer.csproj", "{064BB86D-0B85-44C3-9DDD-CB246F53C7AA}"
 EndProject
@@ -38,7 +38,6 @@ Global
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BABFD193-31A0-4408-9375-F9CB178381A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB087D3-F359-4570-BBA5-AFFCCB854DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

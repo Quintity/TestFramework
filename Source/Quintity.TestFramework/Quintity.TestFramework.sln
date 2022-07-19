@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.Core", "Quintity.TestFramework.Core\Quintity.TestFramework.Core.csproj", "{F6C3DC21-8C28-4A3D-9051-ECE30747AEA8}"
 EndProject
@@ -15,6 +15,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestConsole", "Quintity.TestFramework.TestConsole\Quintity.TestFramework.TestConsole.csproj", "{410D408C-35B0-4E76-AAFD-322145C90502}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestProject", "Quintity.TestFramework.TestProject\Quintity.TestFramework.TestProject.csproj", "{ECC75963-8A10-47C8-A9EC-A32EB8241CCB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{410D408C-35B0-4E76-AAFD-322145C90502} = {410D408C-35B0-4E76-AAFD-322145C90502}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestListeners", "Quintity.TestFramework.TestListeners\Quintity.TestFramework.TestListeners.csproj", "{39D7066E-9EE9-4C6B-8E35-B1F5037A3C69}"
 EndProject

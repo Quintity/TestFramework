@@ -13,7 +13,7 @@ namespace Quintity.TestFramework.TestListeners.TestConsole
             {
                 var bob = new Bob();
                 var client = bob.GetListenerEventsClient();
-                var fred = new string('x', 65200);
+                var fred = new string('x', 32);
 
                 var length = client.TestMethod(fred);
 

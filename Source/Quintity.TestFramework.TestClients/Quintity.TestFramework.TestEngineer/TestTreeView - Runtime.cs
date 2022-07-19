@@ -197,7 +197,7 @@ namespace Quintity.TestFramework.TestEngineer
             }
         }
 
-        private void TestWarning_OnTestWarning(TestWarning testWarning)
+        private void TestWarning_OnTestWarning(string virtualUser, TestWarning testWarning)
         {
             if (this.InvokeRequired)
             {

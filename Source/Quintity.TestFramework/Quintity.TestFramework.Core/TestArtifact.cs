@@ -45,7 +45,12 @@ namespace Quintity.TestFramework.Core
 
         #region Class public methods
 
-        public override string ToString()
+        public virtual string ToString(bool verbose)
+        {
+            return base.ToString();
+        }
+
+        new private string ToString()
         {
             return base.ToString();
         }

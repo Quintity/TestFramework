@@ -207,9 +207,9 @@ namespace Quintity.TestFramework.Core
             return @continue;
         }
 
-        public override string ToString()
+        public override string ToString(bool verbose)
         {
-            return base.ToString();
+            return base.ToString(verbose);
         }
 
         #endregion

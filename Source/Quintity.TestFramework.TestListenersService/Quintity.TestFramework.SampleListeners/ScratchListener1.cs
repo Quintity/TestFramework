@@ -121,6 +121,16 @@ namespace Quintity.TestFramework.SampleListeners
 
         public override void OnTestCheck(TestCheck testCheck) { }
 
+        public override void OnTestAttachmentDetach(string virtualUser, string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void OnTestAttachmentAttach(string virtualUser, TestAttachment testAttachment)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

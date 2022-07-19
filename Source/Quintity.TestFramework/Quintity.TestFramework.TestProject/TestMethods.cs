@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Quintity.TestFramework.Core;
-using Quintity.TestFramework.Runtime;
 
 namespace Quintity.TestFramework.TestProject
 {
@@ -16,26 +11,28 @@ namespace Quintity.TestFramework.TestProject
         {
             try
             {
+                TestTrace.Trace($"Test run ID:  {TestRunId}");
                 var testRunId = TestRunId;
 
-                TestCheck.IsTrue("Is true", true);
-                var testCheck = TestCheck.IsFalse("Is false", true);
+                TestCheck.IsTrue("Verify whatcamacallit is true", true);
+                var testCheck = TestCheck.IsFalse("Verify whatcamacallit is false", true);
 
                 TestVerdict = TestVerdict.Fail;
 
                 TestMessage = "This is the message.";
 
+                TestAttachment.Attach("bob", "value");
+                TestAttachment.Detach("bob");
 
-                TestAttachments.Add("", "");
-
-                TestAttachments.Attach("bob", "value");
+                TestWarning.IsTrue(false, "The sky is falling");
 
                 //TestAssert.IsTrue(false, "TestAssert message here");
-                //throw new Exception("This is the exception.");f
+                //throw new Exception("This is the exception."); 
             }
             catch (Exception exp)
             {
                 int i = 1;
+                throw;
             }
             finally
             {

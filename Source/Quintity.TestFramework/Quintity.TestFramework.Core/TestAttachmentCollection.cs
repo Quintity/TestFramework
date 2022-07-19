@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using System.Threading;
 
 namespace Quintity.TestFramework.Core
 {
@@ -25,19 +26,6 @@ namespace Quintity.TestFramework.Core
 
         #endregion
 
-        public void Attach(string key, object value)
-        {
-            TestWarning.IsTrue(IsSerializable(value), 
-                string.Format("The test data object associated with key \"{0}\", is not serializable.", key));
-
-            base.Add(key, value);
-        }
-
-        public bool Detach(string key)
-        {
-            return base.Remove(key);
-        }
-
         public bool IsSerializable(object obj)
         {
             Type t = obj.GetType();
@@ -52,7 +40,7 @@ namespace Quintity.TestFramework.Core
             if (this.Count() > 0)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Test Data:");
+                sb.AppendLine("Test Attachments:");
 
                 foreach (KeyValuePair<string, object> keyvaluepair in this)
                 {
@@ -64,7 +52,7 @@ namespace Quintity.TestFramework.Core
             }
             else
             {
-                @value = "Test Data:  None";
+                @value = "Test Attachments:  None";
             }
 
             return @value;

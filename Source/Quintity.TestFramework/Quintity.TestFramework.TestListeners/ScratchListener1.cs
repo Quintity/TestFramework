@@ -121,6 +121,10 @@ namespace Quintity.TestFramework.TestListeners
 
         public override void OnTestCheck(TestCheck testCheck) { }
 
+        public override void OnTestAttachmentDetach(string virtualUser, string key) { }
+
+        public override void OnTestAttachmentAttach(string virtualUser, TestAttachment testAttachment) { }
+
         #endregion
     }
 }

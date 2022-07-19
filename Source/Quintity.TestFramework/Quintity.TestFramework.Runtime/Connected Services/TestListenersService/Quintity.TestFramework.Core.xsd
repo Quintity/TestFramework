@@ -29,6 +29,7 @@
   <xs:element name="TestProfile" nillable="true" type="tns:TestProfile" />
   <xs:complexType name="TestExecutionBeginArgs">
     <xs:sequence>
+      <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="_testScriptObject" nillable="true" type="tns:TestScriptObject" />
       <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -70,6 +71,7 @@
           <xs:element minOccurs="0" name="_testPreprocessor" nillable="true" type="tns:TestPreprocessor" />
           <xs:element minOccurs="0" name="_testPostProcessor" nillable="true" type="tns:TestPostprocessor" />
           <xs:element minOccurs="0" name="_filePath" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="_parallelExecution" type="xs:boolean" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -118,6 +120,7 @@
           <xs:element minOccurs="0" name="_tags" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_knownDefects" type="xs:boolean" />
           <xs:element minOccurs="0" name="_defects" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="_parallelizable" type="xs:boolean" />
           <xs:element minOccurs="0" name="_onTestStepFailure" type="tns:OnFailure" />
         </xs:sequence>
       </xs:extension>
@@ -134,6 +137,7 @@
           <xs:element minOccurs="0" name="_alwaysExecute" type="xs:boolean" />
           <xs:element minOccurs="0" name="_expectedTestVerdict" type="tns:TestVerdict" />
           <xs:element minOccurs="0" name="_testAutomationDefinition" nillable="true" type="tns:TestAutomationDefinition" />
+          <xs:element minOccurs="0" name="_dependsOn" nillable="true" type="ser:guid" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -220,6 +224,7 @@
       <xs:element minOccurs="0" name="_elapsedTime" type="ser:duration" />
       <xs:element minOccurs="0" name="_explanation" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="_terminationSource" type="tns:TerminationReason" />
+      <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="_testScriptObject" nillable="true" type="tns:TestScriptObject" />
       <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -247,6 +252,7 @@
   <xs:element name="TestSuiteBeginExecutionArgs" nillable="true" type="tns:TestSuiteBeginExecutionArgs" />
   <xs:complexType name="TestScriptObjectBeginExecutionArgs">
     <xs:sequence>
+      <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -273,7 +279,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="_testChecks" nillable="true" type="tns:TestChecks" />
           <xs:element minOccurs="0" name="_testWarnings" nillable="true" type="tns:TestWarnings" />
-          <xs:element minOccurs="0" name="_testData" nillable="true" type="tns:TestData" />
+          <xs:element minOccurs="0" name="_testAttachments" nillable="true" type="tns:TestAttachments" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -289,6 +295,7 @@
           <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_startTime" type="xs:dateTime" />
           <xs:element minOccurs="0" name="_endTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -309,6 +316,7 @@
           <xs:element minOccurs="0" name="_verdict" type="tns:TestVerdict" />
           <xs:element minOccurs="0" name="_comment" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_source" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -324,15 +332,16 @@
     <xs:complexContent mixed="false">
       <xs:extension base="tns:TestArtifact">
         <xs:sequence>
-          <xs:element minOccurs="0" name="_comment" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="_comment" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_source" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TestWarning" nillable="true" type="tns:TestWarning" />
-  <xs:complexType name="TestData">
+  <xs:complexType name="TestAttachments">
     <xs:annotation>
       <xs:appinfo>
         <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
@@ -349,7 +358,7 @@
       </xs:element>
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="TestData" nillable="true" type="tns:TestData" />
+  <xs:element name="TestAttachments" nillable="true" type="tns:TestAttachments" />
   <xs:complexType name="TestSuiteResult">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:TestScriptResultContainer">
@@ -416,6 +425,7 @@
           <xs:element minOccurs="0" name="_startTime" type="xs:dateTime" />
           <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="_stateArgs" nillable="true" type="q1:ArrayOfstring" />
           <xs:element minOccurs="0" name="_stopTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="_testRunId" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="_virtualUser" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>

@@ -72,7 +72,7 @@ namespace Quintity.TestFramework.Core
         public TestWarningCollection TestWarnings
         { get { return _testWarningCollection; } }
 
-        internal TestAttachmentCollection _testAttachmentCollection;
+        private TestAttachmentCollection _testAttachmentCollection;
         public TestAttachmentCollection TestAttachments
         { get { return _testAttachmentCollection; } }
 
@@ -107,7 +107,6 @@ namespace Quintity.TestFramework.Core
         public bool TestCheckFailuresOnly
         { get; set; }
 
-
         #endregion
 
         #region Class constructors
@@ -123,6 +122,8 @@ namespace Quintity.TestFramework.Core
             TestWarning.OnTestWarning += TestWarning_OnTestWarning;
 
             _testAttachmentCollection = new TestAttachmentCollection();
+            TestAttachment.OnTestAttachmentAttach += TestAttachment_OnAddTestAttachment;
+            TestAttachment.OnTestAttachmentDetach += TestAttachment_OnDetachTestAttachment;
 
             TestCheckFailuresOnly = true;
             MaxFailedTestChecks = _defaultMaxTestCheckFailures;
@@ -324,11 +325,14 @@ namespace Quintity.TestFramework.Core
             }
         }
 
-        void TestWarning_OnTestWarning(TestWarning testWarning)
-        {
+        void TestWarning_OnTestWarning(string virtualUser, TestWarning testWarning) => 
             _testWarningCollection.Add(testWarning);
-        }
 
+        private void TestAttachment_OnDetachTestAttachment(string virtualUser, string key) => 
+            _testAttachmentCollection.Remove(key);
+
+        private void TestAttachment_OnAddTestAttachment(string virtualUser, TestAttachment testAttachment) => 
+            _testAttachmentCollection.Add(testAttachment.Key, testAttachment.Value);
 
         #endregion
     }

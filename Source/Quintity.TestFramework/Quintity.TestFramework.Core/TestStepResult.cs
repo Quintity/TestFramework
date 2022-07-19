@@ -70,10 +70,10 @@ namespace Quintity.TestFramework.Core
             return TestArtifact.DeserializeFromFile(typeof(TestStepResult), filePath) as TestStepResult;
         }
 
-        public override string ToString()
+        public override string ToString(bool verbose = false)
         {
             return string.Format("{0}\r\n\r\n{1}\r\n\r\n{2}\r\n\r\n{3}",
-                base.ToString(),
+                base.ToString(verbose),
                 _testWarnings != null ? _testWarnings.ToString() : null,
                 _testChecks != null ? _testChecks.ToString() : null,
                 _testAttachments != null ? _testAttachments.ToString() : null);

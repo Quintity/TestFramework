@@ -118,7 +118,7 @@ namespace Quintity.TestFramework.Core
 
         #region Class data members
 
-        private List<string> _allTags;
+        //private List<string> _allTags;
         private List<TestCase> _qualifiedTestCases = null;
         private int _available;
 
@@ -313,34 +313,34 @@ namespace Quintity.TestFramework.Core
             return FindTestScriptObjectIndex(testSuite);
         }
 
-        public override string ToString()
+        public override string ToString(bool verbose = false)
         {
-            return base.ToString();
+            return base.ToString(verbose);
         }
 
-        public void SaveToFileX()
-        {
-            // Need to get actual filepath to write to OS
-            string filePath = Core.TestProperties.ExpandString(_filePath);
+        //public void SaveToFileX()
+        //{
+        //    // Need to get actual filepath to write to OS
+        //    string filePath = Core.TestProperties.ExpandString(_filePath);
 
-            // Collapse internal suite file name to  
-            _filePath = Core.TestProperties.FixupString(filePath, "TestSuites");
+        //    // Collapse internal suite file name to  
+        //    _filePath = Core.TestProperties.FixupString(filePath, "TestSuites");
 
-            fixupSuite();
+        //    fixupSuite();
 
-            foreach (TestScriptObject testObject in TestScriptObjects)
-            {
-                if (testObject is TestSuite)
-                {
-                    // If child suite, write separate suite file out.
-                    ((TestSuite)testObject).FileSave();
-                }
-            }
+        //    foreach (TestScriptObject testObject in TestScriptObjects)
+        //    {
+        //        if (testObject is TestSuite)
+        //        {
+        //            // If child suite, write separate suite file out.
+        //            ((TestSuite)testObject).FileSave();
+        //        }
+        //    }
 
-            SerializeToFile(this, filePath);
+        //    SerializeToFile(this, filePath);
 
-            expandSuite();
-        }
+        //    expandSuite();
+        //}
 
         public void FileSave(string outputFile)
         {

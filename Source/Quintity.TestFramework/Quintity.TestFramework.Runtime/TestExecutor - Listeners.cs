@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Collections.Generic;
 using Quintity.TestFramework.Core;
-using Quintity.TestFramework.Runtime.ListenersService;
+using System;
 
 namespace Quintity.TestFramework.Runtime
 {
@@ -90,6 +90,8 @@ namespace Quintity.TestFramework.Runtime
             TestWarning.OnTestWarning += TestWarning_OnTestWarning;
             TestTrace.OnTestTrace += TestTrace_OnTestTrace;
             TestMetric.OnTestMetric += TestMetric_OnTestMetric;
+            TestAttachment.OnTestAttachmentAttach += TestAttachment_OnAddTestAttachment;
+            TestAttachment.OnTestAttachmentDetach += TestAttachment_OnDetachTestAttachment;
         }
 
         private void unregisterRuntimeEventHandlers()
@@ -138,21 +140,24 @@ namespace Quintity.TestFramework.Runtime
             TestProperties.RemoveProperty("CurrentTestSuite");
             TestProperties.RemoveProperty("CurrentTestCase");
             TestProperties.RemoveProperty("CurrentTestStep");
+
+            _logEvent.Info(message: "Test execution finalized.");
         }
 
         private void TestExecutor_OnExecutionBegin(TestExecutor testExecutor, TestExecutionBeginArgs args)
         {
+            _logEvent.Info(message: $"Beginning test execution ({args.TestRunId})");
             _listenerEventsClient?.OnTestExecutionBegin(args);
         }
 
         private void TestExecutor_OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
+            _logEvent.Info(message: $"Test execution complete ({args.TestRunId}), elapsed time:  {args.ElapsedTime}");
             _listenerEventsClient?.OnTestExecutionComplete(args);
 
             Thread.Sleep(3000);
 
             var available = _listenerEventsClient?.ServiceAvailability();
-
 
             _virtualUserRuntimeState.Remove(args.VirtualUser);
 
@@ -179,11 +184,12 @@ namespace Quintity.TestFramework.Runtime
             _resetEvent.Set();
         }
 
-        private void TestSuite_OnExecutionBegin(TestScriptObject testScriptObject, TestSuiteBeginExecutionArgs args)
+        private void TestSuite_OnExecutionBegin(TestSuite testSuite, TestSuiteBeginExecutionArgs args)
         {
-            TestProperties.SetPropertyValue("CurrentTestSuite", testScriptObject);
+            TestProperties.SetPropertyValue("CurrentTestSuite", testSuite);
 
-            _listenerEventsClient?.OnTestSuiteExecutionBegin((TestSuite)testScriptObject, args);
+            _logEvent.Info(message: $"Beginning test suite execution \"{testSuite.Title}\"");
+            _listenerEventsClient?.OnTestSuiteExecutionBegin(testSuite, args);
         }
 
         private void TestSuite_OnTestPreprocessorBegin(TestSuite testSuite, TestProcessorBeginExecutionArgs args)
@@ -206,53 +212,79 @@ namespace Quintity.TestFramework.Runtime
             _listenerEventsClient?.OnTestPostprocessorComplete(testSuite, testProcessorResult);
         }
 
-        private void TestSuite_OnExecutionComplete(TestScriptObject testScriptObject, TestScriptResult testScriptResult)
+        private void TestSuite_OnExecutionComplete(TestSuite testSuite, TestSuiteResult testSuiteResult)
         {
-            _listenerEventsClient?.OnTestSuiteExecutionComplete((TestSuite)testScriptObject, (TestSuiteResult)testScriptResult);
+            _logEvent.Info(message: $"Test suite execution \"{testSuite.Title}\" completed ({testSuiteResult.TestVerdict}).");
+            _listenerEventsClient?.OnTestSuiteExecutionComplete((TestSuite)testSuite, testSuiteResult);
         }
 
-        private void TestCase_OnExecutionBegin(TestScriptObject testScriptObject, TestCaseBeginExecutionArgs args)
+        private void TestCase_OnExecutionBegin(TestCase testCase, TestCaseBeginExecutionArgs args)
         {
-            TestProperties.SetPropertyValue("CurrentTestCase", testScriptObject);
+            TestProperties.SetPropertyValue("CurrentTestCase", testCase);
 
-            _listenerEventsClient?.OnTestCaseExecutionBegin((TestCase)testScriptObject, args);
+            _logEvent.Info(message: $"Beginning test case execution \"{testCase.Title}\"");
+            _listenerEventsClient?.OnTestCaseExecutionBegin(testCase, args);
         }
 
-        private void TestCase_OnExecutionComplete(TestScriptObject testScriptObject, TestScriptResult testScriptResult)
+        private void TestCase_OnExecutionComplete(TestCase testCase, TestScriptResult testCaseResult)
         {
-            _listenerEventsClient?.OnTestCaseExecutionComplete((TestCase)testScriptObject, (TestCaseResult)testScriptResult);
+            _logEvent.Info(message: $"Test case execution \"{testCase.Title}\" completed ({testCaseResult.TestVerdict}).");
+            _listenerEventsClient?.OnTestCaseExecutionComplete((TestCase)testCase, (TestCaseResult)testCaseResult);
         }
 
-        private void TestStep_OnExecutionBegin(TestScriptObject testScriptObject, TestStepBeginExecutionArgs args)
+        private void TestStep_OnExecutionBegin(TestStep testStep, TestStepBeginExecutionArgs args)
         {
-            TestProperties.SetPropertyValue("CurrentTestStep", testScriptObject);
+            TestProperties.SetPropertyValue("CurrentTestStep", testStep);
 
-            _listenerEventsClient?.OnTestStepExecutionBegin((TestStep)testScriptObject, args);
+            _logEvent.Info(message: $"Beginning test step execution \"{testStep.Title}\"");
+            _listenerEventsClient?.OnTestStepExecutionBegin((TestStep)testStep, args);
         }
 
-        private void TestStep_OnExecutionComplete(TestScriptObject testScriptObject, TestScriptResult testScriptResult)
+        private void TestStep_OnExecutionComplete(TestStep testStep, TestStepResult testStepResult)
         {
-            _listenerEventsClient?.OnTestStepExecutionComplete((TestStep)testScriptObject, (TestStepResult)testScriptResult);
+            var logMsg = testStepResult.TestVerdict == TestVerdict.Pass ? string.Empty : 
+                ':' + Environment.NewLine + testStepResult.ToString(true);
+
+            _logEvent.Info(message: $"Test step execution \"{testStep.Title}\" completed ({testStepResult.TestVerdict}) {logMsg}");
+            _listenerEventsClient?.OnTestStepExecutionComplete((TestStep)testStep, (TestStepResult)testStepResult);
         }
 
         private void TestCheck_OnTestCheck(TestCheck testCheck)
         {
+            _logEvent.Info($"Test check event: {Environment.NewLine + testCheck.ToString()}");
             _listenerEventsClient?.OnTestCheck(testCheck);
         }
 
-        private void TestWarning_OnTestWarning(TestWarning testWarning)
+        private void TestWarning_OnTestWarning(string virtualUser, TestWarning testWarning)
         {
+            _logEvent.Info($"Test warning event: {Environment.NewLine + testWarning.ToString()}");
             _listenerEventsClient?.OnTestWarning(testWarning);
         }
 
         private void TestTrace_OnTestTrace(string virtualUser, string traceMessage)
         {
+            _logEvent.Info(message: $"TestTrace:  {traceMessage}");
             _listenerEventsClient?.OnTestTrace(virtualUser, traceMessage);
         }
 
         private void TestMetric_OnTestMetric(string virtualUser, TestMetricEventArgs args)
         {
+            _logEvent.Info($"TestMetric event {args.ToString()}");
             _listenerEventsClient?.OnTestMetric(virtualUser, args);
+        }
+
+        private void TestAttachment_OnDetachTestAttachment(string virtualUser, string key)
+        {
+            _logEvent.Info(message: $"TestAttachment {key} detached");
+            //_listenerEventsClient?.OnTestAttachmentDetach(virtualUser, key);
+        }
+
+        private void TestAttachment_OnAddTestAttachment(string virtualUser, TestAttachment testAttachment)
+        {
+            _logEvent.Info(message: $"TestAttachment attached:  {testAttachment.ToString()}");
+            //_listenerEventsClient?.OnTestAttachmentAttach(virtualUser, testAttachment);
+
+
         }
 
         #endregion

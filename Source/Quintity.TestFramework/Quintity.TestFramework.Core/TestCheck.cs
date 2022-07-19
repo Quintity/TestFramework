@@ -360,7 +360,7 @@ namespace Quintity.TestFramework.Core
 
         public override string ToString()
         {
-            return string.Format("\"{0}\"\r\n    Test verdict:  {1}\r\n{2}    {3}",
+            return string.Format("Description: \"{0}\"\r\n    Test verdict:  {1}\r\n{2}    {3}",
                 _description,
                 _verdict,
                 !string.IsNullOrEmpty(_comment) ? "    Comment:  " + _comment + "\r\n" : null,
@@ -388,14 +388,14 @@ namespace Quintity.TestFramework.Core
             string sourceFile = frame.GetFileName();
             int lineNumber = frame.GetFileLineNumber();
 
-            string format = "Assembly:  {0}, Class: {1}, Method:  {2}\r\n    Source file:  {3} {4}";
+            string format = "Assembly:  {0}, Class: {1}, Method:  {2}\r\n    Source file:  {3}:line {4}";
 
             string source = string.Format(format,
                     assembly,
                     declaringType,
                     method,
                     sourceFile,
-                    lineNumber != 0 ? " (" + lineNumber + ")" : null);
+                    lineNumber != 0 ? lineNumber.ToString()  : "?");
             return source;
         }
 

@@ -43,6 +43,8 @@ namespace Quintity.TestFramework.Runtime
         public abstract void OnTestWarning(TestWarning testWarning);
         public abstract void OnTestTrace(string virtualUser, string traceMessage);
         public abstract void OnTestMetric(string virtualUser, TestMetricEventArgs args);
+        public abstract void OnTestAttachmentDetach(string virtualUser, string key);
+        public abstract void OnTestAttachmentAttach(string virtualUser, TestAttachment testAttachment);
 
         #endregion
 

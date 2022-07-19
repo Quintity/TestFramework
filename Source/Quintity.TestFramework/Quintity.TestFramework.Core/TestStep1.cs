@@ -198,9 +198,9 @@ namespace Quintity.TestFramework.Core
             _parentID = parent.SystemID;
         }
 
-        public override string ToString()
+        public override string ToString(bool verbose)
         {
-            return base.ToString();
+            return base.ToString(verbose);
         }
 
         #endregion

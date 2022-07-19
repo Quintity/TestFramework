@@ -14,14 +14,14 @@ namespace Quintity.TestFramework.Core
     {
         #region Event and delegate definitions
 
-        public delegate void TestWarningEventHandler(TestWarning testWarning);
+        public delegate void TestWarningEventHandler(string virtualUser, TestWarning testWarning);
         public static event TestWarningEventHandler OnTestWarning;
 
         internal static void FireTestWarningEvent(TestWarning testWarning)
         {
             if (TestWarning.OnTestWarning != null)
             {
-                TestWarning.OnTestWarning(testWarning);
+                TestWarning.OnTestWarning(Thread.CurrentThread.Name, testWarning);
             }
         }
 
@@ -212,14 +212,14 @@ namespace Quintity.TestFramework.Core
             string sourceFile = frame.GetFileName();
             int lineNumber = frame.GetFileLineNumber();
 
-            string format = "Assembly:  {0}, Class: {1}, Method:  {2}\r\n    Source file:  {3} {4}";
+            string format = "Assembly:  {0}, Class: {1}, Method:  {2}\r\n    Source file:  {3}:line {4}";
 
             string source = string.Format(format,
                     assembly,
                     declaringType,
                     method,
                     sourceFile,
-                    lineNumber != 0 ? " (" + lineNumber + ")" : null);
+                    lineNumber != 0 ? lineNumber.ToString() : "?");
             return source;
         }
 

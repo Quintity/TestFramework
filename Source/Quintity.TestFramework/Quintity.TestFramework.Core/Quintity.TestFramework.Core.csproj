@@ -70,6 +70,7 @@
     <Compile Include="..\AssemblyVersionInfo.cs">
       <Link>Properties\AssemblyVersionInfo.cs</Link>
     </Compile>
+    <Compile Include="TestAttachment.cs" />
     <Compile Include="TestAutomationDefinitionEditor.cs" />
     <Compile Include="TestBreakpoint.cs" />
     <Compile Include="Exceptions\TestException.cs" />
@@ -154,7 +155,7 @@
     <Compile Include="TestScriptObjectContainer.cs" />
     <Compile Include="TestScriptResultContainer.cs" />
     <Compile Include="TestScriptResult.cs" />
-    <Compile Include="TestScriptObject.cs" />
+    <Compile Include="TestStep1.cs" />
     <Compile Include="TestObject.cs" />
     <Compile Include="TestParameterCollection.cs" />
     <Compile Include="TestScriptResultCollection.cs" />
