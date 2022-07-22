@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Text;
-using Quintity.TestFramework.TestListeners.TestConsole.TestListenerService;
+//using Quintity.TestFramework.TestListeners.TestConsole.TestListenerService;
 
 namespace Quintity.TestFramework.TestListeners.TestConsole
 {
@@ -9,39 +9,39 @@ namespace Quintity.TestFramework.TestListeners.TestConsole
     {
         static void Main(string[] args)
         {
-            try
-            {
-                var bob = new Bob();
-                var client = bob.GetListenerEventsClient();
-                var fred = new string('x', 32);
+            //try
+            //{
+            //    var bob = new Bob();
+            //    var client = bob.GetListenerEventsClient();
+            //    var fred = new string('x', 32);
 
-                var length = client.TestMethod(fred);
+            //    var length = client.TestMethod(fred);
 
-                var available = client.ServiceAvailability();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
+            //    var available = client.ServiceAvailability();
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.ToString());
 
-            }
-            finally
-            {
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadLine();
-            }
+            //}
+            //finally
+            //{
+            //    Console.WriteLine("Press any key to continue...");
+            //    Console.ReadLine();
+            //}
         }
     }
 
     public class Bob
     {
-        public ListenerEventsClient GetListenerEventsClient()
-        {
-            NetTcpBinding binding = new NetTcpBinding();
-            binding.ReceiveTimeout = TimeSpan.FromDays(7);
-            binding.SendTimeout = TimeSpan.FromDays(7);
+        //public ListenerEventsClient GetListenerEventsClient()
+        //{
+        //    NetTcpBinding binding = new NetTcpBinding();
+        //    binding.ReceiveTimeout = TimeSpan.FromDays(7);
+        //    binding.SendTimeout = TimeSpan.FromDays(7);
 
-            EndpointAddress endPoint = new EndpointAddress("net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/");
-            return new ListenerEventsClient(binding, endPoint);
-        }
+        //    EndpointAddress endPoint = new EndpointAddress("net.tcp://localhost:10101//Quintity.TestFramework.TestListenersService/");
+        //    return new ListenerEventsClient(binding, endPoint);
+        //}
     }
 }
