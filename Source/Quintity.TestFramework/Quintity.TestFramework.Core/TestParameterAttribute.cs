@@ -4,7 +4,6 @@
  * 
 */
 using System;
-using System.Runtime.InteropServices;
 
 namespace Quintity.TestFramework.Core
 {
@@ -15,7 +14,10 @@ namespace Quintity.TestFramework.Core
     public class TestParameterAttribute : TestObjectAttribute
     {
         #region Data members
+
         private object m_defaultValue;
+        private bool m_required;
+
         #endregion fields.
 
         #region Constructors.
@@ -26,40 +28,12 @@ namespace Quintity.TestFramework.Core
         public TestParameterAttribute()
         {
         }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public TestParameterAttribute(string alias)
-            : this(alias, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public TestParameterAttribute(string alias, string description)
-            : base(alias, description, null)
-        {
-        }
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public TestParameterAttribute(string alias, string description, object defaultValue)
-            : this(alias, description, defaultValue, null)
-        {
-        }
-
-        /// <summary>
-        /// Constructor for TestParameterAttribute
-        /// </summary>
-        /// <param name="description">Parameter description</param>
-        /// <param name="defaultValue">Default parameter value.</param>
-        public TestParameterAttribute(string alias, string description, object defaultValue, object tag)
+        
+        public TestParameterAttribute(string alias, string description = null, object defaultValue = null, bool required = false, object tag = null)
             : base(alias, description, tag)
         {
-            this.m_defaultValue = defaultValue;
+            m_defaultValue = defaultValue;
+            m_required = required;
         }
 
         #endregion constructors.
@@ -69,10 +43,9 @@ namespace Quintity.TestFramework.Core
         /// <summary>
         /// Returns class's default value;
         /// </summary>
-        public object DefaultValue
-        {
-            get { return m_defaultValue; }
-        }
+        public object DefaultValue => m_defaultValue;
+        public bool Required => m_required;
+
 
         #endregion properties.
     }

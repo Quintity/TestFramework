@@ -72,7 +72,32 @@
             <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
             <TestMethod>ScratchTest1</TestMethod>
-            <TestParameters />
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>stringParam</DisplayName>
+                <Name>stringParam</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[HOME]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>boolParam</DisplayName>
+                <Name>boolParam</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam1</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam2</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
         <TestScriptObject type="TestStep" status="Inactive" testType="Automated">

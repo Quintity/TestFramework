@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Quintity.TestFramework.Core
 {
@@ -51,6 +49,9 @@ namespace Quintity.TestFramework.Core
         /// <param name="tag">Object's additional data tag object.</param>
         public TestObjectAttribute(string alias, string description, object tag)
         {
+            if (string.IsNullOrEmpty(alias))
+                throw new ArgumentNullException("TestParameter alias cannot be a null or empty value.");
+
             m_alias = alias;
             m_description = description;
             m_tag = tag;

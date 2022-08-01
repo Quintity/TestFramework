@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Xml;
 using System.Xml.XPath;
+using System.Linq;
 
 namespace Quintity.TestFramework.Core
 {
@@ -148,8 +149,8 @@ namespace Quintity.TestFramework.Core
                 TestAssert.IsNotNull(testClassType, "The test class specified \"{0}\" cannot be located or is not a valid test class.  " +
                     "Check the test class's TestClassAttribute has been set.", TestClass);
 
+                //Get types and class method
                 Type[] types = TestParameters.GetParameterTypes();
-
                 MethodInfo testMethod = TestReflection.GetTestMethod(testClassType, TestMethod, types);
 
                 TestAssert.IsNotNull(testMethod, "The test method specified \"{0}\" cannot be located or it is not a valid test method.  " +
@@ -183,8 +184,35 @@ namespace Quintity.TestFramework.Core
                 //if (!TestExecutor.SuppressExecution)
                 if (true)
                 {
-                    resultStruct.StartTime = DateTime.Now;
+                    // Iterate through parameters
+                    ParameterInfo[] parameters = testMethod.GetParameters();
 
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        var parameter = parameters[i];
+
+                        // Check and see if TestParameterAttribute is specified and required is true.
+                        var attributes = new List<Attribute>(parameter.GetCustomAttributes<Attribute>());
+                        var requiredAttribute = 
+                            attributes.FirstOrDefault(x => x is TestParameterAttribute && ((TestParameterAttribute)x).Required)
+                            as TestParameterAttribute;
+
+                        if (requiredAttribute != null)
+                        {
+                            // Check if parameter is nullable (string for generic).
+                            if (IsNullable(parameter.ParameterType))
+                            {
+                                // If parameter's intended value is null, throw exception
+                                if (values[i] == null)
+                                {
+                                    throw new ArgumentNullException(
+                                        $"Test method parameter '{requiredAttribute.Alias}' ({parameter.Name}) requires a non-null value");
+                                }
+                            }
+                        }
+                    }
+
+                    resultStruct.StartTime = DateTime.Now;
                     resultStruct.TestVerdict = (TestVerdict)testMethod.Invoke(testClassInstance, values);
                 }
                 else
@@ -236,7 +264,7 @@ namespace Quintity.TestFramework.Core
                     // If exception is thrown, tack on exception test.
                     if (!string.IsNullOrEmpty(exceptionText))
                     {
-                        resultStruct.TestMessage += 
+                        resultStruct.TestMessage +=
                             $"{Environment.NewLine + Environment.NewLine}Exception thrown:{Environment.NewLine}{exceptionText}";
                     }
                 }
@@ -244,7 +272,7 @@ namespace Quintity.TestFramework.Core
 
             return resultStruct;
         }
-
+        
         #endregion
 
         #region Class public methods
@@ -371,7 +399,10 @@ namespace Quintity.TestFramework.Core
                     xmlWriter.WriteElementString("DisplayName", "", testParameter.DisplayName);
                     xmlWriter.WriteElementString("Name", testParameter.Name);
                     xmlWriter.WriteElementString("TypeAsString", testParameter.TypeAsString);
-                    xmlWriter.WriteElementString("ValueAsString", testParameter.ValueAsString);
+                    
+                    // If null string, use [NULL] macro as xmlreader converts to empty string.
+                    var valueAsString = testParameter.ValueAsString == null && testParameter.TypeAsString == "System.String" ? "[NULL]" : testParameter.ValueAsString;
+                    xmlWriter.WriteElementString("ValueAsString", valueAsString);
 
                     // Ends parent element.
                     xmlWriter.WriteEndElement();
@@ -407,6 +438,12 @@ namespace Quintity.TestFramework.Core
 
             return runtimeParams;
         }
+
+        private bool IsNullable(Type type)
+        {
+            return !type.IsValueType || (type.IsGenericType && (type.GetGenericTypeDefinition()) == typeof(Nullable<>));
+        }
+
 
         #endregion
     }
