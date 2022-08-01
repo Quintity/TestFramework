@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<TestSuite status="Active">
+  <SystemID>a8f243da-cb04-473e-a807-76ffdaf869b4</SystemID>
+  <UserID />
+  <Title>Untitled test suite</Title>
+  <Author>jmoth</Author>
+  <Created>2022-08-01T10:21:44-07:00</Created>
+  <Project />
+  <Reference />
+  <FunctionalArea />
+  <Description><![CDATA[]]></Description>
+  <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
+  <TestPreprocessor>
+    <SystemID>d008ff62-b8a7-4566-962b-c1801508be39</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+    <OnFailure>Stop</OnFailure>
+  </TestPreprocessor>
+  <TestPostprocessor>
+    <SystemID>d0e0a048-e700-438a-a0ab-c3e10cd3f3f5</SystemID>
+    <Title />
+    <Description><![CDATA[]]></Description>
+    <Description />
+    <Status>Incomplete</Status>
+    <IgnoreResult>False</IgnoreResult>
+    <TestType>Automated</TestType>
+    <TestAutomationDefinition>
+      <TestAssembly />
+      <TestClass />
+      <TestMethod />
+      <TestParameters />
+    </TestAutomationDefinition>
+  </TestPostprocessor>
+  <PostProcess />
+  <TestScriptObjects>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>434593b9-db57-46fc-8cae-924e28f7c7dd</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2022-08-01T10:21:44-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>2b2b9a6e-bb27-4862-be43-78efd0655859</SystemID>
+          <UserID />
+          <Title>TestParameterCheck</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>TestParameterCheck</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>String param</DisplayName>
+                <Name>stringParam</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Integer param</DisplayName>
+                <Name>intParam</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>0</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Bool param</DisplayName>
+                <Name>boolParam</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>Nullable bool param</DisplayName>
+                <Name>boolNullableParam</Name>
+                <TypeAsString>System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</TypeAsString>
+                <ValueAsString>false</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+  </TestScriptObjects>
+  <FilePath>[TestSuites]\TestParameterTests.ste</FilePath>
+</TestSuite>

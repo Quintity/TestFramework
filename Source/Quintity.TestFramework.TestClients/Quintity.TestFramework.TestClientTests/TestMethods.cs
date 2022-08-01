@@ -14,6 +14,31 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod]
+        public TestVerdict TestParameterCheck(
+            [TestParameter(alias: "String param", required: true)]
+            string stringParam,
+            [TestParameter(alias: "Integer param", required: true)]
+            int intParam,
+            [TestParameter(alias: "Bool param", required: true)]
+            bool boolParam,
+            [TestParameter(alias: "Nullable bool param", required: true)]
+            bool? boolNullableParam
+            )
+        {
+            try
+            {
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        [TestMethod]
         public TestVerdict DoSomething()
         {
             try
