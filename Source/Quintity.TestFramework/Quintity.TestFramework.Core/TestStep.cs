@@ -260,6 +260,9 @@ namespace Quintity.TestFramework.Core
 
             FireExecutionBeginEvent(this, new TestStepBeginExecutionArgs(currentUser));
 
+            // IF only running teststep, initialized TestCache (so exception are not thrown on stash.
+            var started = TestCache.Initialize();
+
             CheckForPossibleBreakpointMode();
 
             TestAutomationDefinition.ResultStruct resultStruct = TestAutomationDefinition.Invoke(testClassDictionary);
@@ -271,6 +274,10 @@ namespace Quintity.TestFramework.Core
             result.SetTestChecks(resultStruct.TestChecks);
             result.SetTestWarnings(resultStruct.TestWarnings);
             result.SetTestAttachments(resultStruct.TestAttachments);
+
+            // If TestCached started just for test step execution, dispose.
+            if (started)
+                TestCache.Dispose();
 
             FireExecutionCompleteEvent(this, result);
 

@@ -667,7 +667,7 @@ namespace Quintity.TestFramework.TestEngineer
             markAsChanged(sourceNode);
 
             this.SelectedNode = sourceNode;
-            
+
             // Create change event with parents container object and index.
             if (recordHistory)
             {
@@ -1597,9 +1597,7 @@ namespace Quintity.TestFramework.TestEngineer
         }
 
         protected override void OnQueryContinueDrag(QueryContinueDragEventArgs qcdevent)
-        {
-            int i = 1;
-        }
+        { }
 
         protected override void OnDragEnter(DragEventArgs e)
         {
@@ -1619,9 +1617,9 @@ namespace Quintity.TestFramework.TestEngineer
 
             if (targetNode is null)
             {
-                int i = 1;
                 return;
             }
+
             TestTreeNode sourceNode = e.Data.GetData(typeof(TestTreeNode)) as TestTreeNode;
 
             Debug.WriteLine(string.Format("OnDragOver - Node:  {1} {0}",

@@ -1052,7 +1052,7 @@ namespace Quintity.TestFramework.Core
             Close();
         }
 
-        private ManualResetEvent _executionEvent = null;
+        //private ManualResetEvent _executionEvent = null;
 
         /// <summary>
         /// Execute button click event handler.  Simulates running the test step with the selected test method.

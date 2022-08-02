@@ -42,7 +42,9 @@
     </TestAutomationDefinition>
   </TestPostprocessor>
   <PostProcess />
+  
   <TestScriptObjects>
+    
     <TestScriptObject type="TestCase" status="Active">
       <SystemID>7b947ce4-c115-4970-a09a-f8628d0b4ed0</SystemID>
       <UserID />
@@ -95,7 +97,7 @@
                 <DisplayName>intParam</DisplayName>
                 <Name>intParam2</Name>
                 <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>[NULL]</ValueAsString>
+                <ValueAsString>69</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
@@ -153,6 +155,119 @@
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>7b947ce4-c115-4970-a09a-f8628d0b4ed0</SystemID>
+      <UserID />
+      <Title>Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2018-06-09T08:12:29-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>bb3ab91b-63cc-48df-ba75-f8e5b0e1af84</SystemID>
+          <UserID />
+          <Title>ScratchTest1</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>ScratchTest1</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>stringParam</DisplayName>
+                <Name>stringParam</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[HOME]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>boolParam</DisplayName>
+                <Name>boolParam</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam1</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>[NULL]</ValueAsString>
+              </TestParameter>
+              <TestParameter>
+                <DisplayName>intParam</DisplayName>
+                <Name>intParam2</Name>
+                <TypeAsString>System.Int32</TypeAsString>
+                <ValueAsString>99</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>81d8be98-3a66-412f-b4ac-d926e3583716</SystemID>
+          <UserID />
+          <Title>Set break point</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>SetBreakPoint</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>a9c54f2f-b399-4b0d-9797-0fdac2c09876</SystemID>
+          <UserID />
+          <Title>ScratchTest2</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>ScratchTest2</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Inactive" testType="Automated">
+          <SystemID>57be67aa-94f2-48a4-9f80-9907c0c425a9</SystemID>
+          <UserID />
+          <Title>ScratchTest3</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestProject.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestProject.TestMethods</TestClass>
+            <TestMethod>ScratchTest3</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
+    
   </TestScriptObjects>
+  
   <FilePath>[TestSuites]\ScratchTests.ste</FilePath>
 </TestSuite>

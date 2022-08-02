@@ -14,6 +14,44 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod]
+        public TestVerdict TestCacheTest1()
+        {
+            try
+            {
+                TestCache.Stash("TestCacheTest1", 999);
+                var item= TestCache.Grab<int>("TestCacheTest1");
+               // TestCache.Clear();
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict TestCacheTest2()
+        {
+            try
+            {
+                var found = TestCache.TryGrabValue<int>("TestCacheTest1", out int @value);
+                var item = TestCache.Grab<int>("TestCacheTest1");
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+
+        [TestMethod]
         public TestVerdict TestParameterCheck(
             [TestParameter(alias: "String param", required: true)]
             string stringParam,
@@ -134,7 +172,6 @@ namespace Quintity.TestFramework.TestClientTests
                     }
                 }
 
-                int i = 1;
             }
             catch (Exception e)
             {
@@ -191,12 +228,9 @@ namespace Quintity.TestFramework.TestClientTests
             return TestVerdict;
         }
 
-        private string bob = null;
-
         [TestMethod]
         public TestVerdict ScratchTest1()
         {
-            bob = "I am set";
             return TestVerdict;
         }
 

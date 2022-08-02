@@ -251,6 +251,9 @@ namespace Quintity.TestFramework.Core
             TestPropertyCollection savedTestPropertyCollection = new TestPropertyCollection(Core.TestProperties.TestPropertyCollection);
 
             AddRuntimeTestPropertiesToTestProperties();
+            
+            // Initialized TestCaches (accessible to its TestSteps
+            TestCache.Initialize();
 
             _testClassDictionary = new Dictionary<int, TestClassBase>();
 
@@ -295,6 +298,9 @@ namespace Quintity.TestFramework.Core
 
             testCaseResult.SetEndTime(DateTime.Now);
             testCaseResult.FinalizeVerdict();
+
+            // Dispose of TestCache (limited scope to TestCases).
+            TestCache.Dispose();
 
             // Restore preserved test property collection.
             Core.TestProperties.SetTestPropertyCollection(savedTestPropertyCollection);

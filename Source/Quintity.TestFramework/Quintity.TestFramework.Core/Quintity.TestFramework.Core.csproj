@@ -91,6 +91,7 @@
     <Compile Include="Support\TestWait.cs" />
     <Compile Include="TestBreakPointArgs.cs" />
     <Compile Include="TestBreakpoints.cs" />
+    <Compile Include="TestCache.cs" />
     <Compile Include="TestCaseResultComposite.cs" />
     <Compile Include="TestProcessorBeginExecutionArgs.cs" />
     <Compile Include="TestPropertyOverride.cs" />

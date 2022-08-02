@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Quintity.TestFramework.Core;
 
 namespace Quintity.TestFramework.TestProject
@@ -6,27 +7,12 @@ namespace Quintity.TestFramework.TestProject
     [TestClass]
     public class TestMethods : TestClassBase
     {
+        [TestMethod]
+        public TestVerdict TestCacheTests()
+        {
+            return TestVerdict.Pass;
+        }
 
-        /*
-         * <TestParameter>
-                <DisplayName>stringParam</DisplayName>
-                <Name>stringParam</Name>
-                <TypeAsString>System.String</TypeAsString>
-                <ValueAsString>[TestHome]</ValueAsString>
-              </TestParameter>
-              <TestParameter>
-                <DisplayName>boolParam</DisplayName>
-                <Name>boolParam</Name>
-                <TypeAsString>System.Boolean</TypeAsString>
-                <ValueAsString>False</ValueAsString>
-              </TestParameter>
-              <TestParameter>
-                <DisplayName>intParam</DisplayName>
-                <Name>intParam</Name>
-                <TypeAsString>System.Int32</TypeAsString>
-                <ValueAsString>0</ValueAsString>
-              </TestParameter>
-         */
         [TestMethod]
         public TestVerdict ScratchTest1(
             [TestParameter("String parameter", description: "This is the string parameter description", required: true)]
@@ -35,25 +21,38 @@ namespace Quintity.TestFramework.TestProject
             bool boolParam,
             [TestParameter("Integer parameter", required: true)]
             int intParam1,
-            [TestParameter("Integer parameter", required: true)]
+            [TestParameter("Integer parameter", required: false)]
             int? intParam2)
         {
             try
             {
-                TestTrace.Trace($"Test run ID:  {TestRunId}");
-                var testRunId = TestRunId;
+                TestCache.Stash("Something", new List<string>() 
+                { "ItemOne"});
 
-                TestCheck.IsTrue("Verify whatcamacallit is true", true);
-                var testCheck = TestCheck.IsFalse("Verify whatcamacallit is false", true);
+                var thing1 = TestCache.Grab("Something");
+                var thing2 = TestCache.Grab<List<string>>("Something");
 
-                TestVerdict = TestVerdict.Fail;
+                try
+                {
+                    var thing3 = TestCache.Grab("Nothing");
+                }
+                catch (Exception e)
+                {
+                    var msg = e.Message;
+                }
 
-                TestMessage = "This is the message.";
+                try
+                {
+                    var thing3 = TestCache.Grab<string>("Something");
+                }
+                catch (Exception e)
+                {
+                    var msg = e.Message;
+                }
 
-                TestAttachment.Attach("bob", "value");
-                TestAttachment.Detach("bob");
+                var found1 = TestCache.TryGrabValue("Something", out List<string> value1);
+                var found2 = TestCache.TryGrabValue("Nothing", out List<string> value2);
 
-                TestWarning.IsTrue(false, "The sky is falling");
 
                 //TestAssert.IsTrue(false, "TestAssert message here");
                 //throw new Exception("This is the exception."); 
