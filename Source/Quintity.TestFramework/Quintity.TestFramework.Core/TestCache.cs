@@ -37,6 +37,11 @@ namespace Quintity.TestFramework.Core
             return started;
         }
 
+        /// <summary>
+        /// Disposes of TestCache's internal dictionary object.
+        /// </summary>
+        internal static void Dispose() => _testCache = null;
+
         #endregion
 
         #region Public methods
@@ -46,10 +51,7 @@ namespace Quintity.TestFramework.Core
         /// </summary>
         /// <param name="key">Key of object</param>
         /// <param name="object">value of object</param>
-        public static void Stash(string key, object @object)
-        {
-            _testCache.Add(key, @object);
-        }
+        public static void Stash(string key, object @object) => _testCache.Add(key, @object);
 
         /// <summary>
         /// Grabs and an object of type T from the cache's dictionary identified by the key.
@@ -58,10 +60,7 @@ namespace Quintity.TestFramework.Core
         /// <typeparam name="T">Type to return</typeparam>
         /// <param name="key">Object key</param>
         /// <returns>Object of type T</returns>
-        public static T Grab<T>(string key)
-        {
-            return (T)_testCache[key];
-        }
+        public static T Grab<T>(string key) => (T)_testCache[key];
 
         /// <summary>
         /// Grabs and an object from the cache's dictionary identified by the key.
@@ -69,10 +68,7 @@ namespace Quintity.TestFramework.Core
         /// </summary>
         /// <param name="key">Object key</param>
         /// <returns>Object requested</returns>
-        public static object Grab(string key)
-        {
-            return _testCache[key];
-        }
+        public static object Grab(string key) => _testCache[key];
 
         /// <summary>
         /// Tries to grab and object from cache's dictionary identified by key. 
@@ -80,10 +76,7 @@ namespace Quintity.TestFramework.Core
         /// <param name="key">Object key</param>
         /// <param name="value">Object requested</param>
         /// <returns>Object requested if found, default value otherwise</returns>
-        public static bool TryGrabValue(string key, out object value)
-        {
-            return _testCache.TryGetValue(key, out value);
-        }
+        public static bool TryGrabValue(string key, out object value) => _testCache.TryGetValue(key, out value);
 
         /// <summary>
         /// Tries to grab and object of type T from cache's dictionary identified by key. 
@@ -103,26 +96,14 @@ namespace Quintity.TestFramework.Core
         /// <summary>
         /// Clears contents of TestCache dictionary
         /// </summary>
-        public static void Clear()
-        {
-            _testCache.Clear();
-        }
+        public static void Clear() => _testCache.Clear();
 
         /// <summary>
         /// Removes object from cache specified by key.
         /// </summary>
         /// <param name="key">Key of object to remove</param>
         /// <returns>True of item found and removed, false otherwise</returns>
-        public static bool Remove(string key)
-        {
-            return _testCache.Remove(key);
-        }
-
-        internal static void Dispose()
-        {
-            _testCache = null;
-        }
-
+        public static bool Remove(string key) => _testCache.Remove(key);
 
         #endregion
     }
