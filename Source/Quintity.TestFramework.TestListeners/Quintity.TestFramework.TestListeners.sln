@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.ExtentReports", "Quintity.TestFramework.ExtentReports\Quintity.TestFramework.ExtentReports.csproj", "{99E0869D-9D36-4DFB-B4A1-8A668D6C88BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.ListenerTests", "Quintity.TestFramework.ListenerTests\Quintity.TestFramework.ListenerTests.csproj", "{F4342B24-0D10-4710-86CB-BBB73B5852C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestListener.MicrosoftDevOps", "Quintity.TestFramework.TestListener.MicrosoftDevOps\Quintity.TestFramework.TestListener.MicrosoftDevOps.csproj", "{5CAC7353-61B5-4182-A4A2-D9040F4EEEA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F4342B24-0D10-4710-86CB-BBB73B5852C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4342B24-0D10-4710-86CB-BBB73B5852C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4342B24-0D10-4710-86CB-BBB73B5852C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAC7353-61B5-4182-A4A2-D9040F4EEEA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAC7353-61B5-4182-A4A2-D9040F4EEEA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAC7353-61B5-4182-A4A2-D9040F4EEEA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAC7353-61B5-4182-A4A2-D9040F4EEEA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

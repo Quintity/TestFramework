@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Services.Common;
+using Microsoft.VisualStudio.Services.WebApi;
 using Quintity.TestFramework.Core;
 
 namespace Quintity.TestFramework.ListenerTests
@@ -61,6 +63,38 @@ namespace Quintity.TestFramework.ListenerTests
             }
 
             return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict ADOScratch()
+        {
+            try
+            {
+                var url = "https://dev.azure.com/jmothershead";
+                var personalAccessToken = "6zdzztjjru5fcegqmj7oftu4pmndnrfs3oa2w4l27jm2zrfvxiwq";
+
+                VssBasicCredential vbc = default(VssBasicCredential);
+                //VssCredentials cred = default(VssCredentials);
+
+                vbc = new VssBasicCredential(string.Empty, personalAccessToken);
+
+                VssConnection connection = new VssConnection(new Uri(url), new VssBasicCredential(string.Empty, personalAccessToken));
+
+                //using (TfsTeamProjectCollection tfs = new TfsTeamProjectCollection(new Uri(url), vbc))
+                //{
+                //    tfs.Authenticate();
+
+                //    var workItemStore = tfs.GetService<WorkItemStore>();
+                //}
+            }
+            catch (Exception e)
+            { }
+            finally
+            {
+
+            }
+
+            return TestVerdict.Pass;
         }
 
         #endregion
