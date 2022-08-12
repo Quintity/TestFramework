@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace Quintity.TestFramework.Core
 {
@@ -24,12 +25,12 @@ namespace Quintity.TestFramework.Core
         #region Properties
 
         public string Key { get; private set; }
-        public object Value { get; private set; }
+        public Uri Value { get; private set; }
 
         #endregion
 
         #region Constructors
-        public TestAttachment(string key, object value)
+        public TestAttachment(string key, Uri value)
         {
             Key = key;
             Value = value;
@@ -37,7 +38,7 @@ namespace Quintity.TestFramework.Core
 
         #endregion
 
-        public static void Attach(string key, object value)
+        public static void Attach(string key, Uri value)
         {
             var testAttachment = new TestAttachment(key, value);
 

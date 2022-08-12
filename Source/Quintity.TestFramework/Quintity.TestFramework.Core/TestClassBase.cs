@@ -129,6 +129,8 @@ namespace Quintity.TestFramework.Core
             MaxFailedTestChecks = _defaultMaxTestCheckFailures;
         }
 
+ 
+
         #endregion
 
         #region Class test methods
@@ -331,7 +333,7 @@ namespace Quintity.TestFramework.Core
         private void TestAttachment_OnDetachTestAttachment(string virtualUser, string key) => 
             _testAttachmentCollection.Remove(key);
 
-        private void TestAttachment_OnAddTestAttachment(string virtualUser, TestAttachment testAttachment) => 
+        private void TestAttachment_OnAddTestAttachment(string virtualUser, TestAttachment testAttachment) =>
             _testAttachmentCollection.Add(testAttachment.Key, testAttachment.Value);
 
         #endregion

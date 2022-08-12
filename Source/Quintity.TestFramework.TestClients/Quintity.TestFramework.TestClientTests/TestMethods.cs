@@ -14,11 +14,32 @@ namespace Quintity.TestFramework.TestClientTests
         #region TestMethods
 
         [TestMethod]
+        public TestVerdict TestAttachmentTest()
+        {
+            try
+            {
+                var uri = new Uri(@"C:\temp");
+                TestAttachment.Attach("Important", uri);
+
+                TestMessage = uri.ToString();
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        [TestMethod]
         public TestVerdict TestCacheTest1()
         {
             try
             {
                 TestCache.Stash("TestCacheTest1", 999);
+
                 var item= TestCache.Grab<int>("TestCacheTest1");
                // TestCache.Clear();
                 TestVerdict = TestVerdict.Pass;
@@ -206,7 +227,7 @@ namespace Quintity.TestFramework.TestClientTests
                 TestMessage += "Really important stuff.";
 
                 TestCheck.IsTrue("This is a lame test", false);
-                TestAttachments.Add("bob", "smith");
+                TestAttachments.Add("bob", new Uri(@"c:\temp\stuff"));
 
                 TestAssert.IsTrue(false, "Assert failed at a lame test.");
 

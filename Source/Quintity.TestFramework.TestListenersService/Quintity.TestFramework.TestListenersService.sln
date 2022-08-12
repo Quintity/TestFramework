@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32510.428
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestListenersService", "Quintity.TestFramework.TestListenersService\Quintity.TestFramework.TestListenersService.csproj", "{A881972C-72D8-4D3F-95DF-0CBBB570CFDE}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestListeners.TestRail", "Quintity.TestFramework.TestListeners.TestRail\Quintity.TestFramework.TestListeners.TestRail.csproj", "{DE1EF335-EF4C-4A4E-9440-BCC39FBAE4D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quintity.TestFramework.TestListenersService.Setup", "TestListenersService.Setup\Quintity.TestFramework.TestListenersService.Setup.csproj", "{1FCA2B35-9A84-4656-B9A4-1779C017ED8D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A881972C-72D8-4D3F-95DF-0CBBB570CFDE} = {A881972C-72D8-4D3F-95DF-0CBBB570CFDE}
+		{CCDF66F4-E476-41F4-8103-7755E7D19289} = {CCDF66F4-E476-41F4-8103-7755E7D19289}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

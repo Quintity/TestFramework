@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using System.Threading;
+using System.Text;
 
 namespace Quintity.TestFramework.Core
 {
 
     [CollectionDataContract
      (Name = "TestAttachments", ItemName = "TestName", KeyName = "DataKey", ValueName = "DataValue")]
-    public class TestAttachmentCollection : Dictionary<string, object>
+    public class TestAttachmentCollection : Dictionary<string, Uri>
     {
         #region Constructors
 
@@ -42,7 +39,7 @@ namespace Quintity.TestFramework.Core
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("Test Attachments:");
 
-                foreach (KeyValuePair<string, object> keyvaluepair in this)
+                foreach (KeyValuePair<string, Uri> keyvaluepair in this)
                 {
                     sb.AppendLine(string.Format("  Key:  {0}, Value: {1}", keyvaluepair.Key, keyvaluepair.Value.ToString()));
                 }
