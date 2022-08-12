@@ -19,7 +19,7 @@ namespace Quintity.TestFramework.TestEngineer.Setup
             var samples = new Feature("Sample Test Application");
 
             Project project = new Project("Quintity.TestFramework",
-                new Dir(@"C:\Quintity.Testframework",
+                new Dir(@"C:\Quintity.TestFramework",
                         // Add the TestEngineer to folder
                         new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.TestEngineer.exe",
                             // Add shortcut to program files folder
