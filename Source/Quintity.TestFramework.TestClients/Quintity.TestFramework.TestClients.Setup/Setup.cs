@@ -19,7 +19,7 @@ namespace Quintity.TestFramework.TestEngineer.Setup
             var samples = new Feature("Sample Test Application");
 
             Project project = new Project("Quintity.TestFramework",
-                new Dir(@"C:\Quintity Testframework",
+                new Dir(@"C:\Quintity.Testframework",
                         // Add the TestEngineer to folder
                         new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.TestEngineer.exe",
                             // Add shortcut to program files folder
@@ -39,8 +39,8 @@ namespace Quintity.TestFramework.TestEngineer.Setup
                         new ExeFileShortcut("Quintity.TestFramework.Uninstall", "[System64Folder]msiexec.exe", "/x [ProductCode]"),
 
                         // Add TestEngineer to StartUp menu
-                        new Dir("%Startup%",
-                            new ExeFileShortcut("Quintity TestEngineer", "[INSTALLDIR]Quintity.TestFramework.TestEngineer.exe", "")),
+                        //new Dir("%Startup%",
+                        //    new ExeFileShortcut("Quintity TestEngineer", "[INSTALLDIR]Quintity.TestFramework.TestEngineer.exe", "")),
 
                         // Add core library to GAC
                         //new Assembly(new Id("GAC"), $@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.Core.dll", true),

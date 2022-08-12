@@ -79,6 +79,41 @@
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>61641ac8-be1e-4789-8c5f-bd0898ef7b93</SystemID>
+      <UserID />
+      <Title>Copy of Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2022-08-02T12:00:58-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>95dea5d1-d4a5-43dd-8e28-04987a6122b2</SystemID>
+          <UserID />
+          <Title>TestAttachmentTest</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>TestAttachmentTest</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\TestAttachmentTests.ste</FilePath>
 </TestSuite>
