@@ -10,6 +10,7 @@
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
     <SystemID>3d9740bd-45f6-4803-a8bc-44bf1e3043bd</SystemID>
     <Title />
@@ -55,6 +56,7 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
@@ -90,6 +92,7 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
@@ -203,6 +206,7 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>

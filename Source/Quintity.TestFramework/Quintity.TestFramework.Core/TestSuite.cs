@@ -1048,8 +1048,6 @@ namespace Quintity.TestFramework.Core
 
             CheckForPossibleBreakpointMode();
 
-            _qualifiedTestCases = discreteTestCases;
-
             testSuiteResult.SetReferenceID(SystemID);
             testSuiteResult.SetVirtualUser(virtualUser);
 
@@ -1082,54 +1080,72 @@ namespace Quintity.TestFramework.Core
                 if ((processorResult.TestVerdict != TestVerdict.Fail && processorResult.TestVerdict != TestVerdict.Error) ||
                     TestPreprocessor.OnFailure != OnFailure.Stop)
                 {
-                    // Setup for default non-parallel processing
-                    var nonParallelTestScriptObjects = TestScriptObjects;
-
-                    // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
-                    _parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
-                        .Where(t => t != null && t.Parallelizable == true));
-
-                    // If suite is set for parallel execution
-                    if (ParallelExecution && _parallelTestCases.Count != 0)
+                    if (discreteTestCases.Count > 0)
                     {
-                        // Capture remaining non-parallel execution test cases.
-                        nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(_parallelTestCases));
-
-                        _parallelTestCasesExecuting = _parallelTestCases.Count;
-
-                        //foreach (var testCase in _parallelTestCases)
-                        while (_parallelTestCases.Count > 0)
+                        foreach (var discreteTestCase in discreteTestCases)
                         {
-                            var currentTestCase = _parallelTestCases.Dequeue();
-                            executeTestCaseOnThread(currentTestCase);
-                        }
-
-                        _manualReset.WaitOne();
-                    }
-
-                    // Iterate through suites test script objects
-                    foreach (var testScriptObject in nonParallelTestScriptObjects)
-                    {
-                        // Only execute Active objects.
-                        if (testScriptObject.Status == Core.Status.Active)
-                        {
-                            if (testScriptObject is TestCase)
+                            if (discreteTestCase.Status == Core.Status.Active)
                             {
-                                TestCase testCase = testScriptObject as TestCase;
-
-                                if (isQualifiedTestCase(testCase))
+                                if (isQualifiedTestCase(discreteTestCase))
                                 {
-                                    var testScriptResult = testCase.Execute();
+                                    var testScriptResult = discreteTestCase.Execute();
                                     testSuiteResult.IncrementCounter(testScriptResult.TestVerdict);
                                     testSuiteResult.AddResult(testScriptResult);
                                 }
                             }
-                            else if (testScriptObject is TestSuite)
+                        }
+                    }
+                    else
+                    {
+                        // Setup for default non-parallel processing
+                        var nonParallelTestScriptObjects = TestScriptObjects;
+
+                        // Select into queue, may at some point want to throttle nos of parallel threads (will need to queue tests).
+                        _parallelTestCases = new Queue<TestCase>(TestScriptObjects.ConvertAll<TestCase>(t => t as TestCase)
+                            .Where(t => t != null && t.Parallelizable == true));
+
+                        // If suite is set for parallel execution
+                        if (ParallelExecution && _parallelTestCases.Count != 0)
+                        {
+                            // Capture remaining non-parallel execution test cases.
+                            nonParallelTestScriptObjects = new TestScriptObjectCollection(TestScriptObjects.Except(_parallelTestCases));
+
+                            _parallelTestCasesExecuting = _parallelTestCases.Count;
+
+                            //foreach (var testCase in _parallelTestCases)
+                            while (_parallelTestCases.Count > 0)
                             {
-                                TestSuite childSuite = testScriptObject as TestSuite;
-                                var testScriptResult = childSuite.Execute(discreteTestCases);
-                                testSuiteResult.IncrementCounters(testScriptResult);
-                                testSuiteResult.AddResult(testScriptResult);
+                                var currentTestCase = _parallelTestCases.Dequeue();
+                                executeTestCaseOnThread(currentTestCase);
+                            }
+
+                            _manualReset.WaitOne();
+                        }
+
+                        // Iterate through suites test script objects
+                        foreach (var testScriptObject in nonParallelTestScriptObjects)
+                        {
+                            // Only execute Active objects.
+                            if (testScriptObject.Status == Core.Status.Active)
+                            {
+                                if (testScriptObject is TestCase)
+                                {
+                                    TestCase testCase = testScriptObject as TestCase;
+
+                                    if (isQualifiedTestCase(testCase))
+                                    {
+                                        var testScriptResult = testCase.Execute();
+                                        testSuiteResult.IncrementCounter(testScriptResult.TestVerdict);
+                                        testSuiteResult.AddResult(testScriptResult);
+                                    }
+                                }
+                                else if (testScriptObject is TestSuite)
+                                {
+                                    TestSuite childSuite = testScriptObject as TestSuite;
+                                    var testScriptResult = childSuite.Execute(discreteTestCases);
+                                    testSuiteResult.IncrementCounters(testScriptResult);
+                                    testSuiteResult.AddResult(testScriptResult);
+                                }
                             }
                         }
                     }

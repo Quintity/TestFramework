@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>773230a4-755e-4cfe-a1a7-74e4a46fe607</SystemID>
-  <UserID />
-  <Title>hello world</Title>
+  <SystemID>13a7149f-6d2f-4567-ab99-05df16c94d5f</SystemID>
+  <UserID>1</UserID>
+  <Title>Untitled test suite</Title>
   <Author>jmoth</Author>
-  <Created>2019-01-31T10:36:38-08:00</Created>
+  <Created>2023-01-15T15:34:00-08:00</Created>
   <Project />
   <Reference />
   <FunctionalArea />
@@ -12,7 +12,7 @@
   <TestProperties />
   <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
-    <SystemID>c88a9d8f-7923-4cbd-949b-173e333b1e35</SystemID>
+    <SystemID>c5547f2f-3c50-48ed-a0fd-e0e9549b433b</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -28,7 +28,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>48cc22a5-f703-4115-bcec-e774671115bb</SystemID>
+    <SystemID>7f372287-3608-4e76-a432-108aa1a1d962</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -45,11 +45,11 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>7534a76e-93c5-4a7a-90ff-9f6192344734</SystemID>
-      <UserID />
+      <SystemID>2e231caa-4c78-4fba-9424-56a7ec2b351a</SystemID>
+      <UserID>1.1</UserID>
       <Title>Untitled test case</Title>
       <Author>jmoth</Author>
-      <Created>2019-03-11T10:56:48-07:00</Created>
+      <Created>2023-01-15T15:34:00-08:00</Created>
       <FunctionalArea />
       <Tags />
       <Defects />
@@ -60,42 +60,33 @@
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>738f169e-7b3b-44e2-9897-4a7335d67887</SystemID>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>c680a6da-320b-41f0-b486-323768566c14</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
+          <Description><![CDATA[This is the description bah
+]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
-            <TestParameters />
-          </TestAutomationDefinition>
-        </TestScriptObject>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>0bce8d66-526d-49ad-ae09-58607ce4c10f</SystemID>
-          <UserID />
-          <Title>Untitle test step</Title>
-          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
-          <AlwaysExecute>False</AlwaysExecute>
-          <DependsOn />
-          <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
-          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
-          <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
-            <TestParameters />
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>True</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestSuite" />
   </TestScriptObjects>
-  <FilePath>[TestSuites]\sork.ste</FilePath>
 </TestSuite>

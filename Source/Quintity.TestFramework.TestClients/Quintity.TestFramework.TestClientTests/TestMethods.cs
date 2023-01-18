@@ -223,13 +223,13 @@ namespace Quintity.TestFramework.TestClientTests
             try
             {
                 Setup();
-
+                System.Threading.Thread.Sleep(2000);
                 TestMessage += "Really important stuff.";
 
-                TestCheck.IsTrue("This is a lame test", false);
-                TestAttachments.Add("bob", new Uri(@"c:\temp\stuff"));
+                //TestCheck.IsTrue("This is a lame test", false);
+                //TestAttachments.Add("bob", new Uri(@"c:\temp\stuff"));
 
-                TestAssert.IsTrue(false, "Assert failed at a lame test.");
+                TestAssert.IsTrue(!throwException, "Assert failed at a lame test.");
 
                 //if (throwException)
                 //{

@@ -71,7 +71,7 @@
           <Description><![CDATA[This is the description]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
             <TestMethod>SimpleTest</TestMethod>
             <TestParameters>
@@ -79,13 +79,14 @@
                 <DisplayName>throwException</DisplayName>
                 <Name>throwException</Name>
                 <TypeAsString>System.Boolean</TypeAsString>
-                <ValueAsString>True</ValueAsString>
+                <ValueAsString>False</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\Sample test suite.ste</FilePath>
 </TestSuite>

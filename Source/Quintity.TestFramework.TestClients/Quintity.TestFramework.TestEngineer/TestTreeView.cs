@@ -1,19 +1,19 @@
-﻿using System;
-using System.Threading;
-using System.Reflection;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Configuration;
+﻿using Quintity.TestFramework.Core;
+using Quintity.TestFramework.Runtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
-using System.Runtime.Serialization;
-using Quintity.TestFramework.Core;
-using Quintity.TestFramework.Runtime;
-using System.Linq;
+using System.Configuration;
+using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -117,6 +117,7 @@ namespace Quintity.TestFramework.TestEngineer
         private System.ComponentModel.IContainer components;
         private ToolStripMenuItem m_miOpenEditor;
         private ToolStripMenuItem m_miExecute;
+        private ToolStripMenuItem m_miReexecuteFailedTests;
         private ToolStripSeparator m_toolStripSeparator1;
         private ToolStripMenuItem m_miSaveResults;
         private ToolStripMenuItem m_miResetResults;
@@ -143,6 +144,7 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miInsertBreakpoint;
         private ToolStripMenuItem m_miDeleteBreakpoint;
         private ToolStripMenuItem m_miChangeBreakpointState;
+        private ToolStripSeparator toolStripSeparator1;
         private bool m_ignoreNodeChanges;
 
         #endregion
@@ -184,6 +186,7 @@ namespace Quintity.TestFramework.TestEngineer
 
             this.m_miOpenEditor.Click += m_miOpenEditor_Click;
             this.m_miExecute.Click += m_miExecute_Click;
+            this.m_miReexecuteFailedTests.Click += m_miReexecuteFailedTests_Click;
             this.m_miSaveResults.Click += m_miSaveResults_Click;
             this.m_miResetResults.Click += m_miReset_Click;
             this.m_miActivate.Click += m_miActivate_Click;
@@ -888,6 +891,23 @@ namespace Quintity.TestFramework.TestEngineer
             TraverseNodes(startNode, resetResult);
         }
 
+        public void ResetResults(params TestTreeNode[] testTreeNodes)
+        {
+            foreach(var testTreeNode in testTreeNodes)
+            {
+                TraverseNodes(testTreeNode, resetResult);
+            }
+        }
+
+        public List<TestTreeNode> CollectFailedTestCaseNodes(TestTreeNode startNode)
+        {
+            var failedTestCases = new List<TestTreeNode>();
+
+            failedTestCases.Select(x => x.TestScriptObject);
+            TraverseNodes(startNode, collectFailedTestNodes, failedTestCases);
+            return failedTestCases;
+        }
+
         public void ResetHasChangedFlags()
         {
             TraverseNodes(RootNode, resetHasChangedFlag);
@@ -982,17 +1002,17 @@ namespace Quintity.TestFramework.TestEngineer
 
         private TestExecutor _executor;
 
-        public void Execute(TestTreeNode testTreeNode)
+        public void Execute(TestTreeNode testTreeNode, List<TestCase> discreteTestCases = null)
         {
+            discreteTestCases = discreteTestCases ?? new List<TestCase>();
+
             try
             {
-                ResetResults(testTreeNode);
-
                 _executor = new TestExecutor();
 
                 if (testTreeNode.TestScriptObject is TestSuite)
                 {
-                    _executor.ExecuteTestSuite(testTreeNode.TestScriptObject as TestSuite, m_qualifiedTestCases, TestProfile,
+                    _executor.ExecuteTestSuite(testTreeNode.TestScriptObject as TestSuite, discreteTestCases, TestProfile,
                         TestListeners.TestListenerCollection, SuppressExecution);
                 }
                 else if (testTreeNode.TestScriptObject is TestCase)
@@ -1733,6 +1753,19 @@ namespace Quintity.TestFramework.TestEngineer
             return true;
         }
 
+        private bool collectFailedTestNodes(TestTreeNode currentNode, object tag)
+        {
+            var testScriptResult = currentNode.TestScriptResult;
+
+            if (currentNode.IsTestCase() && testScriptResult != null
+                && (testScriptResult.TestVerdict == TestVerdict.Fail || testScriptResult.TestVerdict == TestVerdict.Error))
+            {
+                ((List<TestTreeNode>)tag).Add(currentNode);
+            }
+
+            return true;
+        }
+
         private bool resetHasChangedFlag(TestTreeNode currentNode, object tag)
         {
             currentNode.ResetHasChanged();
@@ -1935,6 +1968,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             m_miResetResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
             m_miExecute.Enabled = selectedNode.TestScriptObject.Status == Status.Active ? true : false;
+            m_miReexecuteFailedTests.Visible = selectedNode.IsTestSuite();
+            m_miReexecuteFailedTests.Enabled = enableFailedTestExecution(selectedNode);
             m_miSaveResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
         }
 
@@ -1946,6 +1981,21 @@ namespace Quintity.TestFramework.TestEngineer
         private void m_miExecute_Click(object sender, EventArgs e)
         {
             Execute(SelectedNode);
+        }
+
+        private void m_miReexecuteFailedTests_Click(object sender, EventArgs e)
+        {
+            // Get all failed test nodes from selected test suite node
+            var failedTestCaseNodes = CollectFailedTestCaseNodes(SelectedNode);
+
+            // Reset nodes for rerun
+            ResetResults(failedTestCaseNodes.ToArray());
+
+            // Get node test cases
+            var failedTestCases = failedTestCaseNodes.Select(x => x.TestScriptObject as TestCase).ToList<TestCase>();
+
+            // And execute
+            Execute(SelectedNode, failedTestCases);
         }
 
         private void m_miReset_Click(object sender, EventArgs e)
@@ -2159,6 +2209,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miOpenEditor = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_miReexecuteFailedTests = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -2184,6 +2235,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.m_treeViewContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -2193,6 +2245,8 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miOpenEditor,
             this.m_toolStripSeparator1,
             this.m_miExecute,
+            this.m_miReexecuteFailedTests,
+            this.toolStripSeparator1,
             this.m_miResetResults,
             this.m_miSaveResults,
             this.m_mitoolStripSeparator2,
@@ -2213,7 +2267,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miDelete,
             this.m_miRename});
             this.m_treeViewContextMenu.Name = "m_treeViewContextMenu";
-            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 414);
+            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 420);
             this.m_treeViewContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.m_treeViewContextMenu_Opening);
             // 
             // m_miOpenEditor
@@ -2234,6 +2288,13 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miExecute.Name = "m_miExecute";
             this.m_miExecute.Size = new System.Drawing.Size(201, 22);
             this.m_miExecute.Text = "Execute";
+            // 
+            // m_miReexecuteFailedTests
+            // 
+            this.m_miReexecuteFailedTests.Name = "m_miReexecuteFailedTests";
+            this.m_miReexecuteFailedTests.Size = new System.Drawing.Size(201, 22);
+            this.m_miReexecuteFailedTests.Text = "Execute Failed Tests Only";
+            this.m_miReexecuteFailedTests.ToolTipText = "Re-executes previously errored or failed test cases";
             // 
             // m_miResetResults
             // 
@@ -2424,6 +2485,11 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(25, "breakpoint.disabled");
             this.m_treeViewImages.Images.SetKeyName(26, "BreakpointEnable.png");
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            // 
             // TestTreeView
             // 
             this.ContextMenuStrip = this.m_treeViewContextMenu;
@@ -2608,6 +2674,24 @@ namespace Quintity.TestFramework.TestEngineer
             TestSuite.TraverseTestTree(startingTestScriptObject, new TestSuite.TraverseTestTreeDelegate(constructNodeTreeFragmentDelegate));
 
             return m_parentNode;
+        }
+
+        private bool enableFailedTestExecution(TestTreeNode selectedNode)
+        {
+            bool enable = false;
+
+            if (selectedNode.IsTestSuite())
+            {
+                bool isActive = selectedNode.TestScriptObject.Status == Status.Active ? true : false;
+
+                if (isActive && selectedNode.TestScriptResult != null)
+                {
+                    var testSuiteResult = selectedNode.TestScriptResult as TestSuiteResult;
+                    enable = testSuiteResult.TestVerdict == TestVerdict.Error || testSuiteResult.TestVerdict == TestVerdict.Fail;
+                }
+            }
+
+            return enable;
         }
 
         #region Undo/Redo methods

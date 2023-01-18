@@ -10,6 +10,7 @@
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
     <SystemID>f4e58168-d814-4255-bbcc-128f01cee3bf</SystemID>
     <Title />
@@ -56,29 +57,36 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
           <SystemID>eedc3916-41d1-434c-b563-e4ec9f11c93c</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
+          <Description><![CDATA[This is the description]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
-            <TestParameters />
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\New test case.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\vvcvvv.ste</FilePath>
 </TestSuite>

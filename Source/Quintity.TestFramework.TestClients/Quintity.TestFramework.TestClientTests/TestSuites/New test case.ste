@@ -10,6 +10,7 @@
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
     <SystemID>24f6b013-0d20-4565-8d8f-375a01f8c6ad</SystemID>
     <Title />
@@ -44,35 +45,43 @@
   <PostProcess />
   <TestScriptObjects>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>25aba4c9-49c0-426c-ba24-de91ba1e14dc</SystemID>
+      <SystemID>564d70cf-b67e-4170-8fc9-182c3a0b729f</SystemID>
       <UserID />
-      <Title>Target node</Title>
+      <Title>Untitled test case</Title>
       <Author>jmoth</Author>
-      <Created>2019-03-11T10:56:48-07:00</Created>
+      <Created>2023-01-15T15:59:36-08:00</Created>
       <FunctionalArea />
       <Tags />
       <Defects />
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
-        <TestScriptObject type="TestStep" status="Incomplete" testType="Manual">
-          <SystemID>ad6aad2b-ac81-4b34-a429-79d7b0cccca8</SystemID>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>3139c55f-0ca8-482d-88b3-bc62c919e500</SystemID>
           <UserID />
-          <Title>Untitled test step</Title>
+          <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
           <DependsOn />
           <Iterations>1</Iterations>
-          <Description><![CDATA[]]></Description>
+          <Description><![CDATA[This is the description]]></Description>
           <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
           <TestAutomationDefinition>
-            <TestAssembly />
-            <TestClass />
-            <TestMethod />
-            <TestParameters />
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SimpleTest</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>throwException</DisplayName>
+                <Name>throwException</Name>
+                <TypeAsString>System.Boolean</TypeAsString>
+                <ValueAsString>False</ValueAsString>
+              </TestParameter>
+            </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>

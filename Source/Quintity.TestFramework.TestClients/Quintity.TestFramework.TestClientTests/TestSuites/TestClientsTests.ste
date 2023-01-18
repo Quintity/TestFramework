@@ -10,6 +10,7 @@
   <FunctionalArea />
   <Description><![CDATA[]]></Description>
   <TestProperties />
+  <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
     <SystemID>a3a1bd9a-ed25-4bfb-b044-aecad7719a40</SystemID>
     <Title />
@@ -63,6 +64,7 @@
       <KnownDefects>False</KnownDefects>
       <Reference />
       <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
       <Description><![CDATA[]]></Description>
       <TestProperties />
       <TestScriptObjects>
@@ -85,7 +87,7 @@
                 <DisplayName>throwException</DisplayName>
                 <Name>throwException</Name>
                 <TypeAsString>System.Boolean</TypeAsString>
-                <ValueAsString>False</ValueAsString>
+                <ValueAsString>True</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
@@ -93,7 +95,6 @@
       </TestScriptObjects>
     </TestScriptObject>
     <TestScriptObject type="TestSuite">[TestSuites]\Sample test suite.ste</TestScriptObject>
-    <TestScriptObject type="TestSuite">[TestSuites]\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\TestClientsTests.ste</FilePath>
 </TestSuite>

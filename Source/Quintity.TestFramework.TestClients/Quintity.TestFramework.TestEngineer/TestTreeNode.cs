@@ -157,13 +157,15 @@ namespace Quintity.TestFramework.TestEngineer
         /// <summary>
         /// Sets the node's TestScriptResult value to null;
         /// </summary>
-        public void ResetResult()
+        public void ResetResult(bool updateUI = true)
         {
             if (TestScriptResult != null || IsExecuting)
             {
                 IsExecuting = false;
                 TestScriptResult = null;
-                UpdateUI();
+
+                if (updateUI)
+                    UpdateUI();
             }
         }
 
@@ -433,7 +435,7 @@ namespace Quintity.TestFramework.TestEngineer
                     }
                 }
 
-                
+
             }
 
             if (HasBreakpoint())

@@ -27,8 +27,10 @@ namespace Quintity.TestFramework.TestEngineer.Setup
                             // Add shortcut to desktop
                             new FileShortcut("Quintity TestEngineer", @"%Desktop%")),
 
+                        new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\GenericDictionaryEditor.dll"),
                         new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.Core.dll"),
                         new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.Runtime.dll"),
+                        new Files($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\*.pdb"),
                         new File($@"..\Quintity.TestFramework.TestEngineer\bin\{build}\Quintity.TestFramework.TestEngineer.exe.Config"),
                         new File($@"..\Quintity.TestFramework.TestRunner\bin\{build}\Quintity.TestFramework.TestRunner.exe"),
                         new File($@"..\Quintity.TestFramework.TestRunner\bin\{build}\Quintity.TestFramework.TestRunner.exe.Config"),

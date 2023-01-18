@@ -207,6 +207,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TraceViewer.resx">
       <DependentUpon>TraceViewer.cs</DependentUpon>
