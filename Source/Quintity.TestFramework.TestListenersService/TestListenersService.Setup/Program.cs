@@ -42,7 +42,8 @@ namespace TestListenersService.Setup
                 Arguments = "/S"
             };
 
-            project.OutDir = $@".\bin\{build}\";
+            //project.OutDir = $@".\bin\{build}\";
+            project.OutDir = @"C:\Temp";
             project.ControlPanelInfo.Manufacturer = "Quintity, LLC";
             project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";
             project.GUID = new Guid("96F03431-CD66-4A3E-958D-E71FE7662BD3");

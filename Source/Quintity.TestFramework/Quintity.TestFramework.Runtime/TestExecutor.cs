@@ -133,7 +133,7 @@ namespace Quintity.TestFramework.Runtime
                 ExecutionParameters executionParameters = new ExecutionParameters()
                 {
                     _testScriptObject = testSuite,
-                    _testCases = discreteTestCases,
+                    _testCases = discreteTestCases ?? new List<TestCase>(),
                     _testProfile = testProfile,
                     _suppressExecution = suppressExecution
                 };

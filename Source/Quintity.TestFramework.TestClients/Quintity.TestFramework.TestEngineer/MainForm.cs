@@ -226,8 +226,8 @@ namespace Quintity.TestFramework.TestEngineer
 
             // If treeview items selected and not root, enable edit picks
             m_editPasteMenuItem.Enabled = Clipboard.ContainsData("SystemID");
-            m_editCutMenuItem.Enabled = m_editCopyMenuItem.Enabled = 
-                m_editDeleteMenuItem.Enabled = !(m_testTreeView.SelectedNode is null)  
+            m_editCutMenuItem.Enabled = m_editCopyMenuItem.Enabled =
+                m_editDeleteMenuItem.Enabled = !(m_testTreeView.SelectedNode is null)
                 && !m_testTreeView.SelectedNode.Equals(m_testTreeView.RootNode) ? true : false;
         }
 
@@ -616,7 +616,7 @@ namespace Quintity.TestFramework.TestEngineer
                 }
                 else
                 {
-                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments }\" has been specified, " +
+                    MessageBox.Show(this, $"The test environment \"{Program.TestEnvironments}\" has been specified, " +
                         "however it was not located in the application configuration file.",
                         "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -628,14 +628,14 @@ namespace Quintity.TestFramework.TestEngineer
             var sb = new StringBuilder();
             sb.AppendLine();
 
-            foreach(var unusedOverride in unusedOverrides)
+            foreach (var unusedOverride in unusedOverrides)
             {
                 sb.AppendLine($"{unusedOverride.Name} ({unusedOverride.Environment})");
             }
 
             sb.AppendLine();
 
-            MessageBox.Show(this, 
+            MessageBox.Show(this,
                 $"The following test property overrides were not applied to the test properties collection:{Environment.NewLine}{sb.ToString()} " +
                 $"In order to be applied the property must already be a member of the current collection.",
                 "Quintity TestEngineer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1064,9 +1064,9 @@ namespace Quintity.TestFramework.TestEngineer
         {
             m_testPropertiesGlobalEditor = new TestPropertiesGlobalEditor(_testPropertyOverrides);
             m_testPropertiesGlobalEditor.FormClosed += Editor_FormClosed;
-            m_testPropertiesGlobalEditor.Location = 
+            m_testPropertiesGlobalEditor.Location =
                 new Point(Location.X + Width / 2, Location.Y);
-                        m_testPropertiesGlobalEditor.StartPosition = FormStartPosition.Manual;
+            m_testPropertiesGlobalEditor.StartPosition = FormStartPosition.Manual;
             m_testPropertiesGlobalEditor.Show(this);
             m_testPropertiesToolStripMenuItem.Enabled = false;
         }
@@ -1127,6 +1127,49 @@ namespace Quintity.TestFramework.TestEngineer
 
             this.m_suiteDeleteAllBreakpointsMenuItem.Enabled =
                 this.m_suiteDisableAllBreakpointsMenuItem.Enabled = m_testTreeView.HasBreakpoints();
+        }
+
+        private void m_mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        { }
+
+        private void m_fileExplorerButton_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestHome);
+        }
+
+        private void m_testOutputMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestOutput);
+        }
+
+        private void m_testDataMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestData);
+        }
+
+        private void m_testConfigsMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestConfigs);
+        }
+
+        private void m_testHomeMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestHome);
+        }
+
+        private void m_testResultsMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestResults);
+        }
+
+        private void m_testSuitesMenuItem_Click(object sender, EventArgs e)
+        {
+            launchFileExplorer(TestProperties.TestSuites);
+        }
+
+        private void launchFileExplorer(string folder)
+        {
+            Process.Start("explorer.exe", folder).WaitForExit(2000);
         }
 
         //void watcher_Deleted(object sender, FileSystemEventArgs e)

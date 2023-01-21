@@ -249,6 +249,7 @@
     <Content Include="Images\BreakpointEnable.small.png" />
     <Content Include="Images\EnableAllBreakpoints.png" />
     <Content Include="Images\FileNew.png" />
+    <None Include="Images\Open.png" />
     <Content Include="Images\TestEngineer.png" />
     <None Include="Images\TestEngineerLogo.jpg" />
     <None Include="Images\QuintityLogo.jpg" />

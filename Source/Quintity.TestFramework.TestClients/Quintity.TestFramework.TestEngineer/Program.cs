@@ -98,7 +98,7 @@ namespace Quintity.TestFramework.TestEngineer
         {
             MessageBox.Show(
                 @"An unhandled exception has occurred:" + Environment.NewLine + 
-                ((Exception)e.ExceptionObject).InnerException.Message, 
+                ((Exception)e.ExceptionObject).ToString(),
                 "Quintity TestEngineer",
                 MessageBoxButtons.OK, 
                 MessageBoxIcon.Error);
