@@ -1,6 +1,7 @@
 ﻿using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime;
 using System;
+using System.ServiceModel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -14,6 +15,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Quintity.TestFramework.TestEngineer
 {
@@ -119,7 +121,7 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miExecute;
         private ToolStripMenuItem m_miReexecuteFailedTests;
         private ToolStripSeparator m_toolStripSeparator1;
-        private ToolStripMenuItem m_miSaveResults;
+        private ToolStripMenuItem m_miSaveResultsToFile;
         private ToolStripMenuItem m_miResetResults;
         private ToolStripSeparator m_mitoolStripSeparator2;
         private ToolStripMenuItem m_miActivate;
@@ -145,6 +147,7 @@ namespace Quintity.TestFramework.TestEngineer
         private ToolStripMenuItem m_miDeleteBreakpoint;
         private ToolStripMenuItem m_miChangeBreakpointState;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparator2;
         private bool m_ignoreNodeChanges;
 
         #endregion
@@ -187,7 +190,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miOpenEditor.Click += m_miOpenEditor_Click;
             this.m_miExecute.Click += m_miExecute_Click;
             this.m_miReexecuteFailedTests.Click += m_miReexecuteFailedTests_Click;
-            this.m_miSaveResults.Click += m_miSaveResults_Click;
+            this.m_miSaveResultsToFile.Click += m_miSaveResultsToFile_Click;
             this.m_miResetResults.Click += m_miReset_Click;
             this.m_miActivate.Click += m_miActivate_Click;
             this.m_miActivateAll.Click += m_miActivateAll_Click;
@@ -893,7 +896,7 @@ namespace Quintity.TestFramework.TestEngineer
 
         public void ResetResults(params TestTreeNode[] testTreeNodes)
         {
-            foreach(var testTreeNode in testTreeNodes)
+            foreach (var testTreeNode in testTreeNodes)
             {
                 TraverseNodes(testTreeNode, resetResult);
             }
@@ -1026,12 +1029,19 @@ namespace Quintity.TestFramework.TestEngineer
             }
             catch (TestListenerInitializeException e)
             {
-                MessageBox.Show(e.Message, "Quintity TestFramework",
+                MessageBox.Show(e.Message, "Quintity TestEngineer",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (EndpointNotFoundException e)
+            {
+                MessageBox.Show($"Cannot connect with the Quintity TestListenerService.  Please verify the service is deployed, " +
+                    $"configured and running.{Environment.NewLine + Environment.NewLine}" +
+                    $"Internal message:  {e.Message}", "Quintity TestEngineer",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Quintity TestFramework",
+                MessageBox.Show(e.Message, "Quintity TestEngineer",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -1931,8 +1941,8 @@ namespace Quintity.TestFramework.TestEngineer
             {
                 m_miDelete.Enabled = true;
                 m_miCut.Enabled = unavailable ? false : true;
-                m_miCopy.Enabled = unavailable ? false : true; ;
-                m_miRename.Enabled = unavailable ? false : true; ;
+                m_miCopy.Enabled = unavailable ? false : true;
+                m_miRename.Enabled = unavailable ? false : true;
 
                 if (!unavailable)
                 {
@@ -1970,7 +1980,7 @@ namespace Quintity.TestFramework.TestEngineer
             m_miExecute.Enabled = selectedNode.TestScriptObject.Status == Status.Active ? true : false;
             m_miReexecuteFailedTests.Visible = selectedNode.IsTestSuite();
             m_miReexecuteFailedTests.Enabled = enableFailedTestExecution(selectedNode);
-            m_miSaveResults.Enabled = selectedNode.TestScriptResult != null ? true : false;
+            m_miSaveResultsToFile.Enabled = selectedNode.TestScriptResult != null;
         }
 
         private void m_miOpenEditor_Click(object sender, EventArgs e)
@@ -2003,40 +2013,22 @@ namespace Quintity.TestFramework.TestEngineer
             ResetResults(SelectedNode);
         }
 
-        private void m_miSaveResults_Click(object sender, EventArgs e)
+        private void m_miSaveResultsToFile_Click(object sender, EventArgs e)
         {
-            TestTreeNode node = SelectedNode;
-
-            m_saveFileDialog.Title = "Save Test Result As";
-            m_saveFileDialog.InitialDirectory = TestProperties.TestOutput;
-            m_saveFileDialog.FileName = node.TestScriptObject.Title;
-            m_saveFileDialog.ValidateNames = true;
-            m_saveFileDialog.RestoreDirectory = true;
-            m_saveFileDialog.Filter =
-                "XML results (*.xml)|*.xml|Webpage results (*.html) | *.html|Text results (*.txt) | *.txt|All files (*.*)|*.*";
-            m_saveFileDialog.FilterIndex = 1;
-
-            DialogResult dlgResult = m_saveFileDialog.ShowDialog();
-
-            if (dlgResult == DialogResult.OK)
+            if (SelectedNode.TestScriptResult != null)
             {
-                var result = SelectedNode.TestScriptResult;
+                var fileInfo = TestExecutor.WriteResultsToFile(SelectedNode.TestScriptResult);
 
-                if (result is TestSuiteResult)
+                if (MessageBox.Show(this,
+                    $"The TestResult file was successfully created:{Environment.NewLine + Environment.NewLine}\"{fileInfo.Name}\"" +
+                    $"{Environment.NewLine + Environment.NewLine}" +
+                    $"Do you wish to view the TestRun folder?", "Quintity TestEngineer",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    TestSuiteResult.SerializeToFile((TestSuiteResult)result, m_saveFileDialog.FileName);
-                }
-                else if (result is TestCaseResult)
-                {
-                    TestCaseResult.SerializeToFile((TestCaseResult)result, m_saveFileDialog.FileName);
-                }
-                else if (result is TestStepResult)
-                {
-                    TestStepResult.SerializeToFile((TestStepResult)result, m_saveFileDialog.FileName);
+                    Process.Start("Explorer.exe", $"/select, \"{fileInfo.FullName}\"");
                 }
             }
         }
-
         private void m_miActivate_Click(object sender, EventArgs e)
         {
             if (SelectedNode.TestScriptObject.Status == Status.Inactive)
@@ -2210,8 +2202,9 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miExecute = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miReexecuteFailedTests = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.m_miSaveResultsToFile = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miResetResults = new System.Windows.Forms.ToolStripMenuItem();
-            this.m_miSaveResults = new System.Windows.Forms.ToolStripMenuItem();
             this.m_mitoolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.m_miActivate = new System.Windows.Forms.ToolStripMenuItem();
             this.m_miActivateAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -2235,7 +2228,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.m_treeViewImages = new System.Windows.Forms.ImageList(this.components);
             this.m_openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.m_treeViewContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -2247,8 +2240,8 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miExecute,
             this.m_miReexecuteFailedTests,
             this.toolStripSeparator1,
+            this.m_miSaveResultsToFile,
             this.m_miResetResults,
-            this.m_miSaveResults,
             this.m_mitoolStripSeparator2,
             this.m_miActivate,
             this.m_miActivateAll,
@@ -2265,108 +2258,114 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miCopy,
             this.m_miPaste,
             this.m_miDelete,
+            this.toolStripSeparator2,
             this.m_miRename});
             this.m_treeViewContextMenu.Name = "m_treeViewContextMenu";
-            this.m_treeViewContextMenu.Size = new System.Drawing.Size(202, 420);
+            this.m_treeViewContextMenu.Size = new System.Drawing.Size(206, 426);
             this.m_treeViewContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.m_treeViewContextMenu_Opening);
             // 
             // m_miOpenEditor
             // 
             this.m_miOpenEditor.Name = "m_miOpenEditor";
-            this.m_miOpenEditor.Size = new System.Drawing.Size(201, 22);
+            this.m_miOpenEditor.Size = new System.Drawing.Size(205, 22);
             this.m_miOpenEditor.Text = "Open Editor...";
             // 
             // m_toolStripSeparator1
             // 
             this.m_toolStripSeparator1.Name = "m_toolStripSeparator1";
-            this.m_toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            this.m_toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miExecute
             // 
             this.m_miExecute.Image = global::Quintity.TestFramework.TestEngineer.Properties.Resources.StartExecution;
             this.m_miExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miExecute.Name = "m_miExecute";
-            this.m_miExecute.Size = new System.Drawing.Size(201, 22);
+            this.m_miExecute.Size = new System.Drawing.Size(205, 22);
             this.m_miExecute.Text = "Execute";
             // 
             // m_miReexecuteFailedTests
             // 
             this.m_miReexecuteFailedTests.Name = "m_miReexecuteFailedTests";
-            this.m_miReexecuteFailedTests.Size = new System.Drawing.Size(201, 22);
+            this.m_miReexecuteFailedTests.Size = new System.Drawing.Size(205, 22);
             this.m_miReexecuteFailedTests.Text = "Execute Failed Tests Only";
             this.m_miReexecuteFailedTests.ToolTipText = "Re-executes previously errored or failed test cases";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(202, 6);
+            // 
+            // m_miSaveResultsToFile
+            // 
+            this.m_miSaveResultsToFile.Name = "m_miSaveResultsToFile";
+            this.m_miSaveResultsToFile.Size = new System.Drawing.Size(205, 22);
+            this.m_miSaveResultsToFile.Text = "Save Results to File...";
+            this.m_miSaveResultsToFile.ToolTipText = "Saves the selected items test results to file.";
+            // 
             // m_miResetResults
             // 
-            this.m_miResetResults.Image = ((System.Drawing.Image)(resources.GetObject("m_miResetResults.Image")));
             this.m_miResetResults.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miResetResults.Name = "m_miResetResults";
-            this.m_miResetResults.Size = new System.Drawing.Size(201, 22);
+            this.m_miResetResults.Size = new System.Drawing.Size(205, 22);
             this.m_miResetResults.Text = "Reset Results";
-            // 
-            // m_miSaveResults
-            // 
-            this.m_miSaveResults.Name = "m_miSaveResults";
-            this.m_miSaveResults.Size = new System.Drawing.Size(201, 22);
-            this.m_miSaveResults.Text = "Save Results...";
             // 
             // m_mitoolStripSeparator2
             // 
             this.m_mitoolStripSeparator2.Name = "m_mitoolStripSeparator2";
-            this.m_mitoolStripSeparator2.Size = new System.Drawing.Size(198, 6);
+            this.m_mitoolStripSeparator2.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miActivate
             // 
             this.m_miActivate.Name = "m_miActivate";
-            this.m_miActivate.Size = new System.Drawing.Size(201, 22);
+            this.m_miActivate.Size = new System.Drawing.Size(205, 22);
             this.m_miActivate.Text = "Activate";
             // 
             // m_miActivateAll
             // 
             this.m_miActivateAll.Name = "m_miActivateAll";
-            this.m_miActivateAll.Size = new System.Drawing.Size(201, 22);
+            this.m_miActivateAll.Size = new System.Drawing.Size(205, 22);
             this.m_miActivateAll.Text = "Activate All";
             // 
             // m_toolStripSeparator3
             // 
             this.m_toolStripSeparator3.Name = "m_toolStripSeparator3";
-            this.m_toolStripSeparator3.Size = new System.Drawing.Size(198, 6);
+            this.m_toolStripSeparator3.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miNewTestSuite
             // 
             this.m_miNewTestSuite.Name = "m_miNewTestSuite";
-            this.m_miNewTestSuite.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestSuite.Size = new System.Drawing.Size(205, 22);
             this.m_miNewTestSuite.Text = "New Test Suite...";
             this.m_miNewTestSuite.ToolTipText = "Add a new test suite";
             // 
             // m_miNewTestCase
             // 
             this.m_miNewTestCase.Name = "m_miNewTestCase";
-            this.m_miNewTestCase.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestCase.Size = new System.Drawing.Size(205, 22);
             this.m_miNewTestCase.Text = "New Test Case";
             // 
             // m_miNewTestStep
             // 
             this.m_miNewTestStep.Name = "m_miNewTestStep";
-            this.m_miNewTestStep.Size = new System.Drawing.Size(201, 22);
+            this.m_miNewTestStep.Size = new System.Drawing.Size(205, 22);
             this.m_miNewTestStep.Text = "New Test Step";
             // 
             // m_toolStripSeparator4
             // 
             this.m_toolStripSeparator4.Name = "m_toolStripSeparator4";
-            this.m_toolStripSeparator4.Size = new System.Drawing.Size(198, 6);
+            this.m_toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miAddTestSuite
             // 
             this.m_miAddTestSuite.Name = "m_miAddTestSuite";
-            this.m_miAddTestSuite.Size = new System.Drawing.Size(201, 22);
+            this.m_miAddTestSuite.Size = new System.Drawing.Size(205, 22);
             this.m_miAddTestSuite.Text = "Add Existing Test Suite...";
             this.m_miAddTestSuite.ToolTipText = "Add an existing test suite";
             // 
             // m_toolStripSeparator5
             // 
             this.m_toolStripSeparator5.Name = "m_toolStripSeparator5";
-            this.m_toolStripSeparator5.Size = new System.Drawing.Size(198, 6);
+            this.m_toolStripSeparator5.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miBreakpoint
             // 
@@ -2375,7 +2374,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miDeleteBreakpoint,
             this.m_miChangeBreakpointState});
             this.m_miBreakpoint.Name = "m_miBreakpoint";
-            this.m_miBreakpoint.Size = new System.Drawing.Size(201, 22);
+            this.m_miBreakpoint.Size = new System.Drawing.Size(205, 22);
             this.m_miBreakpoint.Text = "Breakpoint";
             // 
             // m_miInsertBreakpoint
@@ -2404,7 +2403,7 @@ namespace Quintity.TestFramework.TestEngineer
             // m_toolStripSeparator6
             // 
             this.m_toolStripSeparator6.Name = "m_toolStripSeparator6";
-            this.m_toolStripSeparator6.Size = new System.Drawing.Size(198, 6);
+            this.m_toolStripSeparator6.Size = new System.Drawing.Size(202, 6);
             // 
             // m_miCut
             // 
@@ -2412,7 +2411,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miCut.Name = "m_miCut";
             this.m_miCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.m_miCut.Size = new System.Drawing.Size(201, 22);
+            this.m_miCut.Size = new System.Drawing.Size(205, 22);
             this.m_miCut.Text = "Cut";
             // 
             // m_miCopy
@@ -2421,7 +2420,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miCopy.Name = "m_miCopy";
             this.m_miCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.m_miCopy.Size = new System.Drawing.Size(201, 22);
+            this.m_miCopy.Size = new System.Drawing.Size(205, 22);
             this.m_miCopy.Text = "Copy";
             // 
             // m_miPaste
@@ -2431,7 +2430,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miPaste.Name = "m_miPaste";
             this.m_miPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.m_miPaste.Size = new System.Drawing.Size(201, 22);
+            this.m_miPaste.Size = new System.Drawing.Size(205, 22);
             this.m_miPaste.Text = "Paste";
             // 
             // m_miDelete
@@ -2440,7 +2439,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miDelete.Name = "m_miDelete";
             this.m_miDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.m_miDelete.Size = new System.Drawing.Size(201, 22);
+            this.m_miDelete.Size = new System.Drawing.Size(205, 22);
             this.m_miDelete.Text = "Del";
             // 
             // m_miRename
@@ -2449,7 +2448,7 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_miRename.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_miRename.Name = "m_miRename";
             this.m_miRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_miRename.Size = new System.Drawing.Size(201, 22);
+            this.m_miRename.Size = new System.Drawing.Size(205, 22);
             this.m_miRename.Text = "Rename";
             this.m_miRename.ToolTipText = "Rename the selected item.";
             // 
@@ -2485,10 +2484,10 @@ namespace Quintity.TestFramework.TestEngineer
             this.m_treeViewImages.Images.SetKeyName(25, "breakpoint.disabled");
             this.m_treeViewImages.Images.SetKeyName(26, "BreakpointEnable.png");
             // 
-            // toolStripSeparator1
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(198, 6);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(202, 6);
             // 
             // TestTreeView
             // 

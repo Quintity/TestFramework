@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
   <SystemID>4f3273ee-a7f2-491b-8093-39916e32d2c7</SystemID>
-  <UserID />
+  <UserID>TS1001</UserID>
   <Title>Second Suite</Title>
   <Author>jmoth</Author>
   <Created>2019-03-10T08:17:12-07:00</Created>

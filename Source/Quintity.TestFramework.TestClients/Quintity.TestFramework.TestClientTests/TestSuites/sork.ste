@@ -96,6 +96,41 @@
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestCase" status="Active">
+      <SystemID>2719279a-c2ac-4ac5-a835-bcc9eea152a5</SystemID>
+      <UserID />
+      <Title>Copy of Untitled test case</Title>
+      <Author>jmoth</Author>
+      <Created>2019-03-11T10:56:48-07:00</Created>
+      <FunctionalArea />
+      <Tags />
+      <Defects />
+      <KnownDefects>False</KnownDefects>
+      <Reference />
+      <OnFailure>Stop</OnFailure>
+      <Parallelizable>False</Parallelizable>
+      <Description><![CDATA[]]></Description>
+      <TestProperties />
+      <TestScriptObjects>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>89c3e8f5-40f1-48bf-a3d0-c02a4c36f379</SystemID>
+          <UserID />
+          <Title>DumpProperties</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestHome]\bin\Debug\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>DumpProperties</TestMethod>
+            <TestParameters />
+          </TestAutomationDefinition>
+        </TestScriptObject>
+      </TestScriptObjects>
+    </TestScriptObject>
   </TestScriptObjects>
   <FilePath>[TestSuites]\sork.ste</FilePath>
 </TestSuite>

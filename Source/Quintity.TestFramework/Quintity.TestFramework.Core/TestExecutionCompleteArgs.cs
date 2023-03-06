@@ -16,6 +16,8 @@ namespace Quintity.TestFramework.Core
         [DataMember]
         private TestScriptObject _testScriptObject;
         [DataMember]
+        private TestScriptResult _testScriptResult;
+        [DataMember]
         private TerminationReason _terminationSource;
         [DataMember]
         private string _explanation;
@@ -37,6 +39,10 @@ namespace Quintity.TestFramework.Core
         { get { return _testScriptObject; } }
 
         [IgnoreDataMember]
+        public TestScriptResult TestScriptResult
+        { get { return _testScriptResult; } }
+
+        [IgnoreDataMember]
         public TerminationReason TerminationSource
         { get { return _terminationSource; } }
 
@@ -56,11 +62,17 @@ namespace Quintity.TestFramework.Core
 
         #region Class constructors
 
-        public TestExecutionCompleteArgs(string virtualUser, TestScriptObject testScriptObject,
-            TerminationReason terminationSource, TimeSpan elapsedTime, string explanation = null)
+        public TestExecutionCompleteArgs(
+            string virtualUser,
+            TestScriptObject testScriptObject,
+            TestScriptResult testScriptResult,
+            TerminationReason terminationSource,
+            TimeSpan elapsedTime,
+            string explanation = null)
         {
             _virtualUser = virtualUser;
             _testScriptObject = testScriptObject;
+            _testScriptResult = testScriptResult;
             _terminationSource = terminationSource;
             _explanation = explanation;
             _elapsedTime = elapsedTime;

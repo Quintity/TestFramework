@@ -152,6 +152,8 @@ namespace Quintity.TestFramework.Runtime
 
         private void TestExecutor_OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
+            _initialTestScriptObjectResult = args.TestScriptResult;
+
             _logEvent.Info(message: $"Test execution complete ({args.TestRunId}), elapsed time:  {args.ElapsedTime}");
             _listenerEventsClient?.OnTestExecutionComplete(args);
 

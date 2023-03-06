@@ -15,24 +15,30 @@ namespace Quintity.TestFramework.Core
         #region Class data members
 
         [DataMember(Order = 1)]
-        protected Guid _referenceID;
+        protected Guid _referenceSystemID;
 
         [DataMember(Order = 2)]
-        protected TestVerdict _testVerdict;
+        protected string _referenceUserId;
 
         [DataMember(Order = 3)]
-        protected string _testMessage;
-
-        [DataMember(Order = 3)]
-        protected string _virtualUser;
+        protected string _referenceTitle;
 
         [DataMember(Order = 4)]
-        protected DateTime _startTime;
+        protected TestVerdict _testVerdict;
 
         [DataMember(Order = 5)]
-        protected DateTime _endTime;
+        protected string _testMessage;
 
         [DataMember(Order = 6)]
+        protected string _virtualUser;
+
+        [DataMember(Order = 7)]
+        protected DateTime _startTime;
+
+        [DataMember(Order = 8)]
+        protected DateTime _endTime;
+
+        [DataMember(Order = 9)]
         protected string _testRunId;
 
         #endregion
@@ -40,8 +46,16 @@ namespace Quintity.TestFramework.Core
         #region Class properties
 
         [IgnoreDataMember]
-        public Guid ReferenceID
-        { get { return _referenceID; } }
+        public Guid ReferenceSystemID
+        { get { return _referenceSystemID; } }
+
+        [IgnoreDataMember]
+        public string ReferenceUserID
+        { get { return _referenceUserId; } }
+
+        [IgnoreDataMember]
+        public string ReferenceTitle
+        { get { return _referenceTitle; } }
 
         [IgnoreDataMember]
         public TestVerdict TestVerdict
@@ -88,7 +102,9 @@ namespace Quintity.TestFramework.Core
 
         public override string ToString(bool verbose = false)
         {
-            return string.Format("Test verdict:  {0}\r\nTest message:  {1}\r\n\r\nStart time:  {2}\r\nEnd time: {3}\r\nElapsed time:  {4}",
+            return string.Format("TestRun ID: {0}\r\nTest verdict:  {1}\r\nTest message:  {2}\r\n\r\n" +
+                "Start time:  {3}\r\nEnd time: {4}\r\nElapsed time:  {5}",
+                _testRunId,
                 _testVerdict,
                 !string.IsNullOrEmpty(_testMessage) ? _testMessage : "None",
                 _startTime,
@@ -102,7 +118,17 @@ namespace Quintity.TestFramework.Core
 
         internal void SetReferenceID(Guid referenceID)
         {
-            _referenceID = referenceID;
+            _referenceSystemID = referenceID;
+        }
+
+        internal void SetReferenceUserId(string referenceUserID)
+        {
+            _referenceUserId = referenceUserID;
+        }
+
+        internal void SetReferenceTitle(string referenceTitle)
+        {
+            _referenceTitle = referenceTitle;
         }
 
         internal void SetTestVerdict(TestVerdict testVerdict)

@@ -253,10 +253,12 @@ namespace Quintity.TestFramework.Core
 
             string currentUser = Thread.CurrentThread.Name;
 
-            TestStepResult result = new TestStepResult();
-            result.SetReferenceID(SystemID);
-            result.SetVirtualUser(currentUser);
-            result.SetTestVerdict(TestVerdict.Pass);
+            TestStepResult testStepResult = new TestStepResult();
+            testStepResult.SetReferenceID(SystemID);
+            testStepResult.SetReferenceUserId(UserID);
+            testStepResult.SetReferenceTitle(Title);
+            testStepResult.SetVirtualUser(currentUser);
+            testStepResult.SetTestVerdict(TestVerdict.Pass);
 
             FireExecutionBeginEvent(this, new TestStepBeginExecutionArgs(currentUser));
 
@@ -267,21 +269,21 @@ namespace Quintity.TestFramework.Core
 
             TestAutomationDefinition.ResultStruct resultStruct = TestAutomationDefinition.Invoke(testClassDictionary);
 
-            result.SetStartTime(resultStruct.StartTime);
-            result.SetEndTime(resultStruct.EndTime);
-            result.SetTestVerdict(determineVerdict(ExpectedTestVerdict, resultStruct.TestVerdict));
-            result.SetTestMessage(resultStruct.TestMessage);
-            result.SetTestChecks(resultStruct.TestChecks);
-            result.SetTestWarnings(resultStruct.TestWarnings);
-            result.SetTestAttachments(resultStruct.TestAttachments);
+            testStepResult.SetStartTime(resultStruct.StartTime);
+            testStepResult.SetEndTime(resultStruct.EndTime);
+            testStepResult.SetTestVerdict(determineVerdict(ExpectedTestVerdict, resultStruct.TestVerdict));
+            testStepResult.SetTestMessage(resultStruct.TestMessage);
+            testStepResult.SetTestChecks(resultStruct.TestChecks);
+            testStepResult.SetTestWarnings(resultStruct.TestWarnings);
+            testStepResult.SetTestAttachments(resultStruct.TestAttachments);
 
             // If TestCached started just for test step execution, dispose.
             if (started)
                 TestCache.Dispose();
 
-            FireExecutionCompleteEvent(this, result);
+            FireExecutionCompleteEvent(this, testStepResult);
 
-            return result;
+            return testStepResult;
         }
 
         internal void Write(XmlTextWriter xmlWriter)

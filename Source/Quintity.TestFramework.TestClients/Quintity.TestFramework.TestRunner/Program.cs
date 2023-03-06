@@ -160,6 +160,10 @@ namespace Quintity.TestFramework.TestRunner
         private static void TestExecutor_OnExecutionComplete(TestExecutor testExecutor, TestExecutionCompleteArgs args)
         {
             LogEvent.Info(message: $"Test execution complete ({args.VirtualUser}/{args.ElapsedTime})");
+
+            
+            var fileInfo = TestExecutor.WriteResultsToFile(args.TestScriptResult);
+            LogEvent.Info(message: $"Writing run results to file:  ${fileInfo.FullName}");
         }
 
         private static void TestExecutor_OnTestExecutionFinalizedEvent()

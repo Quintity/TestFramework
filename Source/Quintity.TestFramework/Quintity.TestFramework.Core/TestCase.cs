@@ -245,6 +245,8 @@ namespace Quintity.TestFramework.Core
 
             TestCaseResult testCaseResult = new TestCaseResult();
             testCaseResult.SetReferenceID(SystemID);
+            testCaseResult.SetReferenceUserId(UserID);
+            testCaseResult.SetReferenceTitle(Title);
             testCaseResult.SetVirtualUser(currentUser);
 
             // Save copy of test property collection for restoration later (maintains scope)
@@ -387,7 +389,7 @@ namespace Quintity.TestFramework.Core
                 foreach (var testStepResult in testCaseResult.TestStepResults)
                 {
                     // If found, evaluate continue based on test verdict.  If cannot resolve dependency, do not execute.
-                    if (testStepResult.ReferenceID == testStep.DependsOn)
+                    if (testStepResult.ReferenceSystemID == testStep.DependsOn)
                     {
                         provider = testStepResult;
                         executeTestStep = provider.TestVerdict == TestVerdict.Pass ? true : false;

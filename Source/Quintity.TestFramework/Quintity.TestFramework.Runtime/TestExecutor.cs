@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using Quintity.TestFramework.Core;
 using Quintity.TestFramework.Runtime.TestListenersService;
 using System.ServiceModel;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.IO;
 
 namespace Quintity.TestFramework.Runtime
 {
@@ -56,6 +59,7 @@ namespace Quintity.TestFramework.Runtime
         static internal bool SuppressExecution = false;
         private ListenerEventsClient _listenerEventsClient = null;
         private TestScriptObject _initialTestScriptObject;
+        private TestScriptResult _initialTestScriptObjectResult;
         private Timer _executionTimer = null;
         private Thread _mainExecutionThread;
         private TestProfile _testProfile = new TestProfile();
@@ -197,8 +201,48 @@ namespace Quintity.TestFramework.Runtime
                 _mainExecutionThread.Abort();
                 _stopWatch.Stop();
                 fireExecutionCompleteEvent(this,
-                    new TestExecutionCompleteArgs(null, _initialTestScriptObject, terminationSource, _stopWatch.Elapsed, explanation));
+                    new TestExecutionCompleteArgs(null, _initialTestScriptObject, null, terminationSource, _stopWatch.Elapsed, explanation));
             }
+        }
+
+        static public FileInfo WriteResultsToFile(TestScriptResult testScriptResult)//, string outputFileName)
+        {
+            // Check to see if target direct exists
+            var targetDirectory = $@"{TestProperties.TestResults}\TR{testScriptResult.TestRunId}";
+
+            if (!Directory.Exists(targetDirectory))
+                Directory.CreateDirectory(targetDirectory);
+
+            // Prepare results file full path
+            var userIdFixup = string.IsNullOrEmpty(testScriptResult.ReferenceUserID) ?
+                $"({testScriptResult.ReferenceSystemID.ToString().Split('-')[0]})" : $"({testScriptResult.ReferenceUserID})";
+
+            var resultsFileNameFormat = $"{testScriptResult.GetType().Name}{userIdFixup}-{testScriptResult.TestRunId}{{0}}.qrx";
+            var resultsFileFormat = Path.Combine(targetDirectory, resultsFileNameFormat);
+
+            // Create initial results file path.
+            var resultsFile = string.Format(resultsFileFormat, "");
+
+            int counter = 0;
+
+            // If already exist in test run folder, disambiguate path with counter at name end.
+            while (File.Exists(resultsFile))
+            {
+                resultsFile = Path.Combine(targetDirectory, string.Format(resultsFileNameFormat, $".{++counter}"));
+            }
+
+            // Serialize to file
+            var objectType = testScriptResult.GetType();
+            var serializer = new DataContractSerializer(objectType, new List<Type>() { objectType });
+
+            var settings = new XmlWriterSettings() { Indent = true };
+
+            using (var writer = XmlWriter.Create(resultsFile, settings))
+            {
+                serializer.WriteObject(writer, testScriptResult);
+            }
+
+            return new FileInfo(resultsFile);
         }
 
         #endregion
@@ -450,8 +494,12 @@ namespace Quintity.TestFramework.Runtime
                 _stopWatch.Stop();
 
                 // Fire execution complete event...
-                fireExecutionCompleteEvent(this, new TestExecutionCompleteArgs(Thread.CurrentThread.Name, executionParameters._testScriptObject,
-                    TerminationReason.Normal, _stopWatch.Elapsed));
+                fireExecutionCompleteEvent(this, new TestExecutionCompleteArgs(
+                    Thread.CurrentThread.Name,
+                    executionParameters._testScriptObject,
+                    testScriptResult,
+                    TerminationReason.Normal,
+                    _stopWatch.Elapsed));
             }
             catch (ThreadAbortException e)
             {
@@ -463,8 +511,13 @@ namespace Quintity.TestFramework.Runtime
                 _stopWatch.Stop();
 
                 fireExecutionCompleteEvent(this,
-                    new TestExecutionCompleteArgs(Thread.CurrentThread.Name, _initialTestScriptObject,
-                    TerminationReason.RuntimeException, _stopWatch.Elapsed, e.ToString()));
+                    new TestExecutionCompleteArgs(
+                        Thread.CurrentThread.Name,
+                        _initialTestScriptObject,
+                        null,
+                        TerminationReason.RuntimeException,
+                        _stopWatch.Elapsed,
+                        e.ToString()));
             }
             finally
             {

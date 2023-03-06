@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <TestSuite status="Active">
-  <SystemID>6fbcb1f3-d94b-4c89-8265-b7ad20215b11</SystemID>
-  <UserID>99</UserID>
-  <Title>Copy of Sample test suite</Title>
+  <SystemID>de249eec-9221-40fd-a17c-a60d1cf7bd3f</SystemID>
+  <UserID>69</UserID>
+  <Title>DataContract</Title>
   <Author>jmoth</Author>
-  <Created>2019-01-31T10:36:38-08:00</Created>
+  <Created>2023-02-25T09:24:22-08:00</Created>
   <Project />
   <Reference />
   <FunctionalArea />
@@ -12,7 +12,7 @@
   <TestProperties />
   <ParallelExecution>False</ParallelExecution>
   <TestPreprocessor>
-    <SystemID>f4e58168-d814-4255-bbcc-128f01cee3bf</SystemID>
+    <SystemID>f0ab2be1-c15b-4c20-8d11-a2ef08d51445</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -28,7 +28,7 @@
     <OnFailure>Stop</OnFailure>
   </TestPreprocessor>
   <TestPostprocessor>
-    <SystemID>35c4f7e2-45a7-4274-ac3c-caee01cac2c2</SystemID>
+    <SystemID>f67151b4-a3b3-4d05-9c52-967b466847ef</SystemID>
     <Title />
     <Description><![CDATA[]]></Description>
     <Description />
@@ -44,13 +44,12 @@
   </TestPostprocessor>
   <PostProcess />
   <TestScriptObjects>
-    <TestScriptObject type="TestSuite">[TestSuites]\sork.ste</TestScriptObject>
     <TestScriptObject type="TestCase" status="Active">
-      <SystemID>f0207932-685a-48f3-a134-e00acefa54b0</SystemID>
+      <SystemID>2a16793a-6951-4f11-b37b-baf1ca0c8a81</SystemID>
       <UserID />
       <Title>Untitled test case</Title>
       <Author>jmoth</Author>
-      <Created>2019-03-11T10:56:48-07:00</Created>
+      <Created>2023-02-25T10:23:53-08:00</Created>
       <FunctionalArea />
       <Tags />
       <Defects />
@@ -62,8 +61,32 @@
       <TestProperties />
       <TestScriptObjects>
         <TestScriptObject type="TestStep" status="Active" testType="Automated">
-          <SystemID>eedc3916-41d1-434c-b563-e4ec9f11c93c</SystemID>
-          <UserID>15</UserID>
+          <SystemID>da400209-13f1-4f55-9d2d-095e235be970</SystemID>
+          <UserID />
+          <Title>SerializeTestArtificat</Title>
+          <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
+          <AlwaysExecute>False</AlwaysExecute>
+          <DependsOn />
+          <Iterations>1</Iterations>
+          <Description><![CDATA[]]></Description>
+          <ExpectedBehaviour><![CDATA[]]></ExpectedBehaviour>
+          <TestAutomationDefinition>
+            <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
+            <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
+            <TestMethod>SerializeTestArtificat</TestMethod>
+            <TestParameters>
+              <TestParameter>
+                <DisplayName>filePath</DisplayName>
+                <Name>filePath</Name>
+                <TypeAsString>System.String</TypeAsString>
+                <ValueAsString>[TestOutput]</ValueAsString>
+              </TestParameter>
+            </TestParameters>
+          </TestAutomationDefinition>
+        </TestScriptObject>
+        <TestScriptObject type="TestStep" status="Active" testType="Automated">
+          <SystemID>9248ef56-eb0a-4faf-8521-8d31d0b875c4</SystemID>
+          <UserID />
           <Title>This is a simple test</Title>
           <ExpectedTestVerdict>Pass</ExpectedTestVerdict>
           <AlwaysExecute>False</AlwaysExecute>
@@ -80,13 +103,15 @@
                 <DisplayName>throwException</DisplayName>
                 <Name>throwException</Name>
                 <TypeAsString>System.Boolean</TypeAsString>
-                <ValueAsString>False</ValueAsString>
+                <ValueAsString>True</ValueAsString>
               </TestParameter>
             </TestParameters>
           </TestAutomationDefinition>
         </TestScriptObject>
       </TestScriptObjects>
     </TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\NestedSuite1.ste</TestScriptObject>
+    <TestScriptObject type="TestSuite">[TestSuites]\Second Suite.ste</TestScriptObject>
   </TestScriptObjects>
-  <FilePath>[TestSuites]\vvcvvv.ste</FilePath>
+  <FilePath>[TestSuites]\DataContract.ste</FilePath>
 </TestSuite>

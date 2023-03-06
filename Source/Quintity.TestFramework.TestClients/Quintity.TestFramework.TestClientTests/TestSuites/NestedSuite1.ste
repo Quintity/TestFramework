@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<TestSuite status="Active">
+<TestSuite status="Inactive">
   <SystemID>fb336e44-04c4-462d-9bbc-41b1fbb6ba22</SystemID>
   <UserID />
   <Title>NestedSuite1</Title>

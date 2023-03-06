@@ -30,7 +30,7 @@ namespace Quintity.TestFramework.Core
 
             foreach (var testStepResult in testCaseResult.TestStepResults)
             {
-                var testStep = testCase.TestSteps.Find(x => x.SystemID.CompareTo(testStepResult.ReferenceID) == 0);
+                var testStep = testCase.TestSteps.Find(x => x.SystemID.CompareTo(testStepResult.ReferenceSystemID) == 0);
 
                 if (!(testStep is null))
                 {

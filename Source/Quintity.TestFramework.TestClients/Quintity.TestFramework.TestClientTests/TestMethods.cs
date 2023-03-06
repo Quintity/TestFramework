@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Xml;
 using Quintity.TestFramework.Core;
 
 
@@ -12,6 +15,143 @@ namespace Quintity.TestFramework.TestClientTests
     public class TestMethods : TestClassBase
     {
         #region TestMethods
+
+        [TestMethod]
+        public TestVerdict TestPropertiesFixupStringTest()
+        {
+            try
+            {
+                var unFixedString = $@"{TestProperties.TestAssemblies}\library.dll";
+
+                var fixedString = TestProperties.FixupString(unFixedString, "TestAssemblies", "TestHome");
+                //var fixedString = TestProperties.FixupString(unFixedString, "TestHome", "TestAssemblies");
+
+                TestMessage += $"{Environment.NewLine}UnFixed string: {unFixedString}{Environment.NewLine}Fixedup string: {fixedString}";
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        [TestMethod]
+        public TestVerdict SerializeTestArtificat(
+            string filePath)
+        {
+            try
+            {
+                var outputFileName = $"{filePath}\\TestStep.xml";
+                var testSuite = TestProperties.CurrentTestSuite;
+                var testCase = TestProperties.CurrentTestCase;
+                var testStep = TestProperties.CurrentTestStep;
+
+                var serializer = new DataContractSerializer(typeof(TestStep));
+
+                var settings = new XmlWriterSettings() { Indent = true };
+
+                using (var writer = XmlWriter.Create(outputFileName, settings))
+                {
+                    serializer.WriteObject(writer, testStep);
+                }
+
+                var reader = new FileStream(outputFileName, FileMode.Open, FileAccess.Read);
+
+                // Read into object.
+                var testSuite2 = serializer.ReadObject(reader) as TestSuite;
+
+
+                // Testcase result
+                outputFileName = $"{filePath}\\TestCaseResult.xml";
+
+                var testCaseResult = new TestCaseResult();
+
+                serializer = new DataContractSerializer(typeof(TestCaseResult));
+
+                settings = new XmlWriterSettings() { Indent = true };
+
+                using (var writer = XmlWriter.Create(outputFileName, settings))
+                {
+                    serializer.WriteObject(writer, testCaseResult);
+                }
+
+                TestVerdict = TestVerdict.Pass;
+            }
+            catch (Exception exp)
+            {
+                TestMessage += exp.Message;
+                TestVerdict = TestVerdict.Error;
+            }
+
+            return TestVerdict;
+        }
+
+        private static void serializeToFile(TestPropertyCollection testProperties, List<Type> knownTypes, string filePath)
+        {
+            try
+            {
+                //TODO Remove?
+                //knownTypes.Add(typeof(TestListenerCollection));
+
+                DataContractSerializer serializer = new DataContractSerializer(typeof(TestPropertyCollection), knownTypes);
+
+                var settings = new XmlWriterSettings() { Indent = true };
+
+                using (var writer = XmlWriter.Create(filePath, settings))
+                {
+                    serializer.WriteObject(writer, testProperties);
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+
+            }
+        }
+
+        private static TestPropertyCollection deserializeFromFile(string filePath, List<Type> knownTypes)
+        {
+            FileStream reader = null;
+            TestPropertyCollection testProperties = null;
+
+            try
+            {
+                //TODO:  05/25/2018, remove?
+                //knownTypes.Add(typeof(TestListenerCollection));
+                knownTypes.Add(typeof(TestProperty));
+                knownTypes.Add(typeof(TestSystemProperty));
+
+                // Create DataContractSerializer.
+                DataContractSerializer serializer =
+                    new System.Runtime.Serialization.DataContractSerializer(typeof(TestPropertyCollection), knownTypes);
+
+                // Create a file stream to read into.
+                reader = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+
+                // Read into object.
+                testProperties = serializer.ReadObject(reader) as TestPropertyCollection;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    // Close file.
+                    reader.Close();
+                }
+            }
+
+            return testProperties;
+        }
 
         [TestMethod]
         public TestVerdict TestAttachmentTest()

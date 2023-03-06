@@ -73,7 +73,7 @@
           <TestAutomationDefinition>
             <TestAssembly>[TestAssemblies]\Quintity.TestFramework.TestClientTests.dll</TestAssembly>
             <TestClass>Quintity.TestFramework.TestClientTests.TestMethods</TestClass>
-            <TestMethod>DoSomething</TestMethod>
+            <TestMethod>TestPropertiesFixupStringTest</TestMethod>
             <TestParameters />
           </TestAutomationDefinition>
         </TestScriptObject>

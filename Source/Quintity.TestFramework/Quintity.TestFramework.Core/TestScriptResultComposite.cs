@@ -25,7 +25,7 @@ namespace Quintity.TestFramework.Core
 
         public TestScriptResultComposite(TestScriptObject testScriptObject, TestScriptResult testScriptResult)
         {
-            TestAssert.IsTrue(testScriptObject.SystemID.CompareTo(testScriptResult.ReferenceID) == 0,
+            TestAssert.IsTrue(testScriptObject.SystemID.CompareTo(testScriptResult.ReferenceSystemID) == 0,
                 "Test test script result is not applicable to the specified script object.");
 
             ParentID = testScriptObject.ParentID;

@@ -761,96 +761,6 @@ namespace Quintity.TestFramework.Core
             }
         }
 
-        [Obsolete]
-        private void fixupSuite()
-        {
-            _filePath = Core.TestProperties.FixupString(this._filePath, "TestSuites");
-            _filePath = Core.TestProperties.FixupString(this._filePath, "TestHome");
-
-            // If pre or post processor is defined, need to fix up its path.
-            if (null != TestPreprocessor.TestAutomationDefinition.TestAssembly)
-            {
-                Core.TestProperties.FixupString(TestPreprocessor.TestAutomationDefinition.TestAssembly, "TestAssemblies");
-                Core.TestProperties.FixupString(TestPreprocessor.TestAutomationDefinition.TestAssembly, "TestHome");
-            }
-
-            if (null != TestPostprocessor.TestAutomationDefinition.TestAssembly)
-            {
-                Core.TestProperties.FixupString(TestPostprocessor.TestAutomationDefinition.TestAssembly, "TestAssemblies");
-                Core.TestProperties.FixupString(TestPostprocessor.TestAutomationDefinition.TestAssembly, "TestHome");
-            }
-
-            foreach (TestScriptObject testObject in TestScriptObjects)
-            {
-                // Iterate through children
-                if (testObject is TestSuite)
-                {
-                    // If child suite, write separate suite file out.
-                    ((TestSuite)testObject).fixupSuite();
-                }
-                else if (testObject is TestCase)
-                {
-                    TestCase testCase = testObject as TestCase;
-
-                    foreach (TestStep testStep in testCase.TestSteps)
-                    {
-                        var definition = testStep.TestAutomationDefinition;
-
-                        if (definition.TestAssembly != null)
-                        {
-                            // Collapse test assembly path before writing (loading will expand).
-                            definition.TestAssembly = Core.TestProperties.FixupString(definition.TestAssembly, "TestAssemblies");
-                            definition.TestAssembly = Core.TestProperties.FixupString(definition.TestAssembly, "TestHome");
-                        }
-                    }
-                }
-            }
-        }
-
-        [Obsolete]
-        // TODO - remove.
-        private void expandSuite()
-        {
-            // If pre or post processor is defined, need to fix up its path.
-            if (null != TestPreprocessor.TestAutomationDefinition.TestAssembly)
-            {
-                Core.TestProperties.ExpandString(TestPreprocessor.TestAutomationDefinition.TestAssembly);
-            }
-
-            if (null != TestPostprocessor.TestAutomationDefinition.TestAssembly)
-            {
-                Core.TestProperties.ExpandString(TestPostprocessor.TestAutomationDefinition.TestAssembly);
-            }
-
-            foreach (TestScriptObject testObject in TestScriptObjects)
-            {
-                // Iterate through children
-                if (testObject is TestSuite)
-                {
-                    // If child suite, write separate suite file out.
-                    ((TestSuite)testObject).expandSuite();
-                }
-                else if (testObject is TestCase)
-                    if (testObject is TestCase)
-                    {
-                        TestCase testCase = testObject as TestCase;
-
-                        foreach (TestStep testStep in testCase.TestSteps)
-                        {
-                            var definition = testStep.TestAutomationDefinition;
-
-                            if (definition.TestAssembly != null)
-                            {
-                                // Collapse test assembly path before writing (loading will expand).
-                                definition.TestAssembly = Core.TestProperties.ExpandString(definition.TestAssembly);
-                                definition.TestAssembly = Core.TestProperties.ExpandString(definition.TestAssembly);
-                            }
-                        }
-                    }
-            }
-        }
-
-
         private bool availableTestCases(TestScriptObject testScriptObject, object tag)
         {
             if (testScriptObject is TestCase && testScriptObject.Status == Core.Status.Active)
@@ -1048,8 +958,10 @@ namespace Quintity.TestFramework.Core
 
             CheckForPossibleBreakpointMode();
 
-            testSuiteResult.SetReferenceID(SystemID);
             testSuiteResult.SetVirtualUser(virtualUser);
+            testSuiteResult.SetReferenceID(SystemID);
+            testSuiteResult.SetReferenceUserId(UserID);
+            testSuiteResult.SetReferenceTitle(Title);
 
             // Save copy of test property collection for restoration later (maintains scope)
             TestPropertyCollection savedTestPropertyCollection = new TestPropertyCollection(Core.TestProperties.TestPropertyCollection);
