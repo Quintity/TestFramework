@@ -6,6 +6,7 @@ namespace Quintity.TestFramework.Core
     [KnownType(typeof(TestSuite))]
     [KnownType(typeof(TestCase))]
     [KnownType(typeof(TestStep))]
+    [KnownType(typeof(TestSuiteResult))]
     [DataContract]
     public class TestExecutionCompleteArgs
     {

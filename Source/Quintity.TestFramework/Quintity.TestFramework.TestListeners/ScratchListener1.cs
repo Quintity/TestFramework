@@ -11,7 +11,7 @@ namespace Quintity.TestFramework.TestListeners
 
     public class ScratchListener1 : TestListener
     {
-        private static readonly log4net.ILog LogEvent = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog LogEvent = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private Dictionary<string, string> parameters;
 
@@ -100,29 +100,38 @@ namespace Quintity.TestFramework.TestListeners
             int time = 500;
             Thread.Sleep(time);
             LogEvent.Debug($"{MethodInfo.GetCurrentMethod().Name} Scratch:  {testSuiteResult.VirtualUser}, sleep time: {time}");
-
         }
 
         #region Not used
 
+        [NoOperation]
         public override void OnTestMetric(string virtualUser, TestMetricEventArgs args) { }
 
+        [NoOperation]
         public override void OnTestPostprocessorBegin(TestSuite testSuite, TestProcessorBeginExecutionArgs args) { }
 
+        [NoOperation]
         public override void OnTestPostprocessorComplete(TestSuite testSuite, TestProcessorResult testProcessorResult) { }
 
+        [NoOperation]
         public override void OnTestPreprocessorBegin(TestSuite testSuite, TestProcessorBeginExecutionArgs args) { }
 
+        [NoOperation]
         public override void OnTestPreprocessorComplete(TestSuite testSuite, TestProcessorResult testProcessorResult) { }
 
+        [NoOperation]
         public override void OnTestTrace(string virtualString, string traceMessage) { }
 
+        [NoOperation]
         public override void OnTestWarning(TestWarning testWarning) { }
 
+        [NoOperation]
         public override void OnTestCheck(TestCheck testCheck) { }
 
+        [NoOperation]
         public override void OnTestAttachmentDetach(string virtualUser, string key) { }
 
+        [NoOperation]
         public override void OnTestAttachmentAttach(string virtualUser, TestAttachment testAttachment) { }
 
         #endregion
